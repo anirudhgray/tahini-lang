@@ -57,49 +57,35 @@ class Scanner {
     private void scanToken() {
         char c = advance();
         switch (c) {
-            case '(':
+            case '(' ->
                 addToken(TokenType.LEFT_PAREN);
-                break;
-            case ')':
+            case ')' ->
                 addToken(TokenType.RIGHT_PAREN);
-                break;
-            case '{':
+            case '{' ->
                 addToken(TokenType.LEFT_BRACE);
-                break;
-            case '}':
+            case '}' ->
                 addToken(TokenType.RIGHT_BRACE);
-                break;
-            case ',':
+            case ',' ->
                 addToken(TokenType.COMMA);
-                break;
-            case '.':
+            case '.' ->
                 addToken(TokenType.DOT);
-                break;
-            case '-':
+            case '-' ->
                 addToken(TokenType.MINUS);
-                break;
-            case '+':
+            case '+' ->
                 addToken(TokenType.PLUS);
-                break;
-            case ';':
+            case ';' ->
                 addToken(TokenType.SEMICOLON);
-                break;
-            case '*':
+            case '*' ->
                 addToken(TokenType.STAR);
-                break;
-            case '!':
+            case '!' ->
                 addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
-                break;
-            case '=':
+            case '=' ->
                 addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
-                break;
-            case '<':
+            case '<' ->
                 addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
-                break;
-            case '>':
+            case '>' ->
                 addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
-                break;
-            case '/':
+            case '/' -> {
                 if (match('/')) {
                     // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) {
@@ -108,21 +94,15 @@ class Scanner {
                 } else {
                     addToken(TokenType.SLASH);
                 }
-                break;
-            case ' ':
-            case '\r':
-            case '\t':
+            }
+            case ' ', '\r', '\t' -> {
                 // Ignore whitespace.
-                break;
-
-            case '\n':
+            }
+            case '\n' ->
                 line++;
-                break;
-
-            case '"':
+            case '"' ->
                 string();
-                break;
-            default:
+            default -> {
                 if (isDigit(c)) {
                     number();
                 } else if (isAlpha(c)) {
@@ -130,7 +110,7 @@ class Scanner {
                 } else {
                     Lox.error(line, "Unexpected character.");
                 }
-                break;
+            }
         }
     }
 
@@ -163,7 +143,11 @@ class Scanner {
         }
 
         addToken(TokenType.NUMBER,
-                Double.parseDouble(source.substring(start, current)));
+                parseDouble(source, start, current));
+    }
+
+    private double parseDouble(String source, int start, int end) {
+        return Double.parseDouble(source.subSequence(start, end).toString());
     }
 
     private void string() {
