@@ -1,0 +1,5 @@
+// this is a comment
+(( )){} // grouping stuff
+for (var num = 1; num < 3; num = num + 1) {
+    print num;
+}
