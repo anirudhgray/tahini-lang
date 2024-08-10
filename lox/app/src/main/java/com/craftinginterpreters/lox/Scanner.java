@@ -102,6 +102,10 @@ class Scanner {
                 line++;
             case '"' ->
                 string();
+            case '?' ->
+                addToken(TokenType.QUESTION_MARK);
+            case ':' ->
+                addToken(TokenType.COLON);
             default -> {
                 if (isDigit(c)) {
                     number();

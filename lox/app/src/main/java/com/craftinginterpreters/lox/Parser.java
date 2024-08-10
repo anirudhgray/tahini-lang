@@ -22,7 +22,20 @@ class Parser {
     }
 
     private Expr expression() {
-        return equality();
+        return ternary();
+    }
+
+    private Expr ternary() {
+        Expr expr = equality();
+
+        if (match(TokenType.QUESTION_MARK)) {
+            Expr left = ternary();
+            consume(TokenType.COLON, "Expect ':' after expression.");
+            Expr right = ternary();
+            expr = new Expr.Ternary(expr, left, right);
+        }
+
+        return expr;
     }
 
     private Expr equality() {
@@ -77,6 +90,30 @@ class Parser {
     private ParseError error(Token token, String message) {
         Lox.error(token, message);
         return new ParseError();
+    }
+
+    private void synchronize() {
+        advance();
+
+        while (!isAtEnd()) {
+            if (previous().type == TokenType.SEMICOLON) {
+                return;
+            }
+
+            switch (peek().type) {
+                case TokenType.CLASS:
+                case TokenType.FUN:
+                case TokenType.VAR:
+                case TokenType.FOR:
+                case TokenType.IF:
+                case TokenType.WHILE:
+                case TokenType.PRINT:
+                case TokenType.RETURN:
+                    return;
+            }
+
+            advance();
+        }
     }
 
     private Token advance() {
@@ -150,6 +187,13 @@ class Parser {
             consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
             return new Expr.Grouping(expr);
         }
+
+        // Error production for binary operator without left-hand operand
+        if (match(TokenType.PLUS, TokenType.MINUS, TokenType.STAR, TokenType.SLASH, TokenType.EQUAL_EQUAL, TokenType.BANG_EQUAL, TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL)) {
+            Token operator = previous();
+            throw error(operator, "Missing left hand operand.");
+        }
+
         throw error(peek(), "Expected expression.");
     }
 }
