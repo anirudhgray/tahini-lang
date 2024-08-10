@@ -1,3 +1,4 @@
-for (var num = 1; num < 3; num = num + 1) {
-    print num+2; // comment explaining shit
-}
+// for (var num = 1; num < 3; num = num + 1) {
+//    print num+2; // comment explaining shit
+// }
+3+(8-2)*9
