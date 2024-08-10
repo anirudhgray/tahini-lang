@@ -33,6 +33,8 @@ class Scanner {
         keywords.put("true", TokenType.TRUE);
         keywords.put("var", TokenType.VAR);
         keywords.put("while", TokenType.WHILE);
+        keywords.put("yolo", TokenType.QUESTION_MARK);
+        keywords.put("goBust", TokenType.COLON);
     }
 
     Scanner(String source) {
