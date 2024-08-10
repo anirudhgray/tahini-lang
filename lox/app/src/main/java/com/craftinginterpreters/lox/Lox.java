@@ -46,7 +46,12 @@ public class Lox {
 
         for (;;) {
             System.out.print("> ");
-            run(reader.readLine());
+            String line = reader.readLine();
+            if (line == null) {
+                System.out.println("Exiting prompt.");
+                break;
+            }
+            run(line);
             hadError = false;
         }
     }

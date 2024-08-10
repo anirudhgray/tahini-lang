@@ -86,6 +86,7 @@ class Interpreter implements Expr.Visitor<Object> {
             }
             case SLASH -> {
                 checkNumberOperands(expr.operator, left, right);
+                checkZDE(expr.operator, right);
                 yield (double) left / (double) right;
             }
             case STAR -> {
@@ -133,6 +134,12 @@ class Interpreter implements Expr.Visitor<Object> {
         }
 
         throw new RuntimeError(operator, "Both operands must be numbers.");
+    }
+
+    private void checkZDE(Token operator, Object b) {
+        if ((double) b == 0) {
+            throw new RuntimeError(operator, "Oops, ZDE.");
+        }
     }
 
     private Boolean isEqual(Object a, Object b) {
