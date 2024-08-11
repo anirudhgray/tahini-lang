@@ -42,7 +42,24 @@ class Parser {
         if (match(TokenType.LEFT_BRACE)) {
             return new Stmt.Block(block());
         }
+        if (match(TokenType.IF)) {
+            return ifStatement();
+        }
         return expressionStatement();
+    }
+
+    private Stmt ifStatement() {
+        consume(TokenType.LEFT_PAREN, "Expected '(' after 'if'.");
+        Expr condition = expression();
+        consume(TokenType.LEFT_PAREN, "Expected ')' after 'if'.");
+
+        Stmt thenBranch = statement();
+        Stmt elseBranch = null;
+        if (match(TokenType.ELSE)) {
+            elseBranch = statement();
+        }
+
+        return new Stmt.If(condition, thenBranch, elseBranch);
     }
 
     private List<Stmt> block() {

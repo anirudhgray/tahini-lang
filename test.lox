@@ -18,3 +18,15 @@ print a;
 print b;
 print c;
 a;
+var a = 1;
+{
+  var a = a + 2;
+  print a;
+}
+a+b=4;
+a+*;
+{
+  var a = a + 2;
+  print a;
+}
+a+b=4;
