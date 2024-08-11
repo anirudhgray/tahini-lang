@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Lox {
 
-    private static final Interpreter interpreter = new Interpreter();
+    private static Interpreter interpreter;
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
 
@@ -27,6 +27,7 @@ public class Lox {
     }
 
     private static void runFile(String path) throws IOException {
+        interpreter = new Interpreter(false);
         Path filePath = Paths.get(path).toAbsolutePath();
         System.out.println("Attempting to read file: " + filePath);
         byte[] bytes = Files.readAllBytes(filePath);
@@ -40,6 +41,7 @@ public class Lox {
     }
 
     private static void runPrompt() throws IOException {
+        interpreter = new Interpreter(true);
         System.out.println("Welcome to Lox. Type in your code below:");
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
