@@ -31,7 +31,8 @@ public class GenerateAst {
                 "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
                 "Var        : Token name, Expr initializer",
                 "Block      : List<Stmt> statements",
-                "While      : Expr condition, Stmt body"
+                "While      : Expr condition, Stmt body",
+                "Break"
         ));
     }
 
@@ -51,7 +52,13 @@ public class GenerateAst {
 
         for (String type : types) {
             String className = type.split(":")[0].trim();
-            String fields = type.split(":")[1].trim();
+            String fields;
+            if (type.split(":").length == 2) {
+                fields = type.split(":")[1].trim();
+            } else {
+                fields = "";
+            }
+
             defineType(writer, baseName, className, fields);
         }
 
@@ -86,7 +93,12 @@ public class GenerateAst {
         writer.println("    " + className + "(" + fieldList + ") {");
 
         // Store parameters in fields.
-        String[] fields = fieldList.split(", ");
+        String[] fields;
+        if (fieldList.length() > 0) {
+            fields = fieldList.split(", ");
+        } else {
+            fields = new String[0];
+        }
         for (String field : fields) {
             String name = field.split(" ")[1];
             writer.println("      this." + name + " = " + name + ";");

@@ -10,6 +10,7 @@ class Parser {
     }
     private final List<Token> tokens;
     private int current = 0;
+    private int loopLevel = 0;
 
     Parser(List<Token> tokens) {
         this.tokens = tokens;
@@ -52,57 +53,92 @@ class Parser {
         if (match(TokenType.FOR)) {
             return forStatement();
         }
+        if (match(TokenType.BREAK)) {
+            return breakStatement();
+        }
         return expressionStatement();
     }
 
+    private int getLoopLevel() {
+        return this.loopLevel;
+    }
+
+    private void incrementLoopLevel() {
+        loopLevel += 1;
+    }
+
+    private void decrementLoopLevel() {
+        loopLevel -= 1;
+    }
+
+    private Stmt breakStatement() {
+        Token breakToken = previous();
+        consume(TokenType.SEMICOLON, "Expected ';' after break.");
+        if (getLoopLevel() <= 0) {
+            error(breakToken, "Expected 'break' inside a loop.");
+        }
+        return new Stmt.Break();
+    }
+
     private Stmt forStatement() {
-        consume(TokenType.LEFT_PAREN, "Expected '(' after 'while'.");
-        Stmt initializer;
-        if (match(TokenType.SEMICOLON)) {
-            initializer = null;
-        } else if (match(TokenType.VAR)) {
-            initializer = varDeclaration();
-        } else {
-            initializer = expressionStatement();
-        }
-        Expr condition = null;
-        if (!check(TokenType.SEMICOLON)) {
-            condition = expression();
-        }
-        consume(TokenType.SEMICOLON, "Expected ';' after condition.");
-        Expr sideEffect = null;
-        if (!check(TokenType.SEMICOLON)) {
-            sideEffect = expression();
-        }
-        consume(TokenType.RIGHT_PAREN, "Expected ')' after side effect.");
-        Stmt body = statement();
+        try {
+            incrementLoopLevel();
+            consume(TokenType.LEFT_PAREN, "Expected '(' after 'while'.");
+            Stmt initializer;
+            if (match(TokenType.SEMICOLON)) {
+                initializer = null;
+            } else if (match(TokenType.VAR)) {
+                initializer = varDeclaration();
+            } else {
+                initializer = expressionStatement();
+            }
+            Expr condition = null;
+            if (!check(TokenType.SEMICOLON)) {
+                condition = expression();
+            }
+            consume(TokenType.SEMICOLON, "Expected ';' after condition.");
+            Expr sideEffect = null;
+            if (!check(TokenType.SEMICOLON)) {
+                sideEffect = expression();
+            }
+            consume(TokenType.RIGHT_PAREN, "Expected ')' after side effect.");
+            Stmt body = statement();
 
-        if (sideEffect != null) {
-            body = new Stmt.Block(
-                    Arrays.asList(
-                            body,
-                            new Stmt.Expression(sideEffect)));
+            if (sideEffect != null) {
+                body = new Stmt.Block(
+                        Arrays.asList(
+                                body,
+                                new Stmt.Expression(sideEffect)));
+            }
+
+            if (condition == null) {
+                condition = new Expr.Literal(true);
+            }
+            body = new Stmt.While(condition, body);
+
+            if (initializer != null) {
+                body = new Stmt.Block(Arrays.asList(initializer, body));
+            }
+
+            return body;
+        } finally {
+            decrementLoopLevel();
         }
 
-        if (condition == null) {
-            condition = new Expr.Literal(true);
-        }
-        body = new Stmt.While(condition, body);
-
-        if (initializer != null) {
-            body = new Stmt.Block(Arrays.asList(initializer, body));
-        }
-
-        return body;
     }
 
     private Stmt whileStatement() {
         consume(TokenType.LEFT_PAREN, "Expected '(' after 'while'.");
         Expr condition = expression();
         consume(TokenType.RIGHT_PAREN, "Expected ')' after 'while' condition.");
-        Stmt body = statement();
+        try {
+            incrementLoopLevel();
+            Stmt body = statement();
 
-        return new Stmt.While(condition, body);
+            return new Stmt.While(condition, body);
+        } finally {
+            decrementLoopLevel();
+        }
     }
 
     private Stmt ifStatement() {

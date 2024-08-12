@@ -35,6 +35,8 @@ class Scanner {
         keywords.put("while", TokenType.WHILE);
         keywords.put("yolo", TokenType.QUESTION_MARK);
         keywords.put("goBust", TokenType.COLON);
+        keywords.put("break", TokenType.BREAK);
+        keywords.put("continue", TokenType.CONTINUE);
     }
 
     Scanner(String source) {
