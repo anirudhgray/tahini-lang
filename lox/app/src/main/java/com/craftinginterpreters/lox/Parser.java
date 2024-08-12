@@ -117,13 +117,37 @@ class Parser {
     }
 
     private Expr ternary() {
-        Expr expr = equality();
+        Expr expr = logicalOr();
 
         if (match(TokenType.QUESTION_MARK)) {
             Expr left = ternary();
             consume(TokenType.COLON, "Expect ':' after expression.");
             Expr right = ternary();
             expr = new Expr.Ternary(expr, left, right);
+        }
+
+        return expr;
+    }
+
+    private Expr logicalOr() {
+        Expr expr = logicalAnd();
+
+        while (match(TokenType.OR)) {
+            Token operator = previous();
+            Expr right = logicalAnd();
+            expr = new Expr.Logical(expr, operator, right);
+        }
+
+        return expr;
+    }
+
+    private Expr logicalAnd() {
+        Expr expr = equality();
+
+        while (match(TokenType.AND)) {
+            Token operator = previous();
+            Expr right = equality();
+            expr = new Expr.Logical(expr, operator, right);
         }
 
         return expr;
