@@ -23,10 +23,8 @@ var a = 1;
   var a = a + 2;
   print a;
 }
-a+b=4;
-a+*;
-{
-  var a = a + 2;
-  print a;
+
+while (a<10) {
+    print a;
+    a=a+1;
 }
-a+b=4;
