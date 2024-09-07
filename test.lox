@@ -51,3 +51,13 @@ var t2 = clock();
 print t1;
 print t2;
 print t2 - t1;
+
+fun sayHi(first, last) {
+  print "Hi, " + first + " " + last + "!";
+}
+
+fun sayHi(first, last) {
+  print "Hiiiii, " + first + " " + last + "!";
+}
+
+sayHi("Dear", "Reader");
