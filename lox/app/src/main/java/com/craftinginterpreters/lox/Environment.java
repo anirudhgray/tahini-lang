@@ -18,6 +18,10 @@ class Environment {
     private final Map<String, Object> values = new HashMap<>();
 
     public void define(String name, Object value) {
+        if (values.containsKey(name)) {
+            throw new RuntimeError(new Token(TokenType.IDENTIFIER, name, null, -1),
+                    "Variable '" + name + "' is already defined.");
+        }
         values.put(name, value);
     }
 
