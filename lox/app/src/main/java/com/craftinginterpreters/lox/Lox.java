@@ -29,7 +29,6 @@ public class Lox {
     private static void runFile(String path) throws IOException {
         interpreter = new Interpreter(false);
         Path filePath = Paths.get(path).toAbsolutePath();
-        System.out.println("Attempting to read file: " + filePath);
         byte[] bytes = Files.readAllBytes(filePath);
         run(new String(bytes, Charset.defaultCharset()));
         if (hadError) {
@@ -59,7 +58,6 @@ public class Lox {
     }
 
     private static void run(String source) {
-        System.out.println("Running code: " + source);
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
 

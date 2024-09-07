@@ -1,0 +1,5 @@
+var hello = "Hello, ";
+var world = "world!";
+print hello + world;
+
+// Hello, world!
