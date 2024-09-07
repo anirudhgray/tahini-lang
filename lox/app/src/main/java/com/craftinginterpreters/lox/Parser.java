@@ -59,6 +59,9 @@ class Parser {
         if (match(TokenType.BREAK)) {
             return breakStatement();
         }
+        if (match(TokenType.RETURN)) {
+            return returnStatement();
+        }
         return expressionStatement();
     }
 
@@ -81,6 +84,16 @@ class Parser {
             error(breakToken, "Expected 'break' inside a loop.");
         }
         return new Stmt.Break();
+    }
+
+    private Stmt returnStatement() {
+        Token keyword = previous();
+        Expr value = null;
+        if (!check(TokenType.SEMICOLON)) {
+            value = expression();
+        }
+        consume(TokenType.SEMICOLON, "Expected ';' after return value.");
+        return new Stmt.Return(keyword, value);
     }
 
     private Stmt forStatement() {

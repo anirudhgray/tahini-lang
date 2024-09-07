@@ -18,7 +18,7 @@ print a;
 print b;
 print c;
 a;
-var a = 1;
+a = 1;
 {
   var a = a + 2;
   print a;
@@ -37,7 +37,7 @@ for (var i = 0; i<5; i=i+1) {
 
 var t1 = clock();
 
-var a = 0;
+a = 0;
 var temp = nil;
 print temp;
 
@@ -56,8 +56,19 @@ fun sayHi(first, last) {
   print "Hi, " + first + " " + last + "!";
 }
 
-fun sayHi(first, last) {
-  print "Hiiiii, " + first + " " + last + "!";
-}
+//fun sayHi(first, last) {
+//  print "Hiiiii, " + first + " " + last + "!";
+//}
 
 sayHi("Dear", "Reader");
+
+fun fib(n) {
+  if (n <= 1) return n;
+  return fib(n - 2) + fib(n - 1);
+}
+
+for (var i = 0; i < 20; i = i + 1) {
+  print fib(i);
+}
+
+// not going to support nested functions, cuz.
