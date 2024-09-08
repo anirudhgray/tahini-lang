@@ -332,7 +332,7 @@ class Parser {
     }
 
     private ParseError error(Token token, String message) {
-        Lox.error(token, message);
+        Tahini.error(token, message);
         return new ParseError();
     }
 

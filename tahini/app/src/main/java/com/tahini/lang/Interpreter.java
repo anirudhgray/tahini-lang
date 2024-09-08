@@ -15,7 +15,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     public Interpreter(boolean repl) {
         this.repl = repl;
-        globals.define("clock", new LoxCallable() {
+        globals.define("clock", new TahiniCallable() {
             @Override
             public int arity() {
                 return 0;
@@ -39,7 +39,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 execute(statement);
             }
         } catch (RuntimeError error) {
-            Lox.runtimeError(error);
+            Tahini.runtimeError(error);
         }
     }
 
@@ -136,7 +136,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitFunctionStmt(Stmt.Function stmt) {
-        LoxFunction function = new LoxFunction(stmt);
+        TahiniFunction function = new TahiniFunction(stmt);
         environment.define(stmt.name.lexeme, function);
         return null;
     }
@@ -272,12 +272,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             arguments.add(evaluate(argument));
         }
 
-        if (!(callee instanceof LoxCallable)) {
+        if (!(callee instanceof TahiniCallable)) {
             throw new RuntimeError(expr.paren,
                     "Can only call functions and classes.");
         }
 
-        LoxCallable function = (LoxCallable) callee;
+        TahiniCallable function = (TahiniCallable) callee;
         if (arguments.size() != function.arity()) {
             throw new RuntimeError(expr.paren, "Expected "
                     + function.arity() + " arguments but got "

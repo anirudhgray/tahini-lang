@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class Lox {
+public class Tahini {
 
     private static Interpreter interpreter;
     static boolean hadError = false;
@@ -41,7 +41,7 @@ public class Lox {
 
     private static void runPrompt() throws IOException {
         interpreter = new Interpreter(true);
-        System.out.println("Welcome to Lox. Type in your code below:");
+        System.out.println("Welcome to Tahini. Type in your code below:");
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 

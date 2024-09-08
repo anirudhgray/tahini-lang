@@ -3,7 +3,7 @@
 # Directory containing test files
 TEST_DIR="tests"
 
-# Path to your Lox interpreter
+# Path to your Tahini interpreter
 INTERPRETER="./gradlew run --args="
 
 # Function to run a single test
@@ -29,6 +29,6 @@ run_test() {
 }
 
 # Run all tests
-for test_file in $TEST_DIR/*.lox; do
+for test_file in $TEST_DIR/*.tah; do
   run_test "$test_file"
 done

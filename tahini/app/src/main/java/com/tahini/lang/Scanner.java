@@ -116,7 +116,7 @@ class Scanner {
                 } else if (isAlpha(c)) {
                     identifier();
                 } else {
-                    Lox.error(line, "Unexpected character.");
+                    Tahini.error(line, "Unexpected character.");
                 }
             }
         }
@@ -167,7 +167,7 @@ class Scanner {
         }
 
         if (isAtEnd()) {
-            Lox.error(line, "Unterminated string.");
+            Tahini.error(line, "Unterminated string.");
             return;
         }
 

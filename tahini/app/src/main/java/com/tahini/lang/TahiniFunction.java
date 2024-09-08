@@ -2,11 +2,11 @@ package com.tahini.lang;
 
 import java.util.List;
 
-class LoxFunction implements LoxCallable {
+class TahiniFunction implements TahiniCallable {
 
     private final Stmt.Function declaration;
 
-    LoxFunction(Stmt.Function declaration) {
+    TahiniFunction(Stmt.Function declaration) {
         this.declaration = declaration;
     }
 

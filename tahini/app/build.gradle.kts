@@ -34,7 +34,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "com.tahini.lang.Lox"
+    mainClass = "com.tahini.lang.Tahini"
 }
 
 tasks.named<Test>("test") {

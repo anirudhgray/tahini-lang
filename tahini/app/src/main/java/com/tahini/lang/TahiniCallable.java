@@ -2,7 +2,7 @@ package com.tahini.lang;
 
 import java.util.List;
 
-interface LoxCallable {
+interface TahiniCallable {
 
     int arity();
 
