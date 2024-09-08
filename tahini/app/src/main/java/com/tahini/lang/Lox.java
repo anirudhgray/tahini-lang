@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package com.tahini.lang;
 
 import java.io.BufferedReader;
 import java.io.IOException;

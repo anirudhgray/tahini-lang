@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package com.tahini.lang;
 
 class Return extends RuntimeException {
 

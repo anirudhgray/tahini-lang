@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package com.tahini.lang;
 
 import java.util.HashMap;
 import java.util.Map;

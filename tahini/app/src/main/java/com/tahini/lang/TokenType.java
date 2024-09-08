@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package com.tahini.lang;
 
 enum TokenType {
     // Single-character tokens.
