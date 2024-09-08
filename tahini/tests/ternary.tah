@@ -1,5 +1,7 @@
 var a = 10;
 var b = 20;
 print a > b ? "a is greater" : "b is greater";
+print a > b yolo "a is greater" goBust "b is greater";
 
+// b is greater
 // b is greater

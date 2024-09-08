@@ -37,23 +37,95 @@ Planned features include an import system, standard library, in-line testing, an
 
 ### Installation
 
-To get started with Tahini, clone the repository and build the project using Maven or Gradle. Since Tahini is built on top of the JVM, ensure you have a valid Java JDK installed.
+To get started with Tahini, clone the repository and build the project using Maven or Gradle. Since Tahini is built on top of the JVM, ensure you have a valid Java JDK installed (>21).
+
+```bash
+git clone
+cd tahini
+gradle build
+```
 
 #### Verify Installation via Tests
+
+To ensure that Tahini is correctly installed, you can run the test suite using the provided script:
+
+```bash
+./run_tests.sh
+```
 
 ### Running Tahini Code
 
 Tahini comes with a simple REPL (Read-Eval-Print Loop) to run your code interactively. You can also execute scripts via the command line.
 
+To start the REPL:
+```bash
+(>_>) java -jar app/build/libs/app.jar
+Welcome to Tahini. Type in your code below:
+> 3+4;
+7
+> print "hello there!";
+hello there!
+> Exiting prompt.
+```
+
+To run a Tahini script:
+```bash
+java -jar app/build/libs/app.jar "../test.tah"
+```
+
 ## Syntax Overview
 
 ### Variables
 
+```
+var a = "global a";
+{
+  var a = "local a";
+  print a;
+}
+print a;
+var x = 10;
+var y = 20;
+print x + y;
+```
+
 ### Functions
+
+```
+fun greet(name) {
+  print "Hello, " + name + "!";
+}
+greet("Name");
+```
 
 ### Conditionals
 
+```
+var a = 10;
+if (a > 5) {
+  print "Greater than 5";
+} else {
+  print "Less than or equal to 5";
+}
+
+// ternary
+var b = a > 5 ? "Greater than 5" : "Less than or equal to 5";
+```
+
 ### Loops
+
+```
+for (var i = 0; i < 10; i = i + 1) {
+  if (i == 5) break;
+  print i;
+}
+
+var i = 0;
+while (i < 5) {
+  print i;
+  i = i + 1;
+}
+```
 
 ## Planned Features
 
