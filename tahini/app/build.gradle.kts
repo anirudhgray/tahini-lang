@@ -37,6 +37,14 @@ application {
     mainClass = "com.tahini.lang.Tahini"
 }
 
+tasks.jar {
+    manifest {
+        attributes(
+            "Main-Class" to "com.tahini.lang.Tahini"
+        )
+    }
+}
+
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
