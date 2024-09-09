@@ -37,6 +37,8 @@ class Scanner {
         keywords.put("goBust", TokenType.COLON);
         keywords.put("break", TokenType.BREAK);
         keywords.put("continue", TokenType.CONTINUE);
+        keywords.put("precondition", TokenType.PRECONDITION);
+        keywords.put("postcondition", TokenType.POSTCONDITION);
     }
 
     Scanner(String source) {

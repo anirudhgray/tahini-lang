@@ -103,6 +103,8 @@ greet("Name");
 
 #### Contracts (Preconditions and Postconditions)
 
+Inspired by the documentation of Dlang: https://dlang.org/spec/function.html#contracts, as well as the following proposal for C++: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0380r1.pdf
+
 #### Unit Tests
 
 Inspired by https://ziglang.org/documentation/master/#Zig-Test and https://dlang.org/spec/unittest.html
