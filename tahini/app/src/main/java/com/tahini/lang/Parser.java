@@ -11,6 +11,7 @@ class Parser {
     private final List<Token> tokens;
     private int current = 0;
     private int loopLevel = 0;
+    private int functionLevel = 0;
 
     Parser(List<Token> tokens) {
         this.tokens = tokens;
@@ -86,8 +87,23 @@ class Parser {
         return new Stmt.Break();
     }
 
+    private void beginFunction() {
+        functionLevel++;
+    }
+
+    private void endFunction() {
+        functionLevel--;
+    }
+
+    private boolean isInFunction() {
+        return functionLevel > 0;
+    }
+
     private Stmt returnStatement() {
         Token keyword = previous();
+        if (!isInFunction()) {
+            error(keyword, "Cannot return from top-level code.");
+        }
         Expr value = null;
         if (!check(TokenType.SEMICOLON)) {
             value = expression();
@@ -206,6 +222,7 @@ class Parser {
     }
 
     private Stmt function() {
+        beginFunction();
         Token name = consume(TokenType.IDENTIFIER, "Expect function name.");
         consume(TokenType.LEFT_PAREN, "Expect '(' after function name.");
 
@@ -222,6 +239,7 @@ class Parser {
         consume(TokenType.RIGHT_PAREN, "Expect ')' after parameters.");
         consume(TokenType.LEFT_BRACE, "Expect '{' before function body.");
         List<Stmt> body = block();
+        endFunction();
         return new Stmt.Function(name, parameters, body);
     }
 

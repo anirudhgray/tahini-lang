@@ -1,0 +1,4 @@
+var a = 2+3;
+return a;
+
+// [line 2] Error at 'return': Cannot return from top-level code.

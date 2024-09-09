@@ -1,9 +1,1 @@
-var a = 4;
-
-fun rep(str, n) {
-    for (var i = 0; i < n; i = i + 1) {
-        print str;
-    }
-}
-
-rep("hello", a);
+return;
