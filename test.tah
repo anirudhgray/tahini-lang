@@ -1,1 +1,18 @@
-return;
+fun greetUser(name)
+    precondition: name != nil
+{
+    var greeting = "";
+    var i = 0;
+    while (i < 2) {
+        if (i == 0) {
+            greeting = "Hello, " + name + "!";
+        } else {
+            greeting = greeting + " Nice to see you again, " + name + "!";
+        }
+        i = i + 1;
+    }
+    return greeting;
+}
+
+var userName = "Tahini User";
+print greetUser(userName);

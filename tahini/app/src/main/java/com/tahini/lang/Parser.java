@@ -237,10 +237,27 @@ class Parser {
         }
 
         consume(TokenType.RIGHT_PAREN, "Expect ')' after parameters.");
+
+        // precondition and postcondition, both optional
+        List<Expr> preconditions = new ArrayList<>();
+        List<Expr> postconditions = new ArrayList<>();
+        if (match(TokenType.PRECONDITION)) {
+            consume(TokenType.COLON, "Expect ':' after 'precondition'.");
+            do {
+                preconditions.add(expression());
+            } while (match(TokenType.COMMA));
+        }
+        if (match(TokenType.POSTCONDITION)) {
+            consume(TokenType.COLON, "Expect ':' after 'postcondition'.");
+            do {
+                postconditions.add(expression());
+            } while (match(TokenType.COMMA));
+        }
+
         consume(TokenType.LEFT_BRACE, "Expect '{' before function body.");
         List<Stmt> body = block();
         endFunction();
-        return new Stmt.Function(name, parameters, body);
+        return new Stmt.Function(name, parameters, body, preconditions, postconditions);
     }
 
     private Expr expression() {

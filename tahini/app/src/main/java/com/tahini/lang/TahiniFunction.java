@@ -24,13 +24,26 @@ class TahiniFunction implements TahiniCallable {
                     arguments.get(i));
         }
 
-        try {
-            interpreter.executeBlock(declaration.body, environment);
-        } catch (Return returnValue) {
-            return returnValue.value;
+        Expr failingPre = interpreter.evaluateContractConditions(declaration.preconditions, environment);
+        if (failingPre != null) {
+            throw new RuntimeError(declaration.name,
+                    "Precondition failed.");
         }
 
-        return null;
+        Object returnValue = null;
+        try {
+            interpreter.executeBlock(declaration.body, environment);
+        } catch (Return returnValueException) {
+            returnValue = returnValueException.value;
+        }
+
+        Expr failingPost = interpreter.evaluateContractConditions(declaration.postconditions, environment);
+        if (failingPost != null) {
+            throw new RuntimeError(declaration.name,
+                    "Postcondition failed.");
+        }
+
+        return returnValue;
     }
 
     @Override

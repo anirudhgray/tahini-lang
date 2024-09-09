@@ -1,6 +1,27 @@
 # Tahini Language
 
-**Tahini** is a lightweight, interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness, making it a joy for developers to use. Currently, Tahini supports a number of core language features, with an exciting roadmap of future capabilities, including an import system, in-line testing, and cross-language support.
+**Tahini** is a lightweight, interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language features, with an exciting roadmap of future capabilities, including an import system, in-line testing, and cross-language support.
+
+```
+fun greetUser(name)
+    precondition: name != nil
+{
+    var greeting = "";
+    var i = 0;
+    while (i < 2) {
+        if (i == 0) {
+            greeting = "Hello, " + name + "!";
+        } else {
+            greeting = greeting + " Nice to see you again, " + name + "!";
+        }
+        i = i + 1;
+    }
+    return greeting;
+}
+
+var userName = "Tahini User";
+print greetUser(userName);
+```
 
 ## Table of Contents
 - [Tahini Language](#tahini-language)
@@ -30,9 +51,9 @@ Tahini currently implements:
 - [x] **Variables**: Declare mutable variables using a simple and concise syntax.
 - [x] **Loops**: Supports `while` and `for` loops to handle iteration.
 - [x] **Conditionals**: If-else statements for decision-making.
-- [x] **Functions**: Define and call reusable blocks of code.
+- [x] **Functions**: Define and call reusable blocks of code, with support for contracts (`precondition` and `postcondition`).
 - [ ] **Classes**: Object-oriented features to group variables and methods (in progress).
-- [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress).
+- [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress), and a stack trace.
   
 Planned features include an import system, standard library, in-line testing, and cross-language support.
 
@@ -104,6 +125,20 @@ greet("Name");
 #### Contracts (Preconditions and Postconditions)
 
 Inspired by the documentation of Dlang: https://dlang.org/spec/function.html#contracts, as well as the following proposal for C++: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0380r1.pdf
+
+```
+var balance = 1000;
+
+fun withdraw(amount) 
+    precondition: amount > 0, balance > 0
+    postcondition: balance >= 0
+{
+    balance = balance - amount;
+    return balance;
+}
+```
+
+If a contract is violated, a runtime error will be thrown. Preconditions are checked before the function is executed, and postconditions are checked after the function is executed.
 
 #### Unit Tests
 

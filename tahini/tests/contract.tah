@@ -1,0 +1,21 @@
+var balance = 1000;
+
+fun withdraw(amount) 
+    precondition: amount > 0, balance > 0
+    postcondition: balance >= 0
+{
+    balance = balance - amount;
+    return balance;
+}
+
+balance = withdraw(20);
+print balance;
+balance = withdraw(980);
+print balance;
+balance = withdraw(100);
+print balance;
+
+// 980
+// 0
+// Precondition failed.
+// [line 3]

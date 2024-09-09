@@ -125,6 +125,23 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         }
     }
 
+    public Expr evaluateContractConditions(List<Expr> conditions, Environment env) {
+        Environment previous = this.environment;
+        try {
+            this.environment = env;
+
+            for (Expr condition : conditions) {
+                Object value = evaluate(condition);
+                if (!isTruthy(value)) {
+                    return condition;
+                }
+            }
+        } finally {
+            this.environment = previous;
+        }
+        return null;
+    }
+
     @Override
     public Void visitExpressionStmt(Stmt.Expression stmt) {
         Object value = evaluate(stmt.expression);
@@ -196,7 +213,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         throw new RuntimeError(operator, "Operand must be a number.");
     }
 
-    private Boolean isTruthy(Object obj) {
+    public Boolean isTruthy(Object obj) {
         if (obj == null) {
             return false;
         }
