@@ -13,6 +13,8 @@
   - [Syntax Overview](#syntax-overview)
     - [Variables](#variables)
     - [Functions](#functions)
+      - [Contracts (Preconditions and Postconditions)](#contracts-preconditions-and-postconditions)
+      - [Unit Tests](#unit-tests)
     - [Conditionals](#conditionals)
     - [Loops](#loops)
   - [Planned Features](#planned-features)
@@ -30,6 +32,7 @@ Tahini currently implements:
 - [x] **Conditionals**: If-else statements for decision-making.
 - [x] **Functions**: Define and call reusable blocks of code.
 - [ ] **Classes**: Object-oriented features to group variables and methods (in progress).
+- [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress).
   
 Planned features include an import system, standard library, in-line testing, and cross-language support.
 
@@ -97,6 +100,12 @@ fun greet(name) {
 }
 greet("Name");
 ```
+
+#### Contracts (Preconditions and Postconditions)
+
+#### Unit Tests
+
+Inspired by https://ziglang.org/documentation/master/#Zig-Test and https://dlang.org/spec/unittest.html
 
 ### Conditionals
 
