@@ -1,5 +1,6 @@
 package com.tahini.lang;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class TahiniFunction implements TahiniCallable {
@@ -27,7 +28,7 @@ class TahiniFunction implements TahiniCallable {
         Expr failingPre = interpreter.evaluateContractConditions(declaration.preconditions, environment);
         if (failingPre != null) {
             throw new RuntimeError(declaration.name,
-                    "Precondition failed.");
+                    "Precondition failed.", new ArrayList<>());
         }
 
         Object returnValue = null;
@@ -40,7 +41,7 @@ class TahiniFunction implements TahiniCallable {
         Expr failingPost = interpreter.evaluateContractConditions(declaration.postconditions, environment);
         if (failingPost != null) {
             throw new RuntimeError(declaration.name,
-                    "Postcondition failed.");
+                    "Postcondition failed.", new ArrayList<>());
         }
 
         return returnValue;

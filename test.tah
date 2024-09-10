@@ -1,18 +1,15 @@
-fun greetUser(name)
-    precondition: name != nil
-{
-    var greeting = "";
-    var i = 0;
-    while (i < 2) {
-        if (i == 0) {
-            greeting = "Hello, " + name + "!";
-        } else {
-            greeting = greeting + " Nice to see you again, " + name + "!";
-        }
-        i = i + 1;
-    }
-    return greeting;
+fun errorTest() {
+    print "In errorTest";
+    var a = 5;
+    a(); // This should cause a runtime error
 }
 
-var userName = "Tahini User";
-print greetUser(userName);
+// Test nested function calls
+fun nestedFunction() {
+    print "Inside nestedFunction";
+    print "Calling errorTest";
+    errorTest(); // This should cause a runtime error and show the call stack
+}
+
+print "Calling nestedFunction...";
+nestedFunction();

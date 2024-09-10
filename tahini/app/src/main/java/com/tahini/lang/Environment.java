@@ -1,5 +1,6 @@
 package com.tahini.lang;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ class Environment {
     public void define(String name, Object value) {
         if (values.containsKey(name)) {
             throw new RuntimeError(new Token(TokenType.IDENTIFIER, name, null, -1),
-                    "Variable '" + name + "' is already defined.");
+                    "Variable '" + name + "' is already defined.", new ArrayList<>());
         }
         values.put(name, value);
     }
@@ -34,7 +35,7 @@ class Environment {
             return enclosing.getValue(name);
         }
 
-        throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
+        throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.", new ArrayList<>());
     }
 
     void assign(Token name, Object value) {
@@ -49,6 +50,6 @@ class Environment {
         }
 
         throw new RuntimeError(name,
-                "Undefined variable '" + name.lexeme + "'.");
+                "Undefined variable '" + name.lexeme + "'.", new ArrayList<>());
     }
 }

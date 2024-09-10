@@ -18,4 +18,5 @@ print balance;
 // 980
 // 0
 // Precondition failed.
-// [line 3]
+// [line 3] in <fn withdraw>
+// [line 15]

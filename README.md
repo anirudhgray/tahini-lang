@@ -55,7 +55,7 @@ Tahini currently implements:
 - [x] **Conditionals**: If-else statements for decision-making.
 - [x] **Functions**: Define and call reusable blocks of code, with support for contracts (`precondition` and `postcondition`).
 - [ ] **Classes**: Object-oriented features to group variables and methods (in progress).
-- [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress), and a stack trace.
+- [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress), and a stack trace (basic version implemented!).
   
 Planned features include an import system, standard library, in-line testing, and cross-language support.
 
@@ -141,6 +141,13 @@ fun withdraw(amount)
 ```
 
 If a contract is violated, a runtime error will be thrown. Preconditions are checked before the function is executed, and postconditions are checked after the function is executed.
+
+```bash
+Precondition failed.
+[line 3] in <fn withdraw>
+[line 15]
+```
+
 
 #### Unit Tests
 

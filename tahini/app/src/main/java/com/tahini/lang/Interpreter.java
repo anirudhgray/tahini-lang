@@ -2,6 +2,7 @@ package com.tahini.lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
@@ -32,6 +33,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             }
         });
     }
+
+    private final Stack<CallFrame> callStack = new Stack<>();
 
     void interpret(List<Stmt> statements) {
         try {
@@ -210,7 +213,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (operand instanceof Double) {
             return;
         }
-        throw new RuntimeError(operator, "Operand must be a number.");
+        throw new RuntimeError(operator, "Operand must be a number.", new ArrayList<>());
     }
 
     public Boolean isTruthy(Object obj) {
@@ -252,7 +255,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 if (left instanceof String || right instanceof String) {
                     yield (String) stringify(left) + (String) stringify(right);
                 }
-                throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.");
+                throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.", new ArrayList<>());
             }
             case GREATER -> {
                 checkNumberOperands(expr.operator, left, right);
@@ -291,17 +294,30 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
         if (!(callee instanceof TahiniCallable)) {
             throw new RuntimeError(expr.paren,
-                    "Can only call functions and classes.");
+                    "Can only call functions and classes.", new ArrayList<>());
         }
 
         TahiniCallable function = (TahiniCallable) callee;
         if (arguments.size() != function.arity()) {
             throw new RuntimeError(expr.paren, "Expected "
                     + function.arity() + " arguments but got "
-                    + arguments.size() + ".");
+                    + arguments.size() + ".", new ArrayList<>());
         }
 
-        return function.call(this, arguments);
+        CallFrame frame = new CallFrame((TahiniFunction) function, expr.paren.line);
+
+        callStack.push(frame);
+
+        Object result;
+        try {
+            result = function.call(this, arguments);
+        } catch (RuntimeError error) {
+            throw new RuntimeError(error.token, error.getMessage(), new ArrayList<>(callStack));
+        }
+
+        callStack.pop();
+
+        return result;
     }
 
     private void checkNumberOperands(Token operator, Object a, Object b) {
@@ -309,12 +325,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             return;
         }
 
-        throw new RuntimeError(operator, "Both operands must be numbers.");
+        throw new RuntimeError(operator, "Both operands must be numbers.", new ArrayList<>());
     }
 
     private void checkZDE(Token operator, Object b) {
         if ((double) b == 0) {
-            throw new RuntimeError(operator, "Oops, ZDE.");
+            throw new RuntimeError(operator, "Oops, ZDE.", new ArrayList<>());
         }
     }
 
