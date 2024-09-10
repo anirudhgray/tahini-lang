@@ -304,7 +304,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                     + arguments.size() + ".", new ArrayList<>());
         }
 
-        CallFrame frame = new CallFrame((TahiniFunction) function, expr.paren.line);
+        CallFrame frame = new CallFrame(function, expr.paren.line);
 
         callStack.push(frame);
 

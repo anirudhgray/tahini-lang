@@ -21,8 +21,7 @@ fun greetUser(name)
     return greeting;
 }
 
-var userName = "Tahini User";
-print greetUser(userName);
+print greetUser("Tahini User");
 ```
 
 ## Table of Contents
@@ -63,13 +62,18 @@ Planned features include an import system, standard library, in-line testing, an
 
 ### Installation
 
-To get started with Tahini, clone the repository and build the project using Maven or Gradle. Since Tahini is built on top of the JVM, ensure you have a valid Java JDK installed (>21).
+To get started with Tahini, clone the repository and build the project using Maven or Gradle. Since Tahini is built on top of the JVM, ensure you have a valid Java JDK installed (>=21).
 
 ```bash
 git clone
 cd tahini
 gradle build
 ```
+
+> If you get an error, it may be due to the Java version. Ensure you have Java 21 or higher installed, or use the `./gradlew` wrapper to run the project.
+> ```bash
+> ./gradlew run --args="path/to/file.tah"
+> ```
 
 #### Verify Installation via Tests
 
@@ -128,15 +132,26 @@ greet("Name");
 
 Inspired by the documentation of Dlang: https://dlang.org/spec/function.html#contracts, as well as the following proposal for C++: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0380r1.pdf
 
+For example, the following function calculates the square root of a number using the Newton-Raphson method, with a precondition that the input value must be non-negative, and a postcondition that helps confirm that the sqrt function produced an acceptable result:
 ```
-var balance = 1000;
-
-fun withdraw(amount) 
-    precondition: amount > 0, balance > 0
-    postcondition: balance >= 0
+fun safeSqrt(value) 
+    precondition: value >= 0
+    postcondition: x >= 0
 {
-    balance = balance - amount;
-    return balance;
+    var x = value;
+    var tolerance = 0.00001; // Define a tolerance level for the approximation
+    var difference = x;
+
+    while (difference > tolerance) {
+        var newX = 0.5 * (x + value / x);
+        difference = x - newX;
+        if (difference < 0) {
+            difference = -difference;
+        }
+        x = newX;
+    }
+
+    return x;
 }
 ```
 
