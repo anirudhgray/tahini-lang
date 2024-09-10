@@ -1,26 +1,5 @@
-fun safeSqrt(value) 
-    precondition: value >= 0
-    postcondition: x >= 0
-{
-    var x = value;
-    var tolerance = 0.00001; // Define a tolerance level for the approximation
-    var difference = x;
-
-    while (difference > tolerance) {
-        var newX = 0.5 * (x + value / x);
-        difference = x - newX;
-        if (difference < 0) {
-            difference = -difference;
-        }
-        x = newX;
-    }
-
-    return x;
+fun greet(name) {
+  print clock();
+  print "Hello, " + name + "!";
 }
-
-var x = 25;
-var y = safeSqrt(x);  // y will be approximately 5
-print y;
-
-safeSqrt(-9); // This will trigger a precondition error since z < 0
-print result;
+greet("Name");

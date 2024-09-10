@@ -5,23 +5,15 @@
 **Tahini** is a lightweight, interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language features, with an exciting roadmap of future capabilities, including an import system, in-line testing, and cross-language support.
 
 ```
-fun greetUser(name)
-    precondition: name != nil
+fun percentage(part, total)
+    precondition: total > 0, part >= 0
+    postcondition: result >= 0, result <= 100
 {
-    var greeting = "";
-    var i = 0;
-    while (i < 2) {
-        if (i == 0) {
-            greeting = "Hello, " + name + "!";
-        } else {
-            greeting = greeting + " Nice to see you again, " + name + "!";
-        }
-        i = i + 1;
-    }
-    return greeting;
+    var result = (part / total) * 100;
+    return result;
 }
 
-print greetUser("Tahini User");
+print percentage(20, 28);
 ```
 
 ## Table of Contents
@@ -123,6 +115,7 @@ print x + y;
 
 ```
 fun greet(name) {
+  print clock();
   print "Hello, " + name + "!";
 }
 greet("Name");
