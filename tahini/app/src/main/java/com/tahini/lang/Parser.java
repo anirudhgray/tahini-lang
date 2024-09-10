@@ -239,6 +239,8 @@ class Parser {
         consume(TokenType.RIGHT_PAREN, "Expect ')' after parameters.");
 
         // precondition and postcondition, both optional
+        // TODO refactor this to helper methods
+        // TODO add support for return check in postcondition
         List<Expr> preconditions = new ArrayList<>();
         List<Expr> postconditions = new ArrayList<>();
         if (match(TokenType.PRECONDITION)) {

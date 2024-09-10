@@ -17,6 +17,6 @@ print balance;
 
 // 980
 // 0
-// Precondition failed.
+// RuntimeError: Precondition failed.
 // [line 3] in <fn withdraw>
 // [line 15]

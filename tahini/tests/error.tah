@@ -1,4 +1,4 @@
 print a;
 
-// Undefined variable 'a'.
+// RuntimeError: Undefined variable 'a'.
 // [line 1]
