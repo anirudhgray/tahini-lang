@@ -77,7 +77,7 @@ public class Tahini {
     }
 
     static void runtimeError(RuntimeError error) {
-        System.err.print(error.getMessage()
+        System.err.print("RuntimeError: " + error.getMessage()
                 + "\n[line " + error.token.line + "]");
 
         List<CallFrame> callStack = error.callStack;
