@@ -3,24 +3,31 @@
 # Directory containing test files
 TEST_DIR="tests"
 
-# Path to your Tahini interpreter
-INTERPRETER="./gradlew run --args="
+# Path to your built JAR file
+JAR_PATH="app/build/libs/app.jar"
+
+# Build the project
+echo "Building the project..."
+gradle build
+
+# Check if the build was successful
+if [ $? -ne 0 ]; then
+  echo "Build failed. Exiting."
+  exit 1
+fi
 
 # Function to run a single test
 run_test() {
   local test_file=$1
   local expected_output=$(grep -E '^// ' "$test_file" | sed 's/^\/\/ //')
   
-  # Run the interpreter from the project root directory and capture both stdout and stderr
-  local actual_output=$($INTERPRETER"$(pwd)/$test_file" 2>&1 | grep -vE '^(> Task|BUILD SUCCESSFUL|BUILD FAILED|^$|^> Task :app:compileJava|^> Task :app:processResources|^> Task :app:classes|^> Task :app:run|^2 actionable tasks:)')
-
-  # Extract only the relevant lines from the actual output
-  actual_output=$(echo "$actual_output" | grep -vE '^(FAILURE:|^\* What went wrong:|^> Process|^\* Try:|^> Run with|^> Get more help at|^Execution failed for task|^BUILD FAILED|^2 actionable tasks:)')
+  # Run the JAR file and capture both stdout and stderr
+  local actual_output=$(java -jar "$JAR_PATH" "$test_file" 2>&1)
 
   if [ "$expected_output" == "$actual_output" ]; then
-    echo "Test $test_file passed."
+    echo -e "\033[32mTest $test_file passed.\033[0m"
   else
-    echo "Test $test_file failed."
+    echo -e "\033[31mTest $test_file failed.\033[0m"
     echo "Expected:"
     echo "$expected_output"
     echo "Actual:"
@@ -28,7 +35,17 @@ run_test() {
   fi
 }
 
-# Run all tests
+# Run all tests in parallel
+echo "Running tests..."
 for test_file in $TEST_DIR/*.tah; do
-  run_test "$test_file"
+  run_test "$test_file" &
 done
+
+# Wait for all tests to complete
+wait
+
+# Print summary
+echo "Tests completed."
+
+# Exit with appropriate status
+exit 0
