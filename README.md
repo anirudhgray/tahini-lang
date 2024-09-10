@@ -148,7 +148,7 @@ fun safeSqrt(value)
 }
 ```
 
-If a contract is violated, a runtime error will be thrown. Preconditions are checked before the function is executed, and postconditions are checked after the function is executed.
+If a contract is violated, a runtime error will be thrown. Preconditions are checked before the function is executed, and postconditions are checked after the function body, before it returns.
 
 ```bash
 Precondition failed.
