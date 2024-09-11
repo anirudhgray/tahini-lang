@@ -1,5 +1,2 @@
-fun greet(name) {
-  print clock();
-  print "Hello, " + name + "!";
-}
-greet("Name");
+var check = false;
+assertion: check, "Check should be true!";

@@ -63,6 +63,9 @@ class Parser {
         if (match(TokenType.RETURN)) {
             return returnStatement();
         }
+        if (match(TokenType.ASSERTION)) {
+            return assertationStatement();
+        }
         return expressionStatement();
     }
 
@@ -260,6 +263,22 @@ class Parser {
         List<Stmt> body = block();
         endFunction();
         return new Stmt.Function(name, parameters, body, preconditions, postconditions);
+    }
+
+    private Stmt assertationStatement() {
+        Token type = previous();
+        consume(TokenType.COLON, "Expect ':' after 'assertation'.");
+        List<Expr> conditions = new ArrayList<>();
+        Object msg = null;
+        do {
+            if (match(TokenType.STRING)) {
+                msg = previous().literal;
+                break;
+            }
+            conditions.add(expression());
+        } while (match(TokenType.COMMA));
+        consume(TokenType.SEMICOLON, "Expect ';' after assertation.");
+        return new Stmt.Contract(type, conditions, msg);
     }
 
     private Expr expression() {

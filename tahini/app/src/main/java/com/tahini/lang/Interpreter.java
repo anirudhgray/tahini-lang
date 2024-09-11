@@ -146,6 +146,15 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitContractStmt(Stmt.Contract stmt) {
+        Object condition = evaluateContractConditions(stmt.conditions, environment);
+        if (condition != null) {
+            throw new RuntimeError(stmt.type, stmt.type.lexeme + " contract failed (" + stmt.msg + ")", new ArrayList<>());
+        }
+        return null;
+    }
+
+    @Override
     public Void visitExpressionStmt(Stmt.Expression stmt) {
         Object value = evaluate(stmt.expression);
         if (repl) {

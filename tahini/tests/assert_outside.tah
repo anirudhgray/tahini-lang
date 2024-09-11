@@ -1,0 +1,5 @@
+var check = false;
+assertion: check, "Check should be true!";
+
+// RuntimeError: assertion contract failed (Check should be true!)
+// [line 2]

@@ -35,7 +35,8 @@ public class GenerateAst {
                 "Block      : List<Stmt> statements",
                 "While      : Expr condition, Stmt body",
                 "Break",
-                "Return     : Token keyword, Expr value"
+                "Return     : Token keyword, Expr value",
+                "Contract   : Token type, List<Expr> conditions, Object msg"
         ));
     }
 

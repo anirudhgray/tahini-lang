@@ -39,6 +39,7 @@ class Scanner {
         keywords.put("continue", TokenType.CONTINUE);
         keywords.put("precondition", TokenType.PRECONDITION);
         keywords.put("postcondition", TokenType.POSTCONDITION);
+        keywords.put("assertion", TokenType.ASSERTION);
     }
 
     Scanner(String source) {

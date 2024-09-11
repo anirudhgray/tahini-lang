@@ -27,7 +27,7 @@ print percentage(20, 28);
   - [Syntax Overview](#syntax-overview)
     - [Variables](#variables)
     - [Functions](#functions)
-      - [Contracts (Preconditions and Postconditions)](#contracts-preconditions-and-postconditions)
+      - [Contracts (Preconditions, Postconditions and Assertions)](#contracts-preconditions-postconditions-and-assertions)
       - [Unit Tests](#unit-tests)
     - [Conditionals](#conditionals)
     - [Loops](#loops)
@@ -44,7 +44,7 @@ Tahini currently implements:
 - [x] **Variables**: Declare mutable variables using a simple and concise syntax.
 - [x] **Loops**: Supports `while` and `for` loops to handle iteration.
 - [x] **Conditionals**: If-else statements for decision-making.
-- [x] **Functions**: Define and call reusable blocks of code, with support for contracts (`precondition` and `postcondition`).
+- [x] **Functions**: Define and call reusable blocks of code, with support for contracts (`precondition`, `postcondition`, and `assertion`).
 - [ ] **Classes**: Object-oriented features to group variables and methods (in progress).
 - [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress), and a stack trace (basic version implemented!).
   
@@ -121,11 +121,11 @@ fun greet(name) {
 greet("Name");
 ```
 
-#### Contracts (Preconditions and Postconditions)
+#### Contracts (Preconditions, Postconditions and Assertions)
 
 Inspired by the documentation of Dlang: https://dlang.org/spec/function.html#contracts, as well as the following proposal for C++: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0380r1.pdf
 
-For example, the following function calculates the square root of a number using the Newton-Raphson method, with a precondition that the input value must be non-negative, and a postcondition that helps confirm that the sqrt function produced an acceptable result:
+For example, the following function calculates the square root of a number using the Newton-Raphson method, with a `precondition` that the input value must be non-negative, and a `postcondition` that helps confirm that the sqrt function produced an acceptable result:
 ```
 fun safeSqrt(value) 
     precondition: value >= 0
@@ -156,6 +156,12 @@ Precondition failed.
 [line 15]
 ```
 
+`assertion` works in a similar way, except it can be used anywhere in the function body, and outside of functions as well.
+
+```
+var check = false;
+assertion: check, "Check should be true!";
+```
 
 #### Unit Tests
 

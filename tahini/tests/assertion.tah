@@ -1,0 +1,19 @@
+fun calculateDiscountedPrice(originalPrice, discountPercentage)
+    precondition: originalPrice > 0, discountPercentage >= 0, discountPercentage <= 100
+    postcondition: result >= 0, result <= originalPrice
+{
+    assertion: discountPercentage >= 0, discountPercentage <= 100, "Discount must be between 0 and 100";
+
+    var discount = (originalPrice * discountPercentage) / 100;
+    var result = originalPrice + discount;
+
+    assertion: result <= originalPrice, "Result should never exceed the original price";
+
+    return result;
+}
+
+print calculateDiscountedPrice(100,35);
+
+// RuntimeError: assertion contract failed (Result should never exceed the original price)
+// [line 10] in <fn calculateDiscountedPrice>
+// [line 15]
