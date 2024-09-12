@@ -13,14 +13,20 @@ class Parser {
     private int loopLevel = 0;
     private int functionLevel = 0;
 
-    Parser(List<Token> tokens) {
+    final boolean testMode;
+
+    Parser(List<Token> tokens, boolean testMode) {
         this.tokens = tokens;
+        this.testMode = testMode;
     }
 
     List<Stmt> parse() {
         List<Stmt> statements = new ArrayList<>();
         while (!isAtEnd()) {
-            statements.add(declaration());
+            Stmt next = declaration();
+            if (next != null) {
+                statements.add(next);
+            }
         }
 
         return statements;
@@ -34,7 +40,9 @@ class Parser {
             if (match(TokenType.FUN)) {
                 return function();
             }
-            return statement();
+            // skipping non-declaration statements in test mode
+            Stmt next = statement();
+            return testMode ? null : next;
         } catch (ParseError error) {
             synchronize();
             return null;

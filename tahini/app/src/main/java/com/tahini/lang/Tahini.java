@@ -16,21 +16,23 @@ public class Tahini {
     static boolean hadRuntimeError = false;
 
     public static void main(String[] args) throws IOException {
-        if (args.length > 1) {
+        if (args.length > 2 || (args.length == 2 && !args[1].equals("--test"))) {
             System.out.println("Usage: jlox [script]");
             System.exit(64);
+        } else if (args.length == 2 && args[1].equals("--test")) {
+            runFile(args[0], true);
         } else if (args.length == 1) {
-            runFile(args[0]);
+            runFile(args[0], false);
         } else {
             runPrompt();
         }
     }
 
-    private static void runFile(String path) throws IOException {
+    private static void runFile(String path, Boolean testMode) throws IOException {
         interpreter = new Interpreter(false);
         Path filePath = Paths.get(path).toAbsolutePath();
         byte[] bytes = Files.readAllBytes(filePath);
-        run(new String(bytes, Charset.defaultCharset()));
+        run(new String(bytes, Charset.defaultCharset()), testMode);
         if (hadError) {
             System.exit(65);
         }
@@ -52,16 +54,16 @@ public class Tahini {
                 System.out.println("Exiting prompt.");
                 break;
             }
-            run(line);
+            run(line, false);
             hadError = false;
         }
     }
 
-    private static void run(String source) {
+    private static void run(String source, Boolean testMode) {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
 
-        Parser parser = new Parser(tokens);
+        Parser parser = new Parser(tokens, testMode);
         List<Stmt> statements = parser.parse();
 
         // Stop if there was a syntax error.
