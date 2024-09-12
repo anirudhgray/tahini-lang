@@ -40,9 +40,15 @@ class Parser {
             if (match(TokenType.FUN)) {
                 return function();
             }
-            // skipping non-declaration statements in test mode
-            Stmt next = statement();
-            return testMode ? null : next;
+            if (match(TokenType.TEST)) {
+                Stmt testStmt = testStatement();
+                if (testMode) {
+                    return testStmt;
+                } else {
+                    return null;
+                }
+            }
+            return statement();
         } catch (ParseError error) {
             synchronize();
             return null;
@@ -230,6 +236,12 @@ class Parser {
         Expr value = expression();
         consume(TokenType.SEMICOLON, "Expect ';' after expression.");
         return new Stmt.Expression(value);
+    }
+
+    private Stmt testStatement() {
+        Token name = consume(TokenType.STRING, "Expect test name.");
+        Stmt body = statement();
+        return new Stmt.Test(name, body);
     }
 
     private Stmt function() {

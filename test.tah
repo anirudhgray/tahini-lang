@@ -1,12 +1,26 @@
+// Fibonacci function
 fun fib(n) {
   if (n <= 1) return n;
   return fib(n - 2) + fib(n - 1);
 }
 
-assertion: fib(0) == 0;
-assertion: fib(1) == 1;
-assertion: fib(2) == 1;
-assertion: fib(3) == 2;
-assertion: fib(4) == 3;
-assertion: fib(5) == 6, "fib(5) gave wrong result!";
-assertion: fib(6) == 8;
+// Regular code block
+var x = 10;
+print "Fib(x): " + fib(x);
+
+// Test block to check Fibonacci function
+test "checking this out" {
+  assertion: fib(0) == 0;
+  assertion: fib(1) == 1;
+  assertion: fib(2) == 1;
+  assertion: fib(3) == 2;
+  assertion: fib(4) == 3;
+  assertion: fib(5) == 5;
+}
+
+// Test block that should fail
+test "this should fail" {
+  assertion: fib(0) == 0;
+  assertion: fib(2) == 1222; // This will fail
+  assertion: fib(3) == 2;
+}

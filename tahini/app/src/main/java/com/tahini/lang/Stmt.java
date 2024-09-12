@@ -6,6 +6,7 @@ abstract class Stmt {
   interface Visitor<R> {
     R visitExpressionStmt(Expression stmt);
     R visitFunctionStmt(Function stmt);
+    R visitTestStmt(Test stmt);
     R visitPrintStmt(Print stmt);
     R visitIfStmt(If stmt);
     R visitVarStmt(Var stmt);
@@ -46,6 +47,20 @@ abstract class Stmt {
     final List<Stmt> body;
     final List<Expr> preconditions;
     final List<Expr> postconditions;
+  }
+  static class Test extends Stmt {
+    Test(Token name, Stmt body) {
+      this.name = name;
+      this.body = body;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitTestStmt(this);
+    }
+
+    final Token name;
+    final Stmt body;
   }
   static class Print extends Stmt {
     Print(Expr expression) {

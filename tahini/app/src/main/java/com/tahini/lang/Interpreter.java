@@ -36,6 +36,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     private final Stack<CallFrame> callStack = new Stack<>();
 
+    private final List<String> testResults = new ArrayList<>();
+
     void interpret(List<Stmt> statements) {
         try {
             for (Stmt statement : statements) {
@@ -43,6 +45,17 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             }
         } catch (RuntimeError error) {
             Tahini.runtimeError(error);
+        }
+
+        if (!testResults.isEmpty()) {
+            printTestResults();
+        }
+    }
+
+    private void printTestResults() {
+        System.out.println("Test Results:");
+        for (String result : testResults) {
+            System.out.println(result);
         }
     }
 
@@ -159,6 +172,17 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Object value = evaluate(stmt.expression);
         if (repl) {
             System.err.println(stringify(value));
+        }
+        return null;
+    }
+
+    @Override
+    public Void visitTestStmt(Stmt.Test stmt) {
+        try {
+            execute(stmt.body);
+            testResults.add("PASS " + "(line " + stmt.name.line + ")" + ": " + stmt.name.literal);
+        } catch (RuntimeError error) {
+            testResults.add("FAIL " + "(line " + stmt.name.line + ")" + ": " + stmt.name.literal + " (" + error.getMessage() + ")");
         }
         return null;
     }

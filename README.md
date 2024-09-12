@@ -2,15 +2,22 @@
 
 > Tahini is a paste made from sesame seeds that can be used as a dip, spread, or dressing. It's versatile, flavorful, and adds a unique touch to many dishes, while being a healthy choice. Inspired by the simplicity, flexibility, and richness of tahini, we present Tahini, a programming language that aims to be a joy to use, with a focus on simplicity, expressiveness, and extensive testing support.
 
-**Tahini** is a lightweight, tree-based interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language features, with an exciting roadmap of future capabilities, including an import system, in-line testing, and cross-language support.
+**Tahini** is a lightweight, tree-based interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language and testing features, with an exciting roadmap of future capabilities, including an import system, auto function mocking, and cross-language support.
 
 ```
+var check = 10;
 fun percentage(part, total)
     precondition: total > 0, part >= 0
     postcondition: result >= 0, result <= 100
 {
     var result = (part / total) * 100;
+    assertion: check == 10, "Unwanted side effects!";
     return result;
+}
+
+test "percentage test" {
+    assertion: percentage(20, 50) == 40;
+    assertion: percentage(10, 100) == 10;
 }
 
 print percentage(20, 28);
@@ -46,9 +53,11 @@ Tahini currently implements:
 - [x] **Conditionals**: If-else statements for decision-making.
 - [x] **Functions**: Define and call reusable blocks of code, with support for contracts (`precondition`, `postcondition`, and `assertion`).
 - [ ] **Classes**: Object-oriented features to group variables and methods (in progress).
-- [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress), and a stack trace (basic version implemented!).
+- [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress).
+- [x] **Stack Traces**: Detailed error messages with line numbers and function names.
+- [x] **Unit Tests**: Write test blocks directly in the source file to validate code correctness.
   
-Planned features include an import system, standard library, in-line testing, and cross-language support.
+Planned features include an import system, standard library, and cross-language support.
 
 ## Getting Started
 
@@ -167,6 +176,68 @@ assertion: check, "Check should be true!";
 
 Inspired by https://ziglang.org/documentation/master/#Zig-Test and https://dlang.org/spec/unittest.html
 
+You can define test blocks — any statement (block, declaration or individual statement) that is prefixed with the `test` keyword. The test block can contain assertions that check the correctness of the code, and will be ignored during normal execution but will be run when the file is executed with the `--test` flag. This allows you to write unit tests for your code directly in the source file.
+
+If a test block fails (i.e., when any statement within it throws a RuntimeError) while running with the test flag, the test block name and the line number of the failing assertion will be printed to the console.
+
+```
+// Fibonacci function
+fun fib(n) {
+  if (n <= 1) return n;
+  return fib(n - 2) + fib(n - 1);
+}
+
+// Regular code block
+var x = 10;
+print "Fib(x): " + fib(x);
+
+// Test block to check Fibonacci function
+test "checking this out" {
+  assertion: fib(0) == 0;
+  assertion: fib(1) == 1;
+  assertion: fib(2) == 1;
+  assertion: fib(3) == 2;
+  assertion: fib(4) == 3;
+  assertion: fib(5) == 5;
+  assertion: fib(6) == 8;
+}
+
+// Test block that should fail
+test "this should fail" {
+  assertion: fib(0) == 0;
+  assertion: fib(1) == 1;
+  assertion: fib(2) == 1222; // This will fail
+  assertion: fib(3) == 2;
+}
+
+// Another regular code block
+var y = 20;
+print "Value of y: " + y;
+
+// Test block to check variable values
+test "variable check" {
+  assertion: x == 10;
+  assertion: y == 20;
+  assertion: fib(4) == 3;
+}
+```
+
+Running the file normally will ignore the test blocks:
+```bash
+Fib(x): 55
+Value of y: 20
+```
+
+Running the file with the `--test` flag will execute the test blocks:
+```bash
+Fib(x): 55
+Value of y: 20
+Test Results:
+PASS (line 12): checking this out
+FAIL (line 23): this should fail (assertion contract failed (null))
+PASS (line 35): variable check
+```
+
 ### Conditionals
 
 ```
@@ -210,8 +281,7 @@ Tahini is under active development, and we plan to introduce several new feature
    
    Example (tenative std lib features):
 
-3. **In-line Testing + Auto Mocking Functions** (TODO)
-   - Test functions directly within the source file, enabling simple, fast testing and mock generation during the build process.
+3. **Auto Mocking Functions** (TODO)
    
    Example (tentative):
 
