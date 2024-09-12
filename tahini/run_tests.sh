@@ -2,6 +2,7 @@
 
 # Directory containing test files
 TEST_DIR="tests"
+FLAG_TEST_DIR="tests/flag"
 
 # Path to your built JAR file
 JAR_PATH="app/build/libs/app.jar"
@@ -35,13 +36,41 @@ run_test() {
   fi
 }
 
-# Run all tests in parallel
-echo "Running tests..."
+# Function to run a single test with the --test flag
+run_flag_test() {
+  local test_file=$1
+  local expected_output=$(grep -E '^// ' "$test_file" | sed 's/^\/\/ //')
+  
+  # Run the JAR file with the --test flag and capture both stdout and stderr
+  local actual_output=$(java -jar "$JAR_PATH" "$test_file" --test 2>&1)
+
+  if [ "$expected_output" == "$actual_output" ]; then
+    echo -e "\033[32mTest $test_file passed.\033[0m"
+  else
+    echo -e "\033[31mTest $test_file failed.\033[0m"
+    echo "Expected:"
+    echo "$expected_output"
+    echo "Actual:"
+    echo "$actual_output"
+  fi
+}
+
+# Run all regular tests in parallel
+echo "Running regular tests..."
 for test_file in $TEST_DIR/*.tah; do
   run_test "$test_file" &
 done
 
-# Wait for all tests to complete
+# Wait for all regular tests to complete
+wait
+
+# Run all flag tests in parallel
+echo "Running flag tests..."
+for test_file in $FLAG_TEST_DIR/*.tah; do
+  run_flag_test "$test_file" &
+done
+
+# Wait for all flag tests to complete
 wait
 
 # Print summary

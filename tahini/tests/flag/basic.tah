@@ -1,0 +1,38 @@
+fun fib(n) {
+  if (n <= 1) return n;
+  return fib(n - 2) + fib(n - 1);
+}
+
+var x = 10;
+print "Fib(x): " + fib(x);
+
+test "checking this out" {
+  assertion: fib(0) == 0;
+  assertion: fib(1) == 1;
+  assertion: fib(2) == 1;
+  assertion: fib(3) == 2;
+  assertion: fib(4) == 3;
+  assertion: fib(5) == 5;
+}
+
+test "this should fail" {
+  assertion: fib(0) == 0;
+  assertion: fib(2) == 1222; // This will fail
+  assertion: fib(3) == 2;
+}
+
+var y = 20;
+print "Value of y: " + y;
+
+test "variable check" {
+  assertion: x == 10;
+  assertion: y == 20;
+  assertion: fib(4) == 3;
+}
+
+// Fib(x): 55
+// Value of y: 20
+// Test Results:
+// PASS (line 9): checking this out
+// FAIL (line 18): this should fail (assertion contract failed (null))
+// PASS (line 27): variable check

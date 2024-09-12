@@ -53,6 +53,7 @@ Tahini currently implements:
 - [x] **Conditionals**: If-else statements for decision-making.
 - [x] **Functions**: Define and call reusable blocks of code, with support for contracts (`precondition`, `postcondition`, and `assertion`).
 - [ ] **Classes**: Object-oriented features to group variables and methods (in progress).
+- [ ] **Advanced Data Structures**: Support for lists, maps, and other data structures (in progress).
 - [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress).
 - [x] **Stack Traces**: Detailed error messages with line numbers and function names.
 - [x] **Unit Tests**: Write test blocks directly in the source file to validate code correctness.
@@ -81,7 +82,19 @@ gradle build
 To ensure that Tahini is correctly installed, you can run the test suite using the provided script:
 
 ```bash
-./run_tests.sh
+(>_>) ./run_tests.sh
+Building the project...
+
+BUILD SUCCESSFUL in 439ms
+5 actionable tasks: 5 up-to-date
+Running regular tests...
+Test tests/recursion.tah passed.
+Test tests/ternary.tah passed.
+... (more tests)
+Running flag tests...
+Test tests/flag/basic.tah passed.
+... (more tests)
+Tests completed.
 ```
 
 ### Running Tahini Code
