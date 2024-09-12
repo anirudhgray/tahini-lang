@@ -40,6 +40,7 @@ class Scanner {
         keywords.put("precondition", TokenType.PRECONDITION);
         keywords.put("postcondition", TokenType.POSTCONDITION);
         keywords.put("assertion", TokenType.ASSERTION);
+        keywords.put("test", TokenType.TEST);
     }
 
     Scanner(String source) {

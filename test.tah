@@ -1,2 +1,12 @@
-var check = false;
-assertion: check, "Check should be true!";
+fun fib(n) {
+  if (n <= 1) return n;
+  return fib(n - 2) + fib(n - 1);
+}
+
+assertion: fib(0) == 0;
+assertion: fib(1) == 1;
+assertion: fib(2) == 1;
+assertion: fib(3) == 2;
+assertion: fib(4) == 3;
+assertion: fib(5) == 6, "fib(5) gave wrong result!";
+assertion: fib(6) == 8;
