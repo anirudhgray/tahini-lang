@@ -121,6 +121,8 @@ java -jar app/build/libs/app.jar "../test.tah"
 
 ### Variables
 
+All variables in Tahini are dynamically typed, and you can declare them using the `var` keyword. Variables can be reassigned, and their scope is determined by the block in which they are declared.
+
 ```
 var a = "global a";
 {

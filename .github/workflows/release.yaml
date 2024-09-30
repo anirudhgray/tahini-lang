@@ -17,36 +17,80 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up GraalVM
-        uses: DeLaGuardo/setup-graalvm@v4
+        uses: graalvm/setup-graalvm@v1
         with:
           version: 'latest'
           java-version: '21'
 
-      - name: Install Native Image tool
-        run: gu install native-image
-
       - name: Build jar with Gradle
-        run: ./gradlew build
+        run: |
+          cd tahini
+          ./gradlew build
 
       - name: Compile native image
-        run: native-image -jar app/build/libs/tahini.jar tahini
+        run: |
+          cd tahini
+          native-image -jar app/build/libs/app.jar tahini
+
+      - name: Rename binary for unique names on Macos and Linux
+        if: matrix.os != 'windows-latest'
+        run: |
+          cd tahini
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            mv tahini tahini-linux
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            mv tahini tahini-macos
+          fi
 
       - name: Upload binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: tahini-${{ matrix.os }}
-          path: tahini*
+          path: tahini
 
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Download all binaries
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+
+      - name: List files
+        run: |
+          echo "Listing files in current directory:"
+          ls -l
+
+          check_directory() {
+            local dir=$1
+            local file=$2
+
+            if [ -d "$dir" ]; then
+              echo "$dir directory exists."
+              if [ -f "$dir/$file" ]; then
+                echo "$file exists in $dir."
+              else
+                echo "$file does not exist in $dir. Listing files in $dir:"
+                ls -l "$dir"
+              fi
+            else
+              echo "$dir directory does not exist."
+            fi
+          }
+
+          check_directory "tahini-ubuntu-latest" "tahini"
+          check_directory "tahini-ubuntu-latest" "tahini-linux"
+          check_directory "tahini-macos-latest" "tahini"
+          check_directory "tahini-macos-latest" "tahini-macos"
+          check_directory "tahini-windows-latest" "tahini.exe"
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            tahini-ubuntu-latest
-            tahini-macos-latest
-            tahini-windows-latest.exe
+            tahini-ubuntu-latest/tahini-linux
+            tahini-macos-latest/tahini-macos
+            tahini-windows-latest/tahini.exe
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}

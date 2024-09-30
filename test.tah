@@ -1,5 +1,7 @@
 // Fibonacci function
-fun fib(n) {
+fun fib(n)
+precondition: n >= 0
+{
   if (n <= 1) return n;
   return fib(n - 2) + fib(n - 1);
 }
@@ -16,11 +18,4 @@ test "checking this out" {
   assertion: fib(3) == 2;
   assertion: fib(4) == 3;
   assertion: fib(5) == 5;
-}
-
-// Test block that should fail
-test "this should fail" {
-  assertion: fib(0) == 0;
-  assertion: fib(2) == 1222; // This will fail
-  assertion: fib(3) == 2;
 }
