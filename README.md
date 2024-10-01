@@ -28,7 +28,8 @@ print percentage(20, 28);
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Getting Started](#getting-started)
-    - [Installation](#installation)
+    - [Quick Start — Using Prebuilt Binaries](#quick-start--using-prebuilt-binaries)
+    - [Installation — Building from Source](#installation--building-from-source)
       - [Verify Installation via Tests](#verify-installation-via-tests)
     - [Running Tahini Code](#running-tahini-code)
   - [Syntax Overview](#syntax-overview)
@@ -62,7 +63,40 @@ Planned features include an import system, standard library, and cross-language 
 
 ## Getting Started
 
-### Installation
+### Quick Start — Using Prebuilt Binaries
+
+You can download the latest prebuilt binaries for your operating system from the [Releases](https://github.com/anirudhgray/tahini-lang/releases) page. Follow these steps to get started quickly.
+
+1. Download the Latest Binary
+   - Linux: [tahini-ubuntu-latest](https://github.com/anirudhgray/tahini-lang/releases/download/v0.0.1/tahini-linux)
+   - macOS: [tahini-macos-latest](https://github.com/anirudhgray/tahini-lang/releases/download/v0.0.1/tahini-macos)
+   - Windows: [tahini-windows-latest.exe](https://github.com/anirudhgray/tahini-lang/releases/download/v0.0.1/tahini.exe)
+
+2. Make the Binary Executable (Linux/macOS)
+```bash
+chmod +x tahini-linux # For Linux
+chmod +x tahini-macos # For macOS
+```
+
+1. Run Tahini (start up the REPL)
+```bash
+./tahini-linux # For Linux
+./tahini-macos # For macOS
+tahini.exe # For Windows
+Welcome to Tahini. Type in your code below:
+>
+```
+
+1. Run Tahini Code (execute a Tahini script)
+```bash
+./tahini-linux path/to/file.tah # For Linux
+./tahini-macos path/to/file.tah # For macOS
+tahini.exe path/to/file.tah # For Windows
+```
+
+### Installation — Building from Source
+
+If you prefer to build Tahini from the source code, follow these instructions:
 
 To get started with Tahini, clone the repository and build the project using Maven or Gradle. Since Tahini is built on top of the JVM, ensure you have a valid Java JDK installed (>=21).
 
