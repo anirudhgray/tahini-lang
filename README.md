@@ -1,5 +1,9 @@
 # Tahini Language
 
+<img src="./tahini-logo.png" width=100 />
+
+*A most definitely WIP logo for this WIP language.*
+
 > Tahini is a paste made from sesame seeds that can be used as a dip, spread, or dressing. It's versatile, flavorful, and adds a unique touch to many dishes, while being a healthy choice. Inspired by the simplicity, flexibility, and richness of tahini, we present Tahini, a programming language that aims to be a joy to use, with a focus on simplicity, expressiveness, and extensive testing support.
 
 **Tahini** is a lightweight, tree-based interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language and testing features, with an exciting roadmap of future capabilities, including an import system, auto function mocking, and cross-language support.
@@ -78,7 +82,7 @@ chmod +x tahini-linux # For Linux
 chmod +x tahini-macos # For macOS
 ```
 
-1. Run Tahini (start up the REPL)
+3. Run Tahini (start up the REPL)
 ```bash
 ./tahini-linux # For Linux
 ./tahini-macos # For macOS
@@ -87,7 +91,7 @@ Welcome to Tahini. Type in your code below:
 >
 ```
 
-1. Run Tahini Code (execute a Tahini script)
+4. Run Tahini Code (execute a Tahini script from file)
 ```bash
 ./tahini-linux path/to/file.tah # For Linux
 ./tahini-macos path/to/file.tah # For macOS
@@ -150,6 +154,8 @@ To run a Tahini script:
 ```bash
 java -jar app/build/libs/app.jar "../test.tah"
 ```
+
+> Check out the [VSCode extension for Tahini](https://github.com/anirudhgray/tahini-vscode) for a more integrated development experience.
 
 ## Syntax Overview
 
