@@ -77,6 +77,15 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Object visitTahiniListExpr(Expr.TahiniList expr) {
+        List<Object> tahiniList = new ArrayList<>();
+        for (Expr element : expr.elements) {
+            tahiniList.add(evaluate(element));
+        }
+        return tahiniList;
+    }
+
+    @Override
     public Object visitLiteralExpr(Expr.Literal expr) {
         return expr.value;
     }

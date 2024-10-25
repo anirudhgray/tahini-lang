@@ -13,6 +13,7 @@ abstract class Expr {
     R visitTernaryExpr(Ternary expr);
     R visitVariableExpr(Variable expr);
     R visitLogicalExpr(Logical expr);
+    R visitTahiniListExpr(TahiniList expr);
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
@@ -141,6 +142,18 @@ abstract class Expr {
     final Expr left;
     final Token operator;
     final Expr right;
+  }
+  static class TahiniList extends Expr {
+    TahiniList(List<Expr> elements) {
+      this.elements = elements;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitTahiniListExpr(this);
+    }
+
+    final List<Expr> elements;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

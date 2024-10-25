@@ -542,6 +542,17 @@ class Parser {
             return new Expr.Grouping(expr);
         }
 
+        if (match(TokenType.LEFT_SQUARE)) {
+            List<Expr> elements = new ArrayList<>();
+            if (!check(TokenType.RIGHT_SQUARE)) {
+                do {
+                    elements.add(expression());
+                } while (match(TokenType.COMMA));
+            }
+            consume(TokenType.RIGHT_SQUARE, "Expect ']' after list elements.");
+            return new Expr.TahiniList(elements);
+        }
+
         // Error production for binary operator without left-hand operand
         if (match(TokenType.PLUS, TokenType.MINUS, TokenType.STAR, TokenType.SLASH, TokenType.EQUAL_EQUAL, TokenType.BANG_EQUAL, TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL)) {
             Token operator = previous();

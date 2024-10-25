@@ -73,6 +73,10 @@ class Scanner {
                 addToken(TokenType.LEFT_BRACE);
             case '}' ->
                 addToken(TokenType.RIGHT_BRACE);
+            case '[' ->
+                addToken(TokenType.LEFT_SQUARE);
+            case ']' ->
+                addToken(TokenType.RIGHT_SQUARE);
             case ',' ->
                 addToken(TokenType.COMMA);
             case '.' ->

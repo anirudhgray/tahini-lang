@@ -23,7 +23,8 @@ public class GenerateAst {
                 "Unary    : Token operator, Expr right",
                 "Ternary  : Expr condition, Expr left, Expr right",
                 "Variable : Token name",
-                "Logical  : Expr left, Token operator, Expr right"
+                "Logical  : Expr left, Token operator, Expr right",
+                "TahiniList     : List<Expr> elements"
         ));
 
         defineAst(outputDir, "Stmt", Arrays.asList(
