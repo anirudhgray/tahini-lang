@@ -20,10 +20,15 @@ fi
 # Function to run a single test
 run_test() {
   local test_file=$1
+  local input_file="${test_file%.tah}.txt"
   local expected_output=$(grep -E '^// ' "$test_file" | sed 's/^\/\/ //')
   
-  # Run the JAR file and capture both stdout and stderr
-  local actual_output=$(java -jar "$JAR_PATH" "$test_file" 2>&1)
+  # Run the JAR file with input redirection and capture both stdout and stderr
+  if [ -f "$input_file" ]; then
+    local actual_output=$(java -jar "$JAR_PATH" "$test_file" < "$input_file" 2>&1)
+  else
+    local actual_output=$(java -jar "$JAR_PATH" "$test_file" 2>&1)
+  fi
 
   if [ "$expected_output" == "$actual_output" ]; then
     echo -e "\033[32mTest $test_file passed.\033[0m"
