@@ -1,3 +1,7 @@
+// take input
+var x = input();
+print x;
+
 // Fibonacci function
 fun fib(n)
 precondition: n >= 0

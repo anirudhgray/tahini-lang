@@ -1,7 +1,6 @@
 package com.tahini.lang;
 
 import java.util.List;
-import java.util.Stack;
 
 class RuntimeError extends RuntimeException {
 
