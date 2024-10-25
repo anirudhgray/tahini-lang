@@ -43,6 +43,7 @@ print percentage(20, 28);
       - [Unit Tests](#unit-tests)
     - [Conditionals](#conditionals)
     - [Loops](#loops)
+    - [Built-in Functions](#built-in-functions)
   - [Planned Features](#planned-features)
   - [Stretch Goals](#stretch-goals)
 - [The Theory Behind This Implementation of Tahini](#the-theory-behind-this-implementation-of-tahini)
@@ -173,6 +174,8 @@ print a;
 var x = 10;
 var y = 20;
 print x + y;
+var name = input();
+print name;
 ```
 
 ### Functions
@@ -321,6 +324,13 @@ while (i < 5) {
   i = i + 1;
 }
 ```
+
+### Built-in Functions
+
+Currently, Tahini does not support importing external modules or libraries. However, it does provide a set of built-in functions (filling some of the core gaps which an imported standard library would have provided) for common operations:
+
+- `input()` - Read a line of string input from the user.
+- `clock()` - Get the current time in seconds since the Unix epoch.
 
 ## Planned Features
 
