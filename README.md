@@ -41,6 +41,7 @@ print percentage(20, 28);
     - [Functions](#functions)
       - [Contracts (Preconditions, Postconditions and Assertions)](#contracts-preconditions-postconditions-and-assertions)
       - [Unit Tests](#unit-tests)
+    - [Arrays](#arrays)
     - [Conditionals](#conditionals)
     - [Loops](#loops)
     - [Built-in Functions](#built-in-functions)
@@ -57,8 +58,8 @@ Tahini currently implements:
 - [x] **Variables**: Declare mutable variables using a simple and concise syntax.
 - [x] **Loops**: Supports `while` and `for` loops to handle iteration.
 - [x] **Conditionals**: If-else statements for decision-making.
-- [x] **Functions**: Define and call reusable blocks of code, with support for contracts (`precondition`, `postcondition`, and `assertion`).
-- [ ] **Classes**: Object-oriented features to group variables and methods (in progress).
+- [x] **Functions**: First class citizens of Tahini. Define and call reusable blocks of code, with support for contracts (`precondition`, `postcondition`, and `assertion`).
+- [ ] **Classes**: Object-oriented features to group variables and methods (halted in favour of a lean towards a functional paradigm).
 - [ ] **Advanced Data Structures**: Support for lists, maps, and other data structures (in progress).
 - [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress).
 - [x] **Stack Traces**: Detailed error messages with line numbers and function names.
@@ -291,6 +292,15 @@ Test Results:
 PASS (line 12): checking this out
 FAIL (line 23): this should fail (assertion contract failed (null))
 PASS (line 35): variable check
+```
+
+### Arrays
+
+Arrays are implemented as an ArrayList. You can create an array via `[...]` syntax, and access elements using the `[]` operator. Arrays can contain any object values, including functions (since functions are first-class citizens in Tahini).
+
+```
+var arr = [1, 2, "string", fib, 5];
+print arr[0];
 ```
 
 ### Conditionals

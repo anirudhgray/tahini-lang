@@ -363,6 +363,29 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return result;
     }
 
+    @Override
+    public Object visitListAccessExpr(Expr.ListAccess expr) {
+        Object list = evaluate(expr.list);
+        Object index = evaluate(expr.index);
+
+        if (!(list instanceof List)) {
+            throw new RuntimeError(expr.paren, "Can only access elements of a list.", new ArrayList<>());
+        }
+
+        if (!(index instanceof Double)) {
+            throw new RuntimeError(expr.paren, "Index must be a number.", new ArrayList<>());
+        }
+
+        List<Object> tahiniList = (List<Object>) list;
+        int i = ((Double) index).intValue();
+
+        if (i < 0 || i >= tahiniList.size()) {
+            throw new RuntimeError(expr.paren, "Index out of bounds.", new ArrayList<>());
+        }
+
+        return tahiniList.get(i);
+    }
+
     private void checkNumberOperands(Token operator, Object a, Object b) {
         if (a instanceof Double && b instanceof Double) {
             return;

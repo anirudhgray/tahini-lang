@@ -1,0 +1,8 @@
+fun testList() {
+  return [1, 2, 3, 4, 5];
+}
+
+print testList()[8];
+
+// RuntimeError: Index out of bounds.
+// [line 5]

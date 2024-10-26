@@ -7,6 +7,7 @@ abstract class Expr {
     R visitAssignExpr(Assign expr);
     R visitBinaryExpr(Binary expr);
     R visitCallExpr(Call expr);
+    R visitListAccessExpr(ListAccess expr);
     R visitGroupingExpr(Grouping expr);
     R visitLiteralExpr(Literal expr);
     R visitUnaryExpr(Unary expr);
@@ -60,6 +61,22 @@ abstract class Expr {
     final Expr callee;
     final Token paren;
     final List<Expr> arguments;
+  }
+  static class ListAccess extends Expr {
+    ListAccess(Expr list, Token paren, Expr index) {
+      this.list = list;
+      this.paren = paren;
+      this.index = index;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitListAccessExpr(this);
+    }
+
+    final Expr list;
+    final Token paren;
+    final Expr index;
   }
   static class Grouping extends Expr {
     Grouping(Expr expression) {

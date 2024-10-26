@@ -1,0 +1,5 @@
+var xy = 10;
+print xy[2];
+
+// RuntimeError: Can only access elements of a list.
+// [line 2]

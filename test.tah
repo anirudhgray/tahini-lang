@@ -1,6 +1,19 @@
-// take input
-var x = input();
-print x;
+// function which returns a list
+fun testList() {
+  return [1, 2, 3, 4, 5];
+}
+
+print testList()[1];
+
+// function which takes a list as an argument
+fun testList2(list) {
+  return list[2];
+}
+
+var ddd = 4.4;
+print ddd;
+
+print 4.3+5.7;
 
 // Fibonacci function
 fun fib(n)
@@ -9,6 +22,29 @@ precondition: n >= 0
   if (n <= 1) return n;
   return fib(n - 2) + fib(n - 1);
 }
+
+// list of functions
+var list = [testList, fib];
+
+// call the function in the list
+print "T";
+print list[0]()[2];
+print list[0];
+
+// are funcitons first class citizens?
+// let's find out by passing a function as an argument
+fun testFunction(func) {
+  return func(6);
+}
+
+print testFunction(fib);
+
+// assign a function to a variable
+var fibVar = fib;
+print fibVar(6);
+print fib(testFunction(fib));
+
+print "h"+"d";
 
 // Regular code block
 var x = 10;

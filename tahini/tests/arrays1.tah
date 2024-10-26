@@ -1,0 +1,17 @@
+var arr = [1, 2, 3, 4, 5];
+print arr[1];
+fun fib(n) {
+    if (n <= 1) return n;
+    return fib(n - 2) + fib(n - 1);
+}
+var arr2 = [1, "2", 3, fib(4), fib];
+print arr2[1];
+print arr2[3];
+print arr2[4](6);
+print arr2[4];
+
+// 2
+// 2
+// 3
+// 8
+// <fn fib>

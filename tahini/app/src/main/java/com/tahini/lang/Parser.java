@@ -512,6 +512,12 @@ class Parser {
         while (true) {
             if (match(TokenType.LEFT_PAREN)) {
                 expr = finishCall(expr);
+            } else if (match(TokenType.LEFT_SQUARE)) {
+                // List access has equal precedence with function call
+                Token paren = previous();
+                Expr index = expression();
+                consume(TokenType.RIGHT_SQUARE, "Expect ']' after list index.");
+                expr = new Expr.ListAccess(expr, paren, index);
             } else {
                 break;
             }
