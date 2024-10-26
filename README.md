@@ -305,11 +305,15 @@ varr arr2 = arr[1:3];
 print arr2; // [2, "string"]
 ```
 
-You can write basic a basic append function to manipulate arrays:
+You can write basic basic append and remove function to manipulate arrays (utilising the inbuilt `len` function):
 
 ```
 fun append(arr, value) {
   return arr + [value];
+}
+
+fun remove(arr, index) {
+  return arr[0:index] + arr[index+1:len(arr)];
 }
 ```
 
@@ -348,6 +352,7 @@ Currently, Tahini does not support importing external modules or libraries. Howe
 
 - `input()` - Read a line of string input from the user.
 - `clock()` - Get the current time in seconds since the Unix epoch.
+- `len(arr)` - Get the length of an array.
 
 ## Planned Features
 

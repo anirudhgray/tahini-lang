@@ -3,6 +3,10 @@ fun testList() {
   return [1, 2, 3, 4, 5];
 }
 
+print [];
+
+print len(testList())+3;
+
 print testList()[1:5];
 
 print testList() + [100];

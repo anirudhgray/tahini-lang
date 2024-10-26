@@ -1,0 +1,10 @@
+fun remove(arr, index) {
+  return arr[0:index] + arr[index+1:len(arr)];
+}
+
+var arr = [1, 2, 3, 4, 5];
+print arr;
+print remove(arr, 2);
+
+// [1.0, 2.0, 3.0, 4.0, 5.0]
+// [1.0, 2.0, 4.0, 5.0]
