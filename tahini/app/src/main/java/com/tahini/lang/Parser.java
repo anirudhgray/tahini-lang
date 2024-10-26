@@ -516,8 +516,14 @@ class Parser {
                 // List access has equal precedence with function call
                 Token paren = previous();
                 Expr index = expression();
-                consume(TokenType.RIGHT_SQUARE, "Expect ']' after list index.");
-                expr = new Expr.ListAccess(expr, paren, index);
+                if (match(TokenType.COLON)) {
+                    Expr end = expression();
+                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after list slice.");
+                    expr = new Expr.ListSlice(expr, paren, index, end);
+                } else {
+                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after list index.");
+                    expr = new Expr.ListAccess(expr, paren, index);
+                }
             } else {
                 break;
             }

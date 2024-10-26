@@ -386,6 +386,31 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return tahiniList.get(i);
     }
 
+    @Override
+    public Object visitListSliceExpr(Expr.ListSlice expr) {
+        Object list = evaluate(expr.list);
+        Object start = evaluate(expr.start);
+        Object end = evaluate(expr.end);
+
+        if (!(list instanceof List)) {
+            throw new RuntimeError(expr.paren, "Can only slice a list.", new ArrayList<>());
+        }
+
+        if (!(start instanceof Double) || !(end instanceof Double)) {
+            throw new RuntimeError(expr.paren, "Start and end must be numbers.", new ArrayList<>());
+        }
+
+        List<Object> tahiniList = (List<Object>) list;
+        int s = ((Double) start).intValue();
+        int e = ((Double) end).intValue();
+
+        if (s < 0 || e < 0 || s > e || e > tahiniList.size()) {
+            throw new RuntimeError(expr.paren, "Invalid slice.", new ArrayList<>());
+        }
+
+        return tahiniList.subList(s, e);
+    }
+
     private void checkNumberOperands(Token operator, Object a, Object b) {
         if (a instanceof Double && b instanceof Double) {
             return;

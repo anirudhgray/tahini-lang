@@ -3,7 +3,7 @@ fun testList() {
   return [1, 2, 3, 4, 5];
 }
 
-print testList()[1];
+print testList()[1:5];
 
 // function which takes a list as an argument
 fun testList2(list) {

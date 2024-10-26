@@ -8,6 +8,7 @@ abstract class Expr {
     R visitBinaryExpr(Binary expr);
     R visitCallExpr(Call expr);
     R visitListAccessExpr(ListAccess expr);
+    R visitListSliceExpr(ListSlice expr);
     R visitGroupingExpr(Grouping expr);
     R visitLiteralExpr(Literal expr);
     R visitUnaryExpr(Unary expr);
@@ -77,6 +78,24 @@ abstract class Expr {
     final Expr list;
     final Token paren;
     final Expr index;
+  }
+  static class ListSlice extends Expr {
+    ListSlice(Expr list, Token paren, Expr start, Expr end) {
+      this.list = list;
+      this.paren = paren;
+      this.start = start;
+      this.end = end;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitListSliceExpr(this);
+    }
+
+    final Expr list;
+    final Token paren;
+    final Expr start;
+    final Expr end;
   }
   static class Grouping extends Expr {
     Grouping(Expr expression) {

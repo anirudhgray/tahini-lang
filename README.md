@@ -300,7 +300,9 @@ Arrays are implemented as an ArrayList. You can create an array via `[...]` synt
 
 ```
 var arr = [1, 2, "string", fib, 5];
-print arr[0];
+print arr[0]; // 1
+varr arr2 = arr[1:3];
+print arr2; // [2, "string"]
 ```
 
 ### Conditionals
