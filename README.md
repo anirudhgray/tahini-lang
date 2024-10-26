@@ -72,10 +72,7 @@ Planned features include an import system, standard library, and cross-language 
 
 You can download the latest prebuilt binaries for your operating system from the [Releases](https://github.com/anirudhgray/tahini-lang/releases) page. Follow these steps to get started quickly.
 
-1. Download the Latest Binary
-   - Linux: [tahini-ubuntu-latest](https://github.com/anirudhgray/tahini-lang/releases/download/v0.0.1/tahini-linux)
-   - macOS: [tahini-macos-latest](https://github.com/anirudhgray/tahini-lang/releases/download/v0.0.1/tahini-macos)
-   - Windows: [tahini-windows-latest.exe](https://github.com/anirudhgray/tahini-lang/releases/download/v0.0.1/tahini.exe)
+1. Download the Latest Binary for your OS: [Latest Release](https://github.com/anirudhgray/tahini-lang/releases/latest)
 
 2. Make the Binary Executable (Linux/macOS)
 ```bash
@@ -83,7 +80,7 @@ chmod +x tahini-linux # For Linux
 chmod +x tahini-macos # For macOS
 ```
 
-3. Run Tahini (start up the REPL)
+1. Run Tahini (start up the REPL)
 ```bash
 ./tahini-linux # For Linux
 ./tahini-macos # For macOS
@@ -92,7 +89,7 @@ Welcome to Tahini. Type in your code below:
 >
 ```
 
-4. Run Tahini Code (execute a Tahini script from file)
+1. Run Tahini Code (execute a Tahini script from file)
 ```bash
 ./tahini-linux path/to/file.tah # For Linux
 ./tahini-macos path/to/file.tah # For macOS

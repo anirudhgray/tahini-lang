@@ -36,11 +36,21 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: |
           cd tahini
+          VERSION=${{ github.ref_name }}
+          SAFEVERSION=${VERSION//./-}
           if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            mv tahini tahini-linux
+            mv tahini tahini-linux-${SAFEVERSION}
           elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-            mv tahini tahini-macos
+            mv tahini tahini-macos-${SAFEVERSION}
           fi
+
+      - name: Rename binary for unique names on Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd tahini
+          $VERSION = "${{ github.ref_name }}"
+          $SAFEVERSION = $VERSION -replace '\.', '-'
+          Rename-Item -Path "tahini.exe" -NewName "tahini-windows-$SAFEVERSION.exe"
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
@@ -57,14 +67,22 @@ jobs:
         with:
           path: .
 
+      - name: Set Version Variable
+        id: set_version
+        run: |
+          # Replace dots with hyphens in the version name
+          VERSION="${{ github.ref_name }}"
+          VERSION=${VERSION//./-}
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
           prerelease: ${{ contains(github.ref, 'beta') }}
           files: |
-            tahini-ubuntu-latest/tahini-linux
-            tahini-macos-latest/tahini-macos
-            tahini-windows-latest/tahini.exe
+            tahini-ubuntu-latest/tahini-linux-${{ env.VERSION }}
+            tahini-macos-latest/tahini-macos-${{ env.VERSION }}
+            tahini-windows-latest/tahini-windows-${{ env.VERSION }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
