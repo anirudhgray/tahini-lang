@@ -1,20 +1,22 @@
-// function which returns a list
-fun testList() {
-  return [1, 2, 3, 4, 5];
+fun isEven(n) {
+  while (n >= 2) {
+    n = n - 2;
+  }
+  return n == 0;
 }
 
-print [];
-
-print len(testList())+3;
-
-print testList()[1:5];
-
-print testList() + [100];
-
-// function which takes a list as an argument
-fun testList2(list) {
-  return list[2];
+fun filterEven(arr) {
+  var oddArr = [];
+  for (var i = 0; i < len(arr); i = i + 1) {
+    if (isEven(arr[i])) {
+      oddArr = oddArr + [arr[i]];
+    }
+  }
+  return oddArr;
 }
+
+print filterEven([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
 
 var ddd = 4.4;
 print ddd;
@@ -30,11 +32,11 @@ precondition: n >= 0
 }
 
 // list of functions
-var list = [testList, fib];
+var list = [fib];
 
 // call the function in the list
 print "T";
-print list[0]()[2];
+print list[0](7);
 print list[0];
 
 // are funcitons first class citizens?

@@ -1,0 +1,24 @@
+fun isEven(n) {
+  while (n >= 2) {
+    n = n - 2;
+  }
+  return n == 0;
+}
+
+fun filterEven(arr) {
+  var oddArr = [];
+  for (var i = 0; i < len(arr); i = i + 1) {
+    if (isEven(arr[i])) {
+      oddArr = oddArr + [arr[i]];
+    }
+  }
+  return oddArr;
+}
+
+var arr = [1, 2, 3, 4, 5];
+print filterEven(arr);
+print len(arr, 0);
+
+// [2.0, 4.0]
+// RuntimeError: Expected 1 arguments but got 2.
+// [line 20]

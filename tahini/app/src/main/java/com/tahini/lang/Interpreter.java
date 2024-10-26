@@ -360,6 +360,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         try {
             result = function.call(this, arguments);
         } catch (RuntimeError error) {
+            if (error.token == null) {
+                throw new RuntimeError(expr.paren, error.getMessage(), new ArrayList<>(callStack));
+            }
             throw new RuntimeError(error.token, error.getMessage(), new ArrayList<>(callStack));
         }
 
