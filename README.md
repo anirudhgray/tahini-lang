@@ -296,13 +296,21 @@ PASS (line 35): variable check
 
 ### Arrays
 
-Arrays are implemented as an ArrayList. You can create an array via `[...]` syntax, and access elements using the `[]` operator. Arrays can contain any object values, including functions (since functions are first-class citizens in Tahini).
+Arrays are implemented as an ArrayList. You can create an array via `[...]` syntax, and access elements using the `[]` operator. Arrays can contain any object values, including functions (since functions are first-class citizens in Tahini), and can be sliced and concatenated.
 
 ```
 var arr = [1, 2, "string", fib, 5];
 print arr[0]; // 1
 varr arr2 = arr[1:3];
 print arr2; // [2, "string"]
+```
+
+You can write basic a basic append function to manipulate arrays:
+
+```
+fun append(arr, value) {
+  return arr + [value];
+}
 ```
 
 ### Conditionals

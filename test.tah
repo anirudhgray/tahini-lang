@@ -5,6 +5,8 @@ fun testList() {
 
 print testList()[1:5];
 
+print testList() + [100];
+
 // function which takes a list as an argument
 fun testList2(list) {
   return list[2];

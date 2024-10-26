@@ -1,0 +1,14 @@
+var arr = [1, 2, 3, 4, 5];
+var arr2 = arr + [6, 7, 8];
+print arr2;
+var arr3 = arr2[0:1]+arr2[2:4];
+print arr3;
+fun append(arr, value) {
+  return arr + [value];
+}
+var arr4 = append(arr3, 4);
+print arr4;
+
+// [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+// [1.0, 3.0, 4.0]
+// [1.0, 3.0, 4.0, 4.0]

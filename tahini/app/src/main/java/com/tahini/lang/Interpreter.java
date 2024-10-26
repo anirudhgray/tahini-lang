@@ -298,6 +298,11 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 if (left instanceof String || right instanceof String) {
                     yield (String) stringify(left) + (String) stringify(right);
                 }
+                if (left instanceof List && right instanceof List) {
+                    List<Object> tahiniList = new ArrayList<>((List<Object>) left);
+                    tahiniList.addAll((List<Object>) right);
+                    yield tahiniList;
+                }
                 throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.", new ArrayList<>());
             }
             case GREATER -> {
