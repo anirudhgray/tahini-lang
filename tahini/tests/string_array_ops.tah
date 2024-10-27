@@ -1,0 +1,5 @@
+print len(["a", "b", "c", "d", "e"]);
+print len("OK, then.");
+
+// 5
+// 9

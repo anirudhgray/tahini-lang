@@ -5,6 +5,8 @@ fun isEven(n) {
   return n == 0;
 }
 
+print len("Hello");
+
 fun filterEven(arr) {
   var oddArr = [];
   for (var i = 0; i < len(arr); i = i + 1) {
