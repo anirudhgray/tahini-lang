@@ -518,10 +518,10 @@ class Parser {
                 Expr index = expression();
                 if (match(TokenType.COLON)) {
                     Expr end = expression();
-                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after list slice.");
+                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after slice.");
                     expr = new Expr.ListSlice(expr, paren, index, end);
                 } else {
-                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after list index.");
+                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after index.");
                     expr = new Expr.ListAccess(expr, paren, index);
                 }
             } else {
