@@ -39,10 +39,15 @@ class ArrayLengthFunction implements TahiniCallable {
         if (args.size() != 1) {
             throw new RuntimeError(null, "Expected 1 argument but got " + args.size() + ".", null);
         }
-        if (!(args.get(0) instanceof List)) {
-            throw new RuntimeError(null, "Expected an array but got " + args.get(0) + ".", null);
-        }
-        return (double) ((List<Object>) args.get(0)).size();
+        Object arg = args.get(0);
+        return switch (arg) {
+            case List<?> list ->
+                (double) list.size();
+            case String str ->
+                (double) str.length();
+            default ->
+                throw new RuntimeError(null, "Expected an array or string but got " + arg + ".", null);
+        };
     }
 
     @Override
