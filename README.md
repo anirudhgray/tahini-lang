@@ -42,6 +42,7 @@ print percentage(20, 28);
       - [Contracts (Preconditions, Postconditions and Assertions)](#contracts-preconditions-postconditions-and-assertions)
       - [Unit Tests](#unit-tests)
     - [Arrays](#arrays)
+    - [Maps](#maps)
     - [Conditionals](#conditionals)
     - [Loops](#loops)
     - [Built-in Functions](#built-in-functions)
@@ -60,7 +61,7 @@ Tahini currently implements:
 - [x] **Conditionals**: If-else statements for decision-making.
 - [x] **Functions**: First class citizens of Tahini. Define and call reusable blocks of code, with support for contracts (`precondition`, `postcondition`, and `assertion`).
 - [ ] **Classes**: Object-oriented features to group variables and methods (halted in favour of a lean towards a functional paradigm).
-- [ ] **Advanced Data Structures**: Support for lists, maps, and other data structures (in progress).
+- [x] **Advanced Data Structures**: Basic support for lists, maps, and other data structures.
 - [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress).
 - [x] **Stack Traces**: Detailed error messages with line numbers and function names.
 - [x] **Unit Tests**: Write test blocks directly in the source file to validate code correctness.
@@ -315,6 +316,15 @@ fun append(arr, value) {
 fun remove(arr, index) {
   return arr[0:index] + arr[index+1:len(arr)];
 }
+```
+
+### Maps
+
+Maps are implemented as a HashMap. You can create a map via `{...}` syntax, and access elements using the `[]` operator. Maps can contain any object keys or values.
+
+```
+var map = {"key": "value", 1: 2, "fib": fib};
+print map["key"]; // value
 ```
 
 ### Conditionals

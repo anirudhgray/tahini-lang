@@ -1,14 +1,19 @@
-var dict = { "key1": 1, "key2": 2, "key3": 3, true: false, nil:5 };
-print dict["key1"];
-print dict[true];
-print dict[nil];
-
 fun isEven(n) {
   while (n >= 2) {
     n = n - 2;
   }
   return n == 0;
 }
+
+var dictwithfunc = { "key1": 1, "key2": 2, "key3": 3, true: false, nil:5, "fib": isEven, isEven: isEven };
+print dictwithfunc["key1"];
+print dictwithfunc[true];
+print dictwithfunc[nil];
+print dictwithfunc["fib"](4);
+print dictwithfunc["fib"];
+print dictwithfunc[isEven];
+print dictwithfunc[isEven](5);
+print dictwithfunc["isEven"](4);
 
 print len("Hello");
 var str = "hello";
