@@ -1,4 +1,7 @@
+scoop "lol" into lol;
+
 fun isEven(n) {
+  var check =4;
   while (n >= 2) {
     n = n - 2;
   }

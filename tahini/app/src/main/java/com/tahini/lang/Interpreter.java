@@ -200,6 +200,11 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitImportStmt(Stmt.Import stmt) {
+        return null;
+    }
+
+    @Override
     public Void visitTestStmt(Stmt.Test stmt) {
         try {
             execute(stmt.body);

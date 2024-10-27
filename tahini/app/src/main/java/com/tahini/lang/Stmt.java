@@ -15,6 +15,7 @@ abstract class Stmt {
     R visitBreakStmt(Break stmt);
     R visitReturnStmt(Return stmt);
     R visitContractStmt(Contract stmt);
+    R visitImportStmt(Import stmt);
   }
   static class Expression extends Stmt {
     Expression(Expr expression) {
@@ -169,6 +170,20 @@ abstract class Stmt {
     final Token type;
     final List<Expr> conditions;
     final Object msg;
+  }
+  static class Import extends Stmt {
+    Import(Token path, Token name) {
+      this.path = path;
+      this.name = name;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitImportStmt(this);
+    }
+
+    final Token path;
+    final Token name;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

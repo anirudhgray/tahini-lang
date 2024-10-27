@@ -41,7 +41,8 @@ public class GenerateAst {
                 "While      : Expr condition, Stmt body",
                 "Break",
                 "Return     : Token keyword, Expr value",
-                "Contract   : Token type, List<Expr> conditions, Object msg"
+                "Contract   : Token type, List<Expr> conditions, Object msg",
+                "Import      : Token path, Token name"
         ));
     }
 
