@@ -10,6 +10,8 @@ fun isEven(n) {
 
 print checkfromlol;
 
+print testList();
+
 var dictwithfunc = { "key1": 1, "key2": 2, "key3": 3, true: false, nil:5, "fib": isEven, isEven: isEven };
 print dictwithfunc["key1"];
 print dictwithfunc[true];

@@ -1,0 +1,3 @@
+scoop "../test3.tah";
+
+print func2();

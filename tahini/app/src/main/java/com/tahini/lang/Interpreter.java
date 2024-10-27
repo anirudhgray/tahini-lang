@@ -220,7 +220,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
             // Register only declarations (variables, functions) in the module environment
             for (Stmt statement : importedDeclarations) {
-                if (statement instanceof Stmt.Function || statement instanceof Stmt.Var) {
+                if (statement instanceof Stmt.Function || statement instanceof Stmt.Var || statement instanceof Stmt.Import) {
                     execute(statement);
                 }
             }
@@ -239,7 +239,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         // Parse into declarations only
         List<Stmt> allStatements = parser.parse();
         return allStatements.stream()
-                .filter(stmt -> stmt instanceof Stmt.Function || stmt instanceof Stmt.Var)
+                .filter(stmt -> stmt instanceof Stmt.Function || stmt instanceof Stmt.Var || stmt instanceof Stmt.Import)
                 .collect(Collectors.toList());
     }
 
@@ -409,7 +409,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                     + arguments.size() + ".", new ArrayList<>());
         }
 
-        CallFrame frame = new CallFrame(function, expr.paren.line);
+        CallFrame frame = new CallFrame(function, expr.paren.line, expr.paren.filename);
 
         callStack.push(frame);
 

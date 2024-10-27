@@ -80,13 +80,13 @@ public class Tahini {
 
     static void runtimeError(RuntimeError error) {
         System.err.print("RuntimeError: " + error.getMessage()
-                + "\n[line " + error.token.line + "]");
+                + "\n[at line " + error.token.line + " in " + error.token.filename + "]");
 
         List<CallFrame> callStack = error.callStack;
         for (int i = callStack.size() - 1; i >= 0; i--) {
             CallFrame frame = callStack.get(i);
             System.err.println(" in " + frame.function);
-            System.err.print("[line " + frame.returnToLine + "]");
+            System.err.print("[called at line " + frame.returnToLine + " in " + frame.returnToFilename + "]");
         }
 
         hadRuntimeError = true;

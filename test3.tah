@@ -1,0 +1,11 @@
+scoop "../test2.tah";
+
+print testList();
+
+fun func1() {
+    return testList();
+}
+
+fun func2() {
+    return func1();
+}
