@@ -518,10 +518,10 @@ class Parser {
                 Expr index = expression();
                 if (match(TokenType.COLON)) {
                     Expr end = expression();
-                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after list slice.");
+                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after slice.");
                     expr = new Expr.ListSlice(expr, paren, index, end);
                 } else {
-                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after list index.");
+                    consume(TokenType.RIGHT_SQUARE, "Expect ']' after index.");
                     expr = new Expr.ListAccess(expr, paren, index);
                 }
             } else {
@@ -563,6 +563,21 @@ class Parser {
             }
             consume(TokenType.RIGHT_SQUARE, "Expect ']' after list elements.");
             return new Expr.TahiniList(elements);
+        }
+
+        // hash map
+        if (match(TokenType.LEFT_BRACE)) {
+            List<Expr> keys = new ArrayList<>();
+            List<Expr> values = new ArrayList<>();
+            if (!check(TokenType.RIGHT_BRACE)) {
+                do {
+                    keys.add(expression());
+                    consume(TokenType.COLON, "Expect ':' after key.");
+                    values.add(expression());
+                } while (match(TokenType.COMMA));
+            }
+            consume(TokenType.RIGHT_BRACE, "Expect '}' after map elements.");
+            return new Expr.TahiniMap(keys, values);
         }
 
         // Error production for binary operator without left-hand operand

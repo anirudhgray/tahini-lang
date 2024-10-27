@@ -1,5 +1,5 @@
 var xy = 10;
 print xy[2];
 
-// RuntimeError: Can only access elements of a list or a string.
+// RuntimeError: Can only access elements of a list, map or a string.
 // [line 2]

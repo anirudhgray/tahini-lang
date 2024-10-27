@@ -1,7 +1,9 @@
 package com.tahini.lang;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
@@ -83,6 +85,17 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             tahiniList.add(evaluate(element));
         }
         return tahiniList;
+    }
+
+    @Override
+    public Object visitTahiniMapExpr(Expr.TahiniMap expr) {
+        Map<Object, Object> tahiniMap = new HashMap<>();
+        for (int i = 0; i < expr.keys.size(); i++) {
+            Object key = evaluate(expr.keys.get(i));
+            Object value = evaluate(expr.values.get(i));
+            tahiniMap.put(key, value);
+        }
+        return tahiniMap;
     }
 
     @Override
@@ -376,28 +389,36 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Object collection = evaluate(expr.list);
         Object index = evaluate(expr.index);
 
-        if (!(collection instanceof List || collection instanceof String)) {
-            throw new RuntimeError(expr.paren, "Can only access elements of a list or a string.", new ArrayList<>());
+        if (!(collection instanceof List || collection instanceof String || collection instanceof Map)) {
+            throw new RuntimeError(expr.paren, "Can only access elements of a list, map or a string.", new ArrayList<>());
         }
-
-        if (!(index instanceof Double)) {
-            throw new RuntimeError(expr.paren, "Index must be a number.", new ArrayList<>());
-        }
-
-        int i = ((Double) index).intValue();
 
         return switch (collection) {
             case List<?> list -> {
+                if (!(index instanceof Double)) {
+                    throw new RuntimeError(expr.paren, "Index must be a number for list access.", new ArrayList<>());
+                }
+                int i = ((Double) index).intValue();
                 if (i < 0 || i >= list.size()) {
                     throw new RuntimeError(expr.paren, "Index out of bounds.", new ArrayList<>());
                 }
                 yield list.get(i);
             }
             case String str -> {
+                if (!(index instanceof Double)) {
+                    throw new RuntimeError(expr.paren, "Index must be a number for string access.", new ArrayList<>());
+                }
+                int i = ((Double) index).intValue();
                 if (i < 0 || i >= str.length()) {
                     throw new RuntimeError(expr.paren, "Index out of bounds.", new ArrayList<>());
                 }
                 yield String.valueOf(str.charAt(i));
+            }
+            case Map<?, ?> map -> {
+                if (!map.containsKey(index)) {
+                    throw new RuntimeError(expr.paren, "Key not found in map.", new ArrayList<>());
+                }
+                yield map.get(index);
             }
             default ->
                 throw new RuntimeError(expr.paren, "Unexpected error.", new ArrayList<>());
