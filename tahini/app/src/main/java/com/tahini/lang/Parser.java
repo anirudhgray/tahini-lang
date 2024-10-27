@@ -225,8 +225,10 @@ class Parser {
 
     private Stmt scoop() {
         Token path = consume(TokenType.STRING, "Expect string path to scoop from.");
-        consume(TokenType.INTO, "Expect 'into' after scoop path.");
-        Token name = consume(TokenType.IDENTIFIER, "Expect variable name to scoop into.");
+        Token name = null;
+        if (match(TokenType.INTO)) {
+            name = consume(TokenType.IDENTIFIER, "Expect variable name to scoop into.");
+        }
         consume(TokenType.SEMICOLON, "Expect ';' after scoop statement.");
         return new Stmt.Import(path, name);
     }

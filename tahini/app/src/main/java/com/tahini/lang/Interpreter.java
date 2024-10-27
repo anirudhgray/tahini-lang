@@ -1,10 +1,16 @@
 package com.tahini.lang;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
@@ -201,7 +207,40 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitImportStmt(Stmt.Import stmt) {
-        return null;
+        if (stmt.name != null) {
+            // environment.define(stmt.name.lexeme, new TahiniModule(stmt.path.lexeme));
+            return null;
+        } else {
+            List<Stmt> importedDeclarations;
+            try {
+                importedDeclarations = loadAndParseFile(stmt.path.literal);
+            } catch (IOException e) {
+                throw new RuntimeError(stmt.path, "Error importing file " + stmt.path.lexeme + ".", new ArrayList<>());
+            }
+
+            // Register only declarations (variables, functions) in the module environment
+            for (Stmt statement : importedDeclarations) {
+                if (statement instanceof Stmt.Function || statement instanceof Stmt.Var) {
+                    execute(statement);
+                }
+            }
+            return null;
+        }
+    }
+
+    private List<Stmt> loadAndParseFile(Object path) throws IOException {
+        // use some file getting system which doesnt depend on absolute path
+        // of where you are calling the interpreter from
+        Path filePath = Paths.get((String) path).toAbsolutePath();
+        byte[] bytes = Files.readAllBytes(filePath);
+        String source = new String(bytes, Charset.defaultCharset());
+        Parser parser = new Parser(new Scanner(source).scanTokens(), false);
+
+        // Parse into declarations only
+        List<Stmt> allStatements = parser.parse();
+        return allStatements.stream()
+                .filter(stmt -> stmt instanceof Stmt.Function || stmt instanceof Stmt.Var)
+                .collect(Collectors.toList());
     }
 
     @Override
