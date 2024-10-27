@@ -234,7 +234,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Path filePath = Paths.get((String) path).toAbsolutePath();
         byte[] bytes = Files.readAllBytes(filePath);
         String source = new String(bytes, Charset.defaultCharset());
-        Parser parser = new Parser(new Scanner(source).scanTokens(), false);
+        Parser parser = new Parser(new Scanner(source, filePath.normalize().toString()).scanTokens(), false);
 
         // Parse into declarations only
         List<Stmt> allStatements = parser.parse();

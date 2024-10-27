@@ -32,7 +32,7 @@ public class Tahini {
         interpreter = new Interpreter(false);
         Path filePath = Paths.get(path).toAbsolutePath();
         byte[] bytes = Files.readAllBytes(filePath);
-        run(new String(bytes, Charset.defaultCharset()), testMode);
+        run(new String(bytes, Charset.defaultCharset()), testMode, filePath.normalize().toString());
         if (hadError) {
             System.exit(65);
         }
@@ -54,13 +54,13 @@ public class Tahini {
                 System.out.println("Exiting prompt.");
                 break;
             }
-            run(line, false);
+            run(line, false, null);
             hadError = false;
         }
     }
 
-    private static void run(String source, Boolean testMode) {
-        Scanner scanner = new Scanner(source);
+    private static void run(String source, Boolean testMode, String filename) {
+        Scanner scanner = new Scanner(source, filename);
         List<Token> tokens = scanner.scanTokens();
 
         Parser parser = new Parser(tokens, testMode);
@@ -74,8 +74,8 @@ public class Tahini {
         interpreter.interpret(statements);
     }
 
-    static void error(int line, String message) {
-        report(line, "", message);
+    static void error(String filename, int line, String message) {
+        report(filename, line, "", message);
     }
 
     static void runtimeError(RuntimeError error) {
@@ -92,18 +92,18 @@ public class Tahini {
         hadRuntimeError = true;
     }
 
-    private static void report(int line, String where,
+    private static void report(String filename, int line, String where,
             String message) {
         System.err.println(
-                "[line " + line + "] Error" + where + ": " + message);
+                "[file " + filename + "][line " + line + "] Error" + where + ": " + message);
         hadError = true;
     }
 
     static void error(Token token, String message) {
         if (token.type == TokenType.EOF) {
-            report(token.line, " at end", message);
+            report(token.filename, token.line, " at end", message);
         } else {
-            report(token.line, " at '" + token.lexeme + "'", message);
+            report(token.filename, token.line, " at '" + token.lexeme + "'", message);
         }
     }
 }

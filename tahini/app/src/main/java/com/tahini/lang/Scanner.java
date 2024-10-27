@@ -8,6 +8,7 @@ import java.util.Map;
 class Scanner {
 
     private final String source;
+    private final String filename;
     private final List<Token> tokens = new ArrayList<>();
     private int start = 0;
     private int current = 0;
@@ -45,8 +46,9 @@ class Scanner {
         keywords.put("into", TokenType.INTO);
     }
 
-    Scanner(String source) {
+    Scanner(String source, String filename) {
         this.source = source;
+        this.filename = filename;
     }
 
     List<Token> scanTokens() {
@@ -56,7 +58,7 @@ class Scanner {
             scanToken();
         }
 
-        tokens.add(new Token(TokenType.EOF, "", null, line));
+        tokens.add(new Token(TokenType.EOF, "", null, line, filename));
         return tokens;
     }
 
@@ -126,7 +128,7 @@ class Scanner {
                 } else if (isAlpha(c)) {
                     identifier();
                 } else {
-                    Tahini.error(line, "Unexpected character.");
+                    Tahini.error(filename, line, "Unexpected character.");
                 }
             }
         }
@@ -177,7 +179,7 @@ class Scanner {
         }
 
         if (isAtEnd()) {
-            Tahini.error(line, "Unterminated string.");
+            Tahini.error(filename, line, "Unterminated string.");
             return;
         }
 
@@ -239,6 +241,6 @@ class Scanner {
 
     private void addToken(TokenType type, Object literal) {
         String text = source.substring(start, current);
-        tokens.add(new Token(type, text, literal, line));
+        tokens.add(new Token(type, text, literal, line, filename));
     }
 }
