@@ -373,50 +373,70 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Object visitListAccessExpr(Expr.ListAccess expr) {
-        Object list = evaluate(expr.list);
+        Object collection = evaluate(expr.list);
         Object index = evaluate(expr.index);
 
-        if (!(list instanceof List)) {
-            throw new RuntimeError(expr.paren, "Can only access elements of a list.", new ArrayList<>());
+        if (!(collection instanceof List || collection instanceof String)) {
+            throw new RuntimeError(expr.paren, "Can only access elements of a list or a string.", new ArrayList<>());
         }
 
         if (!(index instanceof Double)) {
             throw new RuntimeError(expr.paren, "Index must be a number.", new ArrayList<>());
         }
 
-        List<Object> tahiniList = (List<Object>) list;
         int i = ((Double) index).intValue();
 
-        if (i < 0 || i >= tahiniList.size()) {
-            throw new RuntimeError(expr.paren, "Index out of bounds.", new ArrayList<>());
-        }
-
-        return tahiniList.get(i);
+        return switch (collection) {
+            case List<?> list -> {
+                if (i < 0 || i >= list.size()) {
+                    throw new RuntimeError(expr.paren, "Index out of bounds.", new ArrayList<>());
+                }
+                yield list.get(i);
+            }
+            case String str -> {
+                if (i < 0 || i >= str.length()) {
+                    throw new RuntimeError(expr.paren, "Index out of bounds.", new ArrayList<>());
+                }
+                yield String.valueOf(str.charAt(i));
+            }
+            default ->
+                throw new RuntimeError(expr.paren, "Unexpected error.", new ArrayList<>());
+        };
     }
 
     @Override
     public Object visitListSliceExpr(Expr.ListSlice expr) {
-        Object list = evaluate(expr.list);
+        Object collection = evaluate(expr.list);
         Object start = evaluate(expr.start);
         Object end = evaluate(expr.end);
 
-        if (!(list instanceof List)) {
-            throw new RuntimeError(expr.paren, "Can only slice a list.", new ArrayList<>());
+        if (!(collection instanceof List || collection instanceof String)) {
+            throw new RuntimeError(expr.paren, "Can only slice a list or a string.", new ArrayList<>());
         }
 
         if (!(start instanceof Double) || !(end instanceof Double)) {
             throw new RuntimeError(expr.paren, "Start and end must be numbers.", new ArrayList<>());
         }
 
-        List<Object> tahiniList = (List<Object>) list;
         int s = ((Double) start).intValue();
         int e = ((Double) end).intValue();
 
-        if (s < 0 || e < 0 || s > e || e > tahiniList.size()) {
-            throw new RuntimeError(expr.paren, "Invalid slice.", new ArrayList<>());
-        }
-
-        return tahiniList.subList(s, e);
+        return switch (collection) {
+            case List<?> list -> {
+                if (s < 0 || e < 0 || s > e || e > list.size()) {
+                    throw new RuntimeError(expr.paren, "Index out of bounds.", new ArrayList<>());
+                }
+                yield list.subList(s, e);
+            }
+            case String str -> {
+                if (s < 0 || e < 0 || s > e || e > str.length()) {
+                    throw new RuntimeError(expr.paren, "Index out of bounds.", new ArrayList<>());
+                }
+                yield str.substring(s, e);
+            }
+            default ->
+                throw new RuntimeError(expr.paren, "Unexpected error.", new ArrayList<>());
+        };
     }
 
     private void checkNumberOperands(Token operator, Object a, Object b) {

@@ -1,5 +1,14 @@
 print len(["a", "b", "c", "d", "e"]);
 print len("OK, then.");
+var str = "hello.";
+print str[1];
+print str[1:3];
+var str2 = "is";
+var str3 = str[0:2] + " " + str2;
+print str3;
 
 // 5
 // 9
+// e
+// el
+// he is
