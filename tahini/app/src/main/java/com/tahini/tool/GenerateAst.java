@@ -26,7 +26,8 @@ public class GenerateAst {
                 "Ternary  : Expr condition, Expr left, Expr right",
                 "Variable : Token name",
                 "Logical  : Expr left, Token operator, Expr right",
-                "TahiniList     : List<Expr> elements"
+                "TahiniList     : List<Expr> elements",
+                "TahiniMap      : List<Expr> keys, List<Expr> values"
         ));
 
         defineAst(outputDir, "Stmt", Arrays.asList(

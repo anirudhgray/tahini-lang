@@ -16,6 +16,7 @@ abstract class Expr {
     R visitVariableExpr(Variable expr);
     R visitLogicalExpr(Logical expr);
     R visitTahiniListExpr(TahiniList expr);
+    R visitTahiniMapExpr(TahiniMap expr);
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
@@ -190,6 +191,20 @@ abstract class Expr {
     }
 
     final List<Expr> elements;
+  }
+  static class TahiniMap extends Expr {
+    TahiniMap(List<Expr> keys, List<Expr> values) {
+      this.keys = keys;
+      this.values = values;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitTahiniMapExpr(this);
+    }
+
+    final List<Expr> keys;
+    final List<Expr> values;
   }
 
   abstract <R> R accept(Visitor<R> visitor);

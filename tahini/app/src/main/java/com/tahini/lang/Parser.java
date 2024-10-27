@@ -565,6 +565,21 @@ class Parser {
             return new Expr.TahiniList(elements);
         }
 
+        // hash map
+        if (match(TokenType.LEFT_BRACE)) {
+            List<Expr> keys = new ArrayList<>();
+            List<Expr> values = new ArrayList<>();
+            if (!check(TokenType.RIGHT_BRACE)) {
+                do {
+                    keys.add(expression());
+                    consume(TokenType.COLON, "Expect ':' after key.");
+                    values.add(expression());
+                } while (match(TokenType.COMMA));
+            }
+            consume(TokenType.RIGHT_BRACE, "Expect '}' after map elements.");
+            return new Expr.TahiniMap(keys, values);
+        }
+
         // Error production for binary operator without left-hand operand
         if (match(TokenType.PLUS, TokenType.MINUS, TokenType.STAR, TokenType.SLASH, TokenType.EQUAL_EQUAL, TokenType.BANG_EQUAL, TokenType.GREATER, TokenType.GREATER_EQUAL, TokenType.LESS, TokenType.LESS_EQUAL)) {
             Token operator = previous();

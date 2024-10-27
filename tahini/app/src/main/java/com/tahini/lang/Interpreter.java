@@ -1,7 +1,9 @@
 package com.tahini.lang;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
@@ -83,6 +85,17 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             tahiniList.add(evaluate(element));
         }
         return tahiniList;
+    }
+
+    @Override
+    public Object visitTahiniMapExpr(Expr.TahiniMap expr) {
+        Map<Object, Object> tahiniMap = new HashMap<>();
+        for (int i = 0; i < expr.keys.size(); i++) {
+            Object key = evaluate(expr.keys.get(i));
+            Object value = evaluate(expr.values.get(i));
+            tahiniMap.put(key, value);
+        }
+        return tahiniMap;
     }
 
     @Override
