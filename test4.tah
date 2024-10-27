@@ -1,3 +1,4 @@
 scoop "../test3.tah";
+scoop "../test2.tah";
 
 print func2();

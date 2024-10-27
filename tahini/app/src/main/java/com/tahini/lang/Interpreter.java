@@ -7,8 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     final boolean repl;
+
+    private final Set<Path> scoopedFiles = new HashSet<>();
 
     final Environment globals = new Environment();
     private Environment environment = globals;
@@ -213,7 +217,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         } else {
             List<Stmt> importedDeclarations;
             try {
-                importedDeclarations = loadAndParseFile(stmt.path.literal);
+                importedDeclarations = loadAndParseFile(stmt.path);
             } catch (IOException e) {
                 throw new RuntimeError(stmt.path, "Error importing file " + stmt.path.lexeme + ".", new ArrayList<>());
             }
@@ -224,14 +228,19 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                     execute(statement);
                 }
             }
+            scoopedFiles.remove(Paths.get((String) stmt.path.literal).toAbsolutePath());
             return null;
         }
     }
 
-    private List<Stmt> loadAndParseFile(Object path) throws IOException {
+    private List<Stmt> loadAndParseFile(Token path) throws IOException {
         // use some file getting system which doesnt depend on absolute path
         // of where you are calling the interpreter from
-        Path filePath = Paths.get((String) path).toAbsolutePath();
+        Path filePath = Paths.get((String) path.literal).toAbsolutePath();
+        if (scoopedFiles.contains(filePath)) {
+            throw new RuntimeError(path, "Circular import detected.", new ArrayList<>());
+        }
+        scoopedFiles.add(filePath);
         byte[] bytes = Files.readAllBytes(filePath);
         String source = new String(bytes, Charset.defaultCharset());
         Parser parser = new Parser(new Scanner(source, filePath.normalize().toString()).scanTokens(), false);

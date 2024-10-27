@@ -1,4 +1,4 @@
-scoop "../test2.tah";
+scoop "../tes2.tah";
 
 print testList();
 
