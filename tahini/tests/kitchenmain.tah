@@ -10,6 +10,10 @@ fun totalIngredients(ingredientQuantities)
     return total;
 }
 
+fun prepareDish() {
+    return bake(100, ovenTemperature);
+}
+
 test "totalIngredients test" {
     // Test case: summing 3 ingredients
     assertion: totalIngredients([1, 2, 3]) == 6, "Should be 6!";
@@ -22,8 +26,8 @@ var sugar = 1;
 var eggs = 3;
 
 var ingredientsList = [flour, sugar, eggs];
-var total = totalIngredients(ingredientsList);
-
-print "Total ingredients needed: " + total;
+print "Total ingredients needed: "+totalIngredients(ingredientsList);
+print prepareDish();
 
 // Total ingredients needed: 6
+// Baking for 100 minutes at 180°C.

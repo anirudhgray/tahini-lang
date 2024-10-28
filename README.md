@@ -9,9 +9,11 @@
 **Tahini** is a lightweight, tree-based interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language and testing features, with an exciting roadmap of future capabilities, including an import system, auto function mocking, and cross-language support.
 
 ```
-scoop "../kitchen.tah";
+// import the kitchen file to get the bake function and ovenTemperature variable
+scoop "./kitchen.tah";
 
 fun totalIngredients(ingredientQuantities)
+    // contract
     postcondition: total >= 0
 {
     var total = 0;
@@ -19,6 +21,10 @@ fun totalIngredients(ingredientQuantities)
         total = total + ingredientQuantities[i];
     }
     return total;
+}
+
+fun prepareDish() {
+    return bake(100, ovenTemperature);
 }
 
 test "totalIngredients test" {
@@ -33,9 +39,8 @@ var sugar = 1;
 var eggs = 3;
 
 var ingredientsList = [flour, sugar, eggs];
-var total = totalIngredients(ingredientsList);
-
-print "Total ingredients needed: " + total;
+print "Total ingredients needed: " + totalIngredients(ingredientsList);
+print prepareDish();
 ```
 
 ## Table of Contents
@@ -58,7 +63,6 @@ print "Total ingredients needed: " + total;
     - [Loops](#loops)
     - [Imports](#imports)
     - [Built-in Functions](#built-in-functions)
-  - [Planned Features](#planned-features)
   - [Stretch Goals](#stretch-goals)
 - [The Theory Behind This Implementation of Tahini](#the-theory-behind-this-implementation-of-tahini)
   - [What is a Tree-Walk Interpreter?](#what-is-a-tree-walk-interpreter)
@@ -393,24 +397,6 @@ Currently, Tahini does not support importing external modules or libraries. Howe
 - `input()` - Read a line of string input from the user.
 - `clock()` - Get the current time in seconds since the Unix epoch.
 - `len(arr)` - Get the length of an array.
-
-## Planned Features
-
-Tahini is under active development, and we plan to introduce several new features to enhance its functionality:
-
-1. **Import System** (TODO)
-   - Add support for importing external modules and scripts, enabling code modularity and reuse.
-   
-   Example (tentative):
-
-2. **Standard Library** (TODO)
-   - A set of basic utility functions for common operations such as user input, pattern matching, and file handling.
-   
-   Example (tenative std lib features):
-
-3. **Auto Mocking Functions** (TODO)
-   
-   Example (tentative):
 
 ## Stretch Goals
 
