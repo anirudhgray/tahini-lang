@@ -1,10 +1,18 @@
 package com.tahini.lang;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
@@ -12,6 +20,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     final boolean repl;
+
+    private final Set<Path> scoopedFiles = new HashSet<>();
 
     final Environment globals = new Environment();
     private Environment environment = globals;
@@ -200,6 +210,49 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitImportStmt(Stmt.Import stmt) {
+        if (stmt.name != null) {
+            // environment.define(stmt.name.lexeme, new TahiniModule(stmt.path.lexeme));
+            return null;
+        } else {
+            List<Stmt> importedDeclarations;
+            try {
+                importedDeclarations = loadAndParseFile(stmt.path);
+            } catch (IOException e) {
+                throw new RuntimeError(stmt.path, "Error importing file " + stmt.path.lexeme + ".", new ArrayList<>());
+            }
+
+            // Register only declarations (variables, functions) in the module environment
+            for (Stmt statement : importedDeclarations) {
+                if (statement instanceof Stmt.Function || statement instanceof Stmt.Var || statement instanceof Stmt.Import) {
+                    execute(statement);
+                }
+            }
+            scoopedFiles.remove(Paths.get((String) stmt.path.literal).toAbsolutePath());
+            return null;
+        }
+    }
+
+    private List<Stmt> loadAndParseFile(Token path) throws IOException {
+        // use some file getting system which doesnt depend on absolute path
+        // of where you are calling the interpreter from
+        Path filePath = Paths.get((String) path.literal).toAbsolutePath();
+        if (scoopedFiles.contains(filePath)) {
+            throw new RuntimeError(path, "Circular import detected.", new ArrayList<>());
+        }
+        scoopedFiles.add(filePath);
+        byte[] bytes = Files.readAllBytes(filePath);
+        String source = new String(bytes, Charset.defaultCharset());
+        Parser parser = new Parser(new Scanner(source, filePath.normalize().toString()).scanTokens(), false);
+
+        // Parse into declarations only
+        List<Stmt> allStatements = parser.parse();
+        return allStatements.stream()
+                .filter(stmt -> stmt instanceof Stmt.Function || stmt instanceof Stmt.Var || stmt instanceof Stmt.Import)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Void visitTestStmt(Stmt.Test stmt) {
         try {
             execute(stmt.body);
@@ -365,7 +418,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                     + arguments.size() + ".", new ArrayList<>());
         }
 
-        CallFrame frame = new CallFrame(function, expr.paren.line);
+        CallFrame frame = new CallFrame(function, expr.paren.line, expr.paren.filename);
 
         callStack.push(frame);
 

@@ -48,6 +48,9 @@ class Parser {
                     return null;
                 }
             }
+            if (match(TokenType.SCOOP)) {
+                return scoop();
+            }
             return statement();
         } catch (ParseError error) {
             synchronize();
@@ -218,6 +221,16 @@ class Parser {
         Expr value = expression();
         consume(TokenType.SEMICOLON, "Expect ';' after value.");
         return new Stmt.Print(value);
+    }
+
+    private Stmt scoop() {
+        Token path = consume(TokenType.STRING, "Expect string path to scoop from.");
+        Token name = null;
+        if (match(TokenType.INTO)) {
+            name = consume(TokenType.IDENTIFIER, "Expect variable name to scoop into.");
+        }
+        consume(TokenType.SEMICOLON, "Expect ';' after scoop statement.");
+        return new Stmt.Import(path, name);
     }
 
     private Stmt varDeclaration() {

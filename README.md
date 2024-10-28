@@ -9,22 +9,38 @@
 **Tahini** is a lightweight, tree-based interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language and testing features, with an exciting roadmap of future capabilities, including an import system, auto function mocking, and cross-language support.
 
 ```
-var check = 10;
-fun percentage(part, total)
-    precondition: total > 0, part >= 0
-    postcondition: result >= 0, result <= 100
+// import the kitchen file to get the bake function and ovenTemperature variable
+scoop "./kitchen.tah";
+
+fun totalIngredients(ingredientQuantities)
+    // contract
+    postcondition: total >= 0
 {
-    var result = (part / total) * 100;
-    assertion: check == 10, "Unwanted side effects!";
-    return result;
+    var total = 0;
+    for (var i = 0; i < len(ingredientQuantities); i = i + 1) {
+        total = total + ingredientQuantities[i];
+    }
+    return total;
 }
 
-test "percentage test" {
-    assertion: percentage(20, 50) == 40;
-    assertion: percentage(10, 100) == 10;
+fun prepareDish() {
+    return bake(100, ovenTemperature);
 }
 
-print percentage(20, 28);
+test "totalIngredients test" {
+    // Test case: summing 3 ingredients
+    assertion: totalIngredients([1, 2, 3]) == 6, "Should be 6!";
+    // Test case: summing 0 ingredients
+    assertion: totalIngredients([]) == 0, "Should be 0!";
+}
+
+var flour = 2;
+var sugar = 1;
+var eggs = 3;
+
+var ingredientsList = [flour, sugar, eggs];
+print "Total ingredients needed: " + totalIngredients(ingredientsList);
+print prepareDish();
 ```
 
 ## Table of Contents
@@ -45,8 +61,8 @@ print percentage(20, 28);
     - [Maps](#maps)
     - [Conditionals](#conditionals)
     - [Loops](#loops)
+    - [Imports](#imports)
     - [Built-in Functions](#built-in-functions)
-  - [Planned Features](#planned-features)
   - [Stretch Goals](#stretch-goals)
 - [The Theory Behind This Implementation of Tahini](#the-theory-behind-this-implementation-of-tahini)
   - [What is a Tree-Walk Interpreter?](#what-is-a-tree-walk-interpreter)
@@ -65,8 +81,9 @@ Tahini currently implements:
 - [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress).
 - [x] **Stack Traces**: Detailed error messages with line numbers and function names.
 - [x] **Unit Tests**: Write test blocks directly in the source file to validate code correctness.
+- [ ] **Import System**: Import other Tahini files to reuse code and create modular applications (in progress).
   
-Planned features include an import system, standard library, and cross-language support.
+Planned features include a standard library and cross-language support.
 
 ## Getting Started
 
@@ -356,6 +373,23 @@ while (i < 5) {
 }
 ```
 
+### Imports
+
+Tahini supports importing other Tahini files to reuse code and create modular applications. You can import a file using the `scoop` keyword, followed by the path to the file. The imported file will be executed in the current scope, allowing you to access its variables and functions.
+
+```tahini
+scoop "../kitchen.tah";
+```
+
+The above would do a **flat import** of the `kitchen.tah` file, executing it in the current scope, and making every variable and function in `kitchen.tah` available in the current file's global scope. This should be used with caution, as it can lead to naming conflicts, pollution and unintended side effects.
+
+To avoid polluting the global environment, future versions of Tahini will support **namespaced imports**.
+
+```tahini
+// future support
+scoop "../kitchen.tah" into kitchen;
+```
+
 ### Built-in Functions
 
 Currently, Tahini does not support importing external modules or libraries. However, it does provide a set of built-in functions (filling some of the core gaps which an imported standard library would have provided) for common operations:
@@ -363,24 +397,6 @@ Currently, Tahini does not support importing external modules or libraries. Howe
 - `input()` - Read a line of string input from the user.
 - `clock()` - Get the current time in seconds since the Unix epoch.
 - `len(arr)` - Get the length of an array.
-
-## Planned Features
-
-Tahini is under active development, and we plan to introduce several new features to enhance its functionality:
-
-1. **Import System** (TODO)
-   - Add support for importing external modules and scripts, enabling code modularity and reuse.
-   
-   Example (tentative):
-
-2. **Standard Library** (TODO)
-   - A set of basic utility functions for common operations such as user input, pattern matching, and file handling.
-   
-   Example (tenative std lib features):
-
-3. **Auto Mocking Functions** (TODO)
-   
-   Example (tentative):
 
 ## Stretch Goals
 

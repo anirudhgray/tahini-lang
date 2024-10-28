@@ -27,5 +27,5 @@ print result;
 
 // 5
 // RuntimeError: Precondition failed.
-// [line 1] in <fn safeSqrt>
-// [line 25]
+// [at line 1 in advcontract.tah] in <fn safeSqrt>
+// [called at line 25 in advcontract.tah]

@@ -1,4 +1,4 @@
 print a;
 
 // RuntimeError: Undefined variable 'a'.
-// [line 1]
+// [at line 1 in error.tah]

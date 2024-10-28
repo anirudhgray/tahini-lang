@@ -1,3 +1,3 @@
 break;
 
-// [line 1] Error at 'break': Expected 'break' inside a loop.
+// [file breakerror.tah][line 1] Error at 'break': Expected 'break' inside a loop.

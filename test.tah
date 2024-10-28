@@ -1,9 +1,16 @@
+scoop "../test2.tah";
+
 fun isEven(n) {
+  var check =4;
   while (n >= 2) {
     n = n - 2;
   }
   return n == 0;
 }
+
+print checkfromlol;
+
+print testList();
 
 var dictwithfunc = { "key1": 1, "key2": 2, "key3": 3, true: false, nil:5, "fib": isEven, isEven: isEven };
 print dictwithfunc["key1"];

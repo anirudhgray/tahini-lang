@@ -30,6 +30,9 @@ run_test() {
     local actual_output=$(java -jar "$JAR_PATH" "$test_file" 2>&1)
   fi
 
+  # Remove absolute paths from the actual output, keeping only filenames
+  actual_output=$(echo "$actual_output" | sed -E 's|/[^ ]*/([^/]+\.tah)|\1|g')
+
   if [ "$expected_output" == "$actual_output" ]; then
     echo -e "\033[32mTest $test_file passed.\033[0m"
   else
@@ -48,6 +51,8 @@ run_flag_test() {
   
   # Run the JAR file with the --test flag and capture both stdout and stderr
   local actual_output=$(java -jar "$JAR_PATH" "$test_file" --test 2>&1)
+
+  actual_output=$(echo "$actual_output" | sed -E 's|/[^ ]*/([^/]+\.tah)|\1|g')
 
   if [ "$expected_output" == "$actual_output" ]; then
     echo -e "\033[32mTest $test_file passed.\033[0m"
