@@ -24,7 +24,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     private final Set<Path> scoopedFiles = new HashSet<>();
 
     final Environment globals = new Environment();
-    private Environment environment = globals;
+    public Environment environment = globals;
 
     public Interpreter(boolean repl) {
         this.repl = repl;
@@ -211,26 +211,53 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitImportStmt(Stmt.Import stmt) {
+        List<Stmt> importedDeclarations;
+        try {
+            importedDeclarations = loadAndParseFile(stmt.path);
+        } catch (IOException e) {
+            throw new RuntimeError(stmt.path, "Error importing file " + stmt.path.lexeme + ".", new ArrayList<>());
+        }
+
         if (stmt.name != null) {
-            // environment.define(stmt.name.lexeme, new TahiniModule(stmt.path.lexeme));
-            return null;
-        } else {
-            List<Stmt> importedDeclarations;
+            Environment previous = this.environment;
+            Environment importedEnv = new Environment();
+
             try {
-                importedDeclarations = loadAndParseFile(stmt.path);
-            } catch (IOException e) {
-                throw new RuntimeError(stmt.path, "Error importing file " + stmt.path.lexeme + ".", new ArrayList<>());
+                this.environment = importedEnv;
+
+                for (Stmt statement : importedDeclarations) {
+                    if (statement instanceof Stmt.Function || statement instanceof Stmt.Var) {
+                        execute(statement);
+                    } else if (statement instanceof Stmt.Import) {
+                        // Recursive flat import: ensure nested imports are also flat-imported here
+                        Stmt.Import nestedImport = (Stmt.Import) statement;
+                        if (nestedImport.name == null) {  // Only handle further flat imports
+                            this.environment = previous;
+                            visitImportStmt(nestedImport);
+                            this.environment = importedEnv;
+                        }
+                        execute(statement);
+                    }
+                }
+            } finally {
+                this.environment = previous;
             }
 
+            environment.defineNamespace(stmt.name.lexeme, importedEnv);
+            for (Map.Entry<String, Environment> entry : importedEnv.namespaces.entrySet()) {
+                environment.defineNamespace(entry.getKey(), entry.getValue());
+            }
+        } else {
             // Register only declarations (variables, functions) in the module environment
             for (Stmt statement : importedDeclarations) {
                 if (statement instanceof Stmt.Function || statement instanceof Stmt.Var || statement instanceof Stmt.Import) {
                     execute(statement);
                 }
             }
-            scoopedFiles.remove(Paths.get((String) stmt.path.literal).toAbsolutePath());
-            return null;
         }
+        scoopedFiles.remove(Paths.get((String) stmt.path.literal).toAbsolutePath());
+
+        return null;
     }
 
     private List<Stmt> loadAndParseFile(Token path) throws IOException {
@@ -316,6 +343,16 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Object visitVariableExpr(Expr.Variable expr) {
         return environment.getValue(expr.name);
+    }
+
+    @Override
+    public Object visitNamespacedVariableExpr(Expr.NamespacedVariable expr) {
+        List<Token> nameParts = expr.nameParts;
+        Environment env = environment;
+        for (int i = 0; i < nameParts.size() - 1; i++) {
+            env = env.getNamespace(nameParts.get(i));
+        }
+        return env.getValue(nameParts.get(nameParts.size() - 1));
     }
 
     private void checkNumberOperand(Token operator, Object operand) {

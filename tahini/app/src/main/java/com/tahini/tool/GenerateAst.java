@@ -15,19 +15,20 @@ public class GenerateAst {
         String outputDir = args[0];
 
         defineAst(outputDir, "Expr", Arrays.asList(
-                "Assign   : Token name, Expr value",
-                "Binary   : Expr left, Token operator, Expr right",
-                "Call     : Expr callee, Token paren, List<Expr> arguments",
-                "ListAccess     : Expr list, Token paren, Expr index",
-                "ListSlice      : Expr list, Token paren, Expr start, Expr end",
-                "Grouping : Expr expression",
-                "Literal  : Object value",
-                "Unary    : Token operator, Expr right",
-                "Ternary  : Expr condition, Expr left, Expr right",
-                "Variable : Token name",
-                "Logical  : Expr left, Token operator, Expr right",
-                "TahiniList     : List<Expr> elements",
-                "TahiniMap      : List<Expr> keys, List<Expr> values"
+                "Assign             : Token name, Expr value",
+                "Binary             : Expr left, Token operator, Expr right",
+                "Call               : Expr callee, Token paren, List<Expr> arguments",
+                "ListAccess         : Expr list, Token paren, Expr index",
+                "ListSlice          : Expr list, Token paren, Expr start, Expr end",
+                "Grouping           : Expr expression",
+                "Literal            : Object value",
+                "Unary              : Token operator, Expr right",
+                "Ternary            : Expr condition, Expr left, Expr right",
+                "Variable           : Token name",
+                "NamespacedVariable : List<Token> nameParts",
+                "Logical            : Expr left, Token operator, Expr right",
+                "TahiniList         : List<Expr> elements",
+                "TahiniMap          : List<Expr> keys, List<Expr> values"
         ));
 
         defineAst(outputDir, "Stmt", Arrays.asList(
@@ -42,7 +43,7 @@ public class GenerateAst {
                 "Break",
                 "Return     : Token keyword, Expr value",
                 "Contract   : Token type, List<Expr> conditions, Object msg",
-                "Import      : Token path, Token name"
+                "Import     : Token path, Token name"
         ));
     }
 

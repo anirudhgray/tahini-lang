@@ -19,7 +19,7 @@ class TahiniFunction implements TahiniCallable {
     @Override
     public Object call(Interpreter interpreter,
             List<Object> arguments) {
-        Environment environment = new Environment(interpreter.globals);
+        Environment environment = new Environment(interpreter.environment);
         for (int i = 0; i < declaration.params.size(); i++) {
             environment.define(declaration.params.get(i).lexeme,
                     arguments.get(i));

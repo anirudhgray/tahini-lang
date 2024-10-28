@@ -18,5 +18,5 @@ enum TokenType {
     // Annotations.
     PRECONDITION, POSTCONDITION, ASSERTION, TEST,
     // Import
-    SCOOP, INTO
+    SCOOP, INTO, NAMESPACE_SEPARATOR
 }

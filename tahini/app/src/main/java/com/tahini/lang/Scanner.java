@@ -120,8 +120,13 @@ class Scanner {
                 string();
             case '?' ->
                 addToken(TokenType.QUESTION_MARK);
-            case ':' ->
-                addToken(TokenType.COLON);
+            case ':' -> {
+                if (match(':')) {
+                    addToken(TokenType.NAMESPACE_SEPARATOR);
+                } else {
+                    addToken(TokenType.COLON);
+                }
+            }
             default -> {
                 if (isDigit(c)) {
                     number();

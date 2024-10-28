@@ -559,7 +559,17 @@ class Parser {
             return new Expr.Literal(previous().literal);
         }
         if (match(TokenType.IDENTIFIER)) {
-            return new Expr.Variable(previous());
+            Token name = previous();
+            if (peek().type != TokenType.NAMESPACE_SEPARATOR) {
+                return new Expr.Variable(name);
+            }
+            List<Token> nameParts = new ArrayList<>();
+            nameParts.add(name);
+            while (match(TokenType.NAMESPACE_SEPARATOR)) {
+                Token member = consume(TokenType.IDENTIFIER, "Expect member name after '::'.");
+                nameParts.add(member);
+            }
+            return new Expr.NamespacedVariable(nameParts);
         }
         if (match(TokenType.LEFT_PAREN)) {
             Expr expr = expression();

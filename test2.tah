@@ -1,0 +1,18 @@
+scoop "../test3.tah";
+
+var checkfromlol = 15;
+
+// print test3::hello();
+
+fun hello2() {
+    // print test3::hello();
+    // print test3::test3var;
+    // print test3::from4;
+    print hello3();
+    print test4::from4;
+    return "Hello, World! From 2.";
+}
+
+print hello2();
+// print test3::hello();
+print hello2();
