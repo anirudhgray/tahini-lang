@@ -21,4 +21,4 @@ print len(arr, 0);
 
 // [2.0, 4.0]
 // RuntimeError: Expected 1 arguments but got 2.
-// [line 20]
+// [at line 20 in arrays7.tah]

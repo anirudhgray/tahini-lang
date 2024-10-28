@@ -15,5 +15,5 @@ fun calculateDiscountedPrice(originalPrice, discountPercentage)
 print calculateDiscountedPrice(100,35);
 
 // RuntimeError: assertion contract failed (Result should never exceed the original price)
-// [line 10] in <fn calculateDiscountedPrice>
-// [line 15]
+// [at line 10 in assertion.tah] in <fn calculateDiscountedPrice>
+// [called at line 15 in assertion.tah]

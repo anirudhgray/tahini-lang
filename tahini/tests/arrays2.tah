@@ -5,4 +5,4 @@ fun testList() {
 print testList()[8];
 
 // RuntimeError: Index out of bounds.
-// [line 5]
+// [at line 5 in arrays2.tah]

@@ -2,4 +2,4 @@ var check = false;
 assertion: check, "Check should be true!";
 
 // RuntimeError: assertion contract failed (Check should be true!)
-// [line 2]
+// [at line 2 in assert_outside.tah]
