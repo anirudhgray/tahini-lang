@@ -392,7 +392,7 @@ scoop "../kitchen.tah" into kitchen;
 
 ### Built-in Functions
 
-Currently, Tahini does not support importing external modules or libraries. However, it does provide a set of built-in functions (filling some of the core gaps which an imported standard library would have provided) for common operations:
+Currently, Tahini does not have a standard library. However, it does provide a set of built-in functions (filling some of the core gaps which an imported standard library would have provided) for common operations:
 
 - `input()` - Read a line of string input from the user.
 - `clock()` - Get the current time in seconds since the Unix epoch.
