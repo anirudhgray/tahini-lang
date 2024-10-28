@@ -1,0 +1,14 @@
+fun bake(cookingTime, temperature) {
+    assertion: cookingTime > 0, "Cooking time must be positive!";
+    assertion: temperature > 0, "Temperature must be positive!";
+    
+    return "Baking for " + cookingTime + " minutes at " + temperature + "°C.";
+}
+
+fun saute(cookingTime) {
+    assertion: cookingTime > 0, "Cooking time must be positive!";
+    
+    return "Sautéing for " + cookingTime + " minutes.";
+}
+
+var ovenTemperature = 180; // Default oven temperature

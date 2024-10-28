@@ -1,7 +1,0 @@
-print "jjj";
-var checkfromlol = 45;
-
-fun testList() {
-    print "a"*7;
-  return [1, 2, 3, 4, 5];
-}

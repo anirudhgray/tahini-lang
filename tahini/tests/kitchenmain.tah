@@ -1,0 +1,29 @@
+scoop "./tests/kitchen.tah";
+
+fun totalIngredients(ingredientQuantities)
+    postcondition: total >= 0
+{
+    var total = 0;
+    for (var i = 0; i < len(ingredientQuantities); i = i + 1) {
+        total = total + ingredientQuantities[i];
+    }
+    return total;
+}
+
+test "totalIngredients test" {
+    // Test case: summing 3 ingredients
+    assertion: totalIngredients([1, 2, 3]) == 6, "Should be 6!";
+    // Test case: summing 0 ingredients
+    assertion: totalIngredients([]) == 0, "Should be 0!";
+}
+
+var flour = 2;
+var sugar = 1;
+var eggs = 3;
+
+var ingredientsList = [flour, sugar, eggs];
+var total = totalIngredients(ingredientsList);
+
+print "Total ingredients needed: " + total;
+
+// Total ingredients needed: 6
