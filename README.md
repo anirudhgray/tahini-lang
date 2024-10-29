@@ -9,8 +9,7 @@
 **Tahini** is a lightweight, tree-based interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language and testing features, with an exciting roadmap of future capabilities.
 
 ```
-// import the kitchen file to get the bake function and ovenTemperature variable
-scoop "./kitchen.tah";
+scoop "./kitchen.tah" into kitchen;
 
 fun totalIngredients(ingredientQuantities)
     // contract
@@ -24,7 +23,7 @@ fun totalIngredients(ingredientQuantities)
 }
 
 fun prepareDish() {
-    return bake(100, ovenTemperature);
+    return kitchen::bake(100, kitchen::ovenTemperature);
 }
 
 test "totalIngredients test" {
