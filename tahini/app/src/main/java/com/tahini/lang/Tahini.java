@@ -16,11 +16,13 @@ public class Tahini {
     static boolean hadRuntimeError = false;
 
     public static void main(String[] args) throws IOException {
-        if (args.length > 2 || (args.length == 2 && !args[1].equals("--test"))) {
+        if (args.length > 2 || (args.length == 2 && !args[1].equals("--test") && !args[1].equals("--visualize"))) {
             System.out.println("Usage: jlox [script]");
             System.exit(64);
         } else if (args.length == 2 && args[1].equals("--test")) {
             runFile(args[0], true);
+        } else if (args.length == 2 && args[1].equals("--visualize")) {
+            visualizeAST(args[0]);
         } else if (args.length == 1) {
             runFile(args[0], false);
         } else {
@@ -106,4 +108,24 @@ public class Tahini {
             report(token.filename, token.line, " at '" + token.lexeme + "'", message);
         }
     }
+
+    private static void visualizeAST(String path) throws IOException {
+        Path filePath = Paths.get(path).toAbsolutePath();
+        byte[] bytes = Files.readAllBytes(filePath);
+        String source = new String(bytes, Charset.defaultCharset());
+
+        Scanner scanner = new Scanner(source, path);
+        List<Token> tokens = scanner.scanTokens();
+
+        Parser parser = new Parser(tokens, false);
+        List<Stmt> statements = parser.parse();
+
+        if (hadError) {
+            return;
+        }
+
+        ASTVisualizer visualizer = new ASTVisualizer();
+        visualizer.display(statements);
+    }
+
 }

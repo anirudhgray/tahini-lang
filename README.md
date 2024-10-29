@@ -128,6 +128,7 @@ cd tahini
 gradle build
 ```
 
+> [!WARNING]
 > If you get an error, it may be due to the Java version. Ensure you have Java 21 or higher installed, or use the `./gradlew` wrapper to run the project.
 > ```bash
 > ./gradlew run --args="path/to/file.tah"
@@ -173,6 +174,7 @@ To run a Tahini script:
 java -jar app/build/libs/app.jar "../test.tah"
 ```
 
+> [!TIP]
 > Check out the [VSCode extension for Tahini](https://github.com/anirudhgray/tahini-vscode) for a more integrated development experience.
 
 ## Syntax Overview
@@ -453,6 +455,10 @@ A **tree-walk interpreter** is a simple form of interpreter that executes progra
 
 In Tahini's case:
 1. **Parsing**: The source code is tokenized and parsed into an AST.
+
+> [!TIP]
+> Note: you can see the AST for a Tahini program by running the `--visualize` flag with the Tahini interpreter.
+
 2. **Interpretation**: The interpreter walks the tree recursively, evaluating expressions, executing statements, and manipulating variables as it encounters them.
 
 This approach is straightforward because the AST is used directly without translating the code into an intermediate form or machine-level bytecode.
