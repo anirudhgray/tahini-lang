@@ -15,18 +15,23 @@ public class Tahini {
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
 
-    public static void main(String[] args) throws IOException {
-        if (args.length > 2 || (args.length == 2 && !args[1].equals("--test") && !args[1].equals("--visualize"))) {
-            System.out.println("Usage: jlox [script]");
-            System.exit(64);
-        } else if (args.length == 2 && args[1].equals("--test")) {
-            runFile(args[0], true);
-        } else if (args.length == 2 && args[1].equals("--visualize")) {
-            visualizeAST(args[0]);
-        } else if (args.length == 1) {
-            runFile(args[0], false);
-        } else {
-            runPrompt();
+    public static void main(String[] args) {
+        try {
+            if (args.length > 2 || (args.length == 2 && !args[1].equals("--test") && !args[1].equals("--visualize"))) {
+                System.out.println("Usage: jlox [script]");
+                System.exit(64);
+            } else if (args.length == 2 && args[1].equals("--test")) {
+                runFile(args[0], true);
+            } else if (args.length == 2 && args[1].equals("--visualize")) {
+                visualizeAST(args[0]);
+            } else if (args.length == 1) {
+                runFile(args[0], false);
+            } else {
+                runPrompt();
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            System.exit(74);
         }
     }
 
