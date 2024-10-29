@@ -6,7 +6,7 @@
 
 > Tahini is a paste made from sesame seeds that can be used as a dip, spread, or dressing. It's versatile, flavorful, and adds a unique touch to many dishes, while being a healthy choice. Inspired by the simplicity, flexibility, and richness of tahini, we present Tahini, a programming language that aims to be a joy to use, with a focus on simplicity, expressiveness, and extensive testing support.
 
-**Tahini** is a lightweight, tree-based interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language and testing features, with an exciting roadmap of future capabilities, including an import system, auto function mocking, and cross-language support.
+**Tahini** is a lightweight, tree-based interpreted programming language that is written using Java, and which runs on the JVM (Java Virtual Machine), inspired by Lox and Python. It aims to provide simplicity and expressiveness alongside extensive testing and contract support, making it a joy for developers to use. Currently, Tahini supports a number of core language and testing features, with an exciting roadmap of future capabilities.
 
 ```
 // import the kitchen file to get the bake function and ovenTemperature variable
@@ -62,6 +62,8 @@ print prepareDish();
     - [Conditionals](#conditionals)
     - [Loops](#loops)
     - [Imports](#imports)
+      - [Flat Imports](#flat-imports)
+      - [Namespaced Imports](#namespaced-imports)
     - [Built-in Functions](#built-in-functions)
   - [Stretch Goals](#stretch-goals)
 - [The Theory Behind This Implementation of Tahini](#the-theory-behind-this-implementation-of-tahini)
@@ -377,18 +379,50 @@ while (i < 5) {
 
 Tahini supports importing other Tahini files to reuse code and create modular applications. You can import a file using the `scoop` keyword, followed by the path to the file. The imported file will be executed in the current scope, allowing you to access its variables and functions.
 
+#### Flat Imports
+
 ```tahini
 scoop "../kitchen.tah";
+
+function_from_kitchen();
 ```
 
-The above would do a **flat import** of the `kitchen.tah` file, executing it in the current scope, and making every variable and function in `kitchen.tah` available in the current file's global scope. This should be used with caution, as it can lead to naming conflicts, pollution and unintended side effects.
+The above would do a **flat import** of the `kitchen.tah` file, executing it in the current scope, and making every variable and function in `kitchen.tah` available in the current file's global scope without any prefix. This should be used with caution, as it can lead to naming conflicts, pollution and unintended side effects.
 
-To avoid polluting the global environment, future versions of Tahini will support **namespaced imports**.
+#### Namespaced Imports
+
+To avoid polluting the global environment, it is recommended to use **namespaced imports**.
 
 ```tahini
-// future support
 scoop "../kitchen.tah" into kitchen;
+
+kitchen::function_from_kitchen();
 ```
+
+With this, all functions and variables from kitchen.tah are accessible only through the kitchen namespace. If `kitchen.tah` defines a function `prepare()`, you would now call it as `kitchen::prepare()` in your current file.
+
+Tahini also allows **nested imports**, so if a file you import also imports other files, they will follow the same flat or namespaced rules. For example:
+
+```tahini
+// C.tah
+fun function_from_c() {...}
+
+// D.tah
+fun function_from_d() {...}
+
+// B.tah 
+scoop "C.tah";
+scoop "D.tah" into D;
+fun function_from_b() {...}
+
+// A.tah
+scoop "B.tah" into B;
+B::function_from_b();
+B::function_from_c();
+B::D::function_from_d();
+```
+
+See [tests/namescoop](./tahini/tests/namescoop1.tah) for an example of how imports work.
 
 ### Built-in Functions
 

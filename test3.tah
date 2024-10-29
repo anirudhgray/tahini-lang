@@ -1,8 +1,0 @@
-scoop "../test4.tah" into test4;
-
-fun hello3() {
-    // print from4;
-    return "Hello, World! From 3.";
-}
-
-var test3var = "test3var";
