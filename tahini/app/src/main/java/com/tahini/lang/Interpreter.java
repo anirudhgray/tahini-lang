@@ -1,7 +1,11 @@
 package com.tahini.lang;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -248,17 +252,43 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     private List<Stmt> loadAndParseFile(Token path) throws IOException {
-        Path filePath = Paths.get((String) path.literal).toAbsolutePath();
-        if (scoopedFiles.contains(filePath)) {
-            throw new RuntimeError(path, "Circular import detected.", new ArrayList<>());
-        }
-        scoopedFiles.add(filePath);
-        byte[] bytes = Files.readAllBytes(filePath);
-        String source = new String(bytes, Charset.defaultCharset());
-        Parser parser = new Parser(new Scanner(source, filePath.normalize().toString()).scanTokens(), false);
+        String importPath = (String) path.literal;
+        List<Stmt> parsedStatements = new ArrayList<>();
 
-        // Parse into declarations only
+        if (importPath.startsWith("larder/")) {
+            String stdlibFilePath = "/stdlib" + importPath.substring("larder".length()) + ".tah";
+            parsedStatements.addAll(loadSingleStdlibModule(stdlibFilePath, path));
+        } else {
+            Path filePath = Paths.get(importPath).toAbsolutePath();
+            if (scoopedFiles.contains(filePath)) {
+                throw new RuntimeError(path, "Circular import detected.", new ArrayList<>());
+            }
+            scoopedFiles.add(filePath);
+
+            byte[] bytes = Files.readAllBytes(filePath);
+            String source = new String(bytes, Charset.defaultCharset());
+            parsedStatements.addAll(parseSource(source, importPath));
+        }
+
+        return parsedStatements;
+    }
+
+    private List<Stmt> loadSingleStdlibModule(String stdlibFilePath, Token path) throws IOException {
+        InputStream stdlibStream = getClass().getResourceAsStream(stdlibFilePath);
+        if (stdlibStream == null) {
+            throw new RuntimeError(path, "File " + stdlibFilePath + " not found in the larder.", new ArrayList<>());
+        }
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stdlibStream, StandardCharsets.UTF_8))) {
+            String source = reader.lines().collect(Collectors.joining("\n"));
+            return parseSource(source, stdlibFilePath);
+        }
+    }
+
+    private List<Stmt> parseSource(String source, String sourcePath) {
+        Parser parser = new Parser(new Scanner(source, sourcePath).scanTokens(), false);
         List<Stmt> allStatements = parser.parse();
+
         return allStatements.stream()
                 .filter(stmt -> stmt instanceof Stmt.Function || stmt instanceof Stmt.Var || stmt instanceof Stmt.Import)
                 .collect(Collectors.toList());
