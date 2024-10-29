@@ -1,0 +1,17 @@
+scoop "./tests/namescoop2.tah" into test2;
+
+fun hello() {
+    return "Hello, World!";
+}
+
+print test2::hello2();
+print hello3();
+print test2::test4::from4;
+print test2::test4::test5::from5;
+
+// Hello, World! From 3.
+// test4.tah
+// test5.tah
+// Hello, World! From 2.
+// RuntimeError: Undefined variable 'hello3'.
+// [at line 8 in namescooperror.tah]

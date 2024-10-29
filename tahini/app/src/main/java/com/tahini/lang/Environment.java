@@ -18,8 +18,14 @@ class Environment {
 
     private final Map<String, Object> values = new HashMap<>();
 
+    final Map<String, Environment> namespaces = new HashMap<>();
+
     public void define(String name, Object value) {
         values.put(name, value);
+    }
+
+    public void defineNamespace(String name, Environment namespace) {
+        namespaces.put(name, namespace);
     }
 
     public Object getValue(Token name) {
@@ -32,6 +38,18 @@ class Environment {
         }
 
         throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.", new ArrayList<>());
+    }
+
+    public Environment getNamespace(Token name) {
+        if (namespaces.containsKey(name.lexeme)) {
+            return namespaces.get(name.lexeme);
+        }
+
+        if (enclosing != null) {
+            return enclosing.getNamespace(name);
+        }
+
+        throw new RuntimeError(name, "Undefined namespace '" + name.lexeme + "'.", new ArrayList<>());
     }
 
     void assign(Token name, Object value) {

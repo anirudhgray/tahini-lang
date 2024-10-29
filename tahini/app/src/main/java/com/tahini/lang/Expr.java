@@ -14,6 +14,7 @@ abstract class Expr {
     R visitUnaryExpr(Unary expr);
     R visitTernaryExpr(Ternary expr);
     R visitVariableExpr(Variable expr);
+    R visitNamespacedVariableExpr(NamespacedVariable expr);
     R visitLogicalExpr(Logical expr);
     R visitTahiniListExpr(TahiniList expr);
     R visitTahiniMapExpr(TahiniMap expr);
@@ -163,6 +164,18 @@ abstract class Expr {
     }
 
     final Token name;
+  }
+  static class NamespacedVariable extends Expr {
+    NamespacedVariable(List<Token> nameParts) {
+      this.nameParts = nameParts;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitNamespacedVariableExpr(this);
+    }
+
+    final List<Token> nameParts;
   }
   static class Logical extends Expr {
     Logical(Expr left, Token operator, Expr right) {

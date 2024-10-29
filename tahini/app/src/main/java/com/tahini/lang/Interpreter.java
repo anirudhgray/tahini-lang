@@ -24,7 +24,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     private final Set<Path> scoopedFiles = new HashSet<>();
 
     final Environment globals = new Environment();
-    private Environment environment = globals;
+    public Environment environment = globals;
 
     public Interpreter(boolean repl) {
         this.repl = repl;
@@ -211,31 +211,43 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitImportStmt(Stmt.Import stmt) {
+        List<Stmt> importedDeclarations;
+        try {
+            importedDeclarations = loadAndParseFile(stmt.path);
+        } catch (IOException e) {
+            throw new RuntimeError(stmt.path, "Error importing file " + stmt.path.lexeme + ".", new ArrayList<>());
+        }
+
         if (stmt.name != null) {
-            // environment.define(stmt.name.lexeme, new TahiniModule(stmt.path.lexeme));
-            return null;
-        } else {
-            List<Stmt> importedDeclarations;
+            Environment previous = this.environment;
+            Environment importedEnv = new Environment();
+
             try {
-                importedDeclarations = loadAndParseFile(stmt.path);
-            } catch (IOException e) {
-                throw new RuntimeError(stmt.path, "Error importing file " + stmt.path.lexeme + ".", new ArrayList<>());
+                this.environment = importedEnv;
+
+                for (Stmt statement : importedDeclarations) {
+                    if (statement instanceof Stmt.Function || statement instanceof Stmt.Var || statement instanceof Stmt.Import) {
+                        execute(statement);
+                    }
+                }
+            } finally {
+                this.environment = previous;
             }
 
-            // Register only declarations (variables, functions) in the module environment
+            environment.defineNamespace(stmt.name.lexeme, importedEnv);
+        } else {
             for (Stmt statement : importedDeclarations) {
                 if (statement instanceof Stmt.Function || statement instanceof Stmt.Var || statement instanceof Stmt.Import) {
                     execute(statement);
                 }
             }
-            scoopedFiles.remove(Paths.get((String) stmt.path.literal).toAbsolutePath());
-            return null;
         }
+        scoopedFiles.remove(Paths.get((String) stmt.path.literal).toAbsolutePath());
+
+        return null;
     }
 
     private List<Stmt> loadAndParseFile(Token path) throws IOException {
-        // use some file getting system which doesnt depend on absolute path
-        // of where you are calling the interpreter from
         Path filePath = Paths.get((String) path.literal).toAbsolutePath();
         if (scoopedFiles.contains(filePath)) {
             throw new RuntimeError(path, "Circular import detected.", new ArrayList<>());
@@ -316,6 +328,16 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Object visitVariableExpr(Expr.Variable expr) {
         return environment.getValue(expr.name);
+    }
+
+    @Override
+    public Object visitNamespacedVariableExpr(Expr.NamespacedVariable expr) {
+        List<Token> nameParts = expr.nameParts;
+        Environment env = environment;
+        for (int i = 0; i < nameParts.size() - 1; i++) {
+            env = env.getNamespace(nameParts.get(i));
+        }
+        return env.getValue(nameParts.get(nameParts.size() - 1));
     }
 
     private void checkNumberOperand(Token operator, Object operand) {
@@ -424,7 +446,19 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
         Object result;
         try {
-            result = function.call(this, arguments);
+            if (expr.callee instanceof Expr.NamespacedVariable namespacedVariable) {
+                List<Token> nameParts = namespacedVariable.nameParts;
+                Environment env = environment;
+                Environment previousEnv = environment;
+                for (int i = 0; i < nameParts.size() - 1; i++) {
+                    env = env.getNamespace(nameParts.get(i));
+                }
+                this.environment = env;
+                result = function.call(this, arguments);
+                this.environment = previousEnv;
+            } else {
+                result = function.call(this, arguments);
+            }
         } catch (RuntimeError error) {
             if (error.token == null) {
                 throw new RuntimeError(expr.paren, error.getMessage(), new ArrayList<>(callStack));

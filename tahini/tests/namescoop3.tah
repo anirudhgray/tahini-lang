@@ -1,0 +1,7 @@
+scoop "./tests/namescoop4.tah" into test4;
+
+fun hello3() {
+    return "Hello, World! From 3.";
+}
+
+var test3var = "test3var";
