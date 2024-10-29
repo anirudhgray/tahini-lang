@@ -1,4 +1,4 @@
-scoop "../test2.tah" into test2;
+scoop "./tests/namescoop2.tah" into test2;
 
 fun hello() {
     return "Hello, World!";

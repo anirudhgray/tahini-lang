@@ -226,16 +226,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 this.environment = importedEnv;
 
                 for (Stmt statement : importedDeclarations) {
-                    if (statement instanceof Stmt.Function || statement instanceof Stmt.Var) {
-                        execute(statement);
-                    } else if (statement instanceof Stmt.Import) {
-                        // Recursive flat import: ensure nested imports are also flat-imported here
-                        Stmt.Import nestedImport = (Stmt.Import) statement;
-                        if (nestedImport.name == null) {  // Only handle further flat imports
-                            this.environment = previous;
-                            visitImportStmt(nestedImport);
-                            this.environment = importedEnv;
-                        }
+                    if (statement instanceof Stmt.Function || statement instanceof Stmt.Var || statement instanceof Stmt.Import) {
                         execute(statement);
                     }
                 }
@@ -244,11 +235,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             }
 
             environment.defineNamespace(stmt.name.lexeme, importedEnv);
-            for (Map.Entry<String, Environment> entry : importedEnv.namespaces.entrySet()) {
-                environment.defineNamespace(entry.getKey(), entry.getValue());
-            }
         } else {
-            // Register only declarations (variables, functions) in the module environment
             for (Stmt statement : importedDeclarations) {
                 if (statement instanceof Stmt.Function || statement instanceof Stmt.Var || statement instanceof Stmt.Import) {
                     execute(statement);
@@ -261,8 +248,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     private List<Stmt> loadAndParseFile(Token path) throws IOException {
-        // use some file getting system which doesnt depend on absolute path
-        // of where you are calling the interpreter from
         Path filePath = Paths.get((String) path.literal).toAbsolutePath();
         if (scoopedFiles.contains(filePath)) {
             throw new RuntimeError(path, "Circular import detected.", new ArrayList<>());
@@ -461,7 +446,19 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
         Object result;
         try {
-            result = function.call(this, arguments);
+            if (expr.callee instanceof Expr.NamespacedVariable namespacedVariable) {
+                List<Token> nameParts = namespacedVariable.nameParts;
+                Environment env = environment;
+                Environment previousEnv = environment;
+                for (int i = 0; i < nameParts.size() - 1; i++) {
+                    env = env.getNamespace(nameParts.get(i));
+                }
+                this.environment = env;
+                result = function.call(this, arguments);
+                this.environment = previousEnv;
+            } else {
+                result = function.call(this, arguments);
+            }
         } catch (RuntimeError error) {
             if (error.token == null) {
                 throw new RuntimeError(expr.paren, error.getMessage(), new ArrayList<>(callStack));

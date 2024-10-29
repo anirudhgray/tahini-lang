@@ -1,0 +1,16 @@
+scoop "./tests/namescoop3.tah";
+
+var checkfromlol = 15;
+
+fun hello2() {
+    print hello3();
+    print test4::from4;
+    print test4::test5::from5;
+    return "Hello, World! From 2.";
+}
+
+hello2();
+
+// Hello, World! From 3.
+// test4.tah
+// test5.tah

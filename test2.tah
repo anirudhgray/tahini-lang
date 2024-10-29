@@ -10,6 +10,7 @@ fun hello2() {
     // print test3::from4;
     print hello3();
     print test4::from4;
+    print test4::test5::from5;
     return "Hello, World! From 2.";
 }
 

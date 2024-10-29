@@ -1,1 +1,3 @@
+scoop "../test5.tah" into test5;
+
 var from4 = "test4.tah";
