@@ -27,10 +27,21 @@ jobs:
           cd tahini
           ./gradlew build
 
-      - name: Compile native image
+      - name: Compile native image on Linux/macOS
+        if: matrix.os != 'windows-latest'
         run: |
           cd tahini
-          native-image -jar app/build/libs/app.jar tahini
+          native-image \
+            -H:IncludeResources="larder/.*" \
+            -jar app/build/libs/app.jar tahini
+
+      - name: Compile native image on Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd tahini
+          native-image `
+            -H:IncludeResources="larder/.*" `
+            -jar app/build/libs/app.jar tahini
 
       - name: Rename binary for unique names on Macos and Linux
         if: matrix.os != 'windows-latest'
