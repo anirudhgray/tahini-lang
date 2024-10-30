@@ -1,0 +1,18 @@
+fun keys(map) {
+    var keys = _keys(map);
+    return keys;
+}
+
+fun values(map) {
+    var values = _values(map);
+    return values;
+}
+
+fun append(list, item) {
+    list = list + [item];
+    return list;
+}
+
+fun remove(list, index) {
+    return list[0:index] + list[index + 1:len(list)];
+}

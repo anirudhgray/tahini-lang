@@ -1,0 +1,90 @@
+// stdlib/math
+
+fun min(a, b) {
+    if (a < b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+fun max(a, b) {
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+fun abs(a) {
+    if (a < 0) {
+        return -a;
+    } else {
+        return a;
+    }
+}
+
+fun pow(a, b) {
+    var result = 1;
+    for (var i = 0; i < b; i = i + 1) {
+        result = result * a;
+    }
+    return result;
+}
+
+fun sqrt(a) {
+    var x = a;
+    var y = 1;
+    var e = 0.000001;
+    while (x - y > e) {
+        x = (x + y) / 2;
+        y = a / x;
+    }
+    return x;
+}
+
+fun log(a) {
+    var result = 0;
+    var x = (a - 1) / (a + 1);
+    var x2 = x * x;
+    for (var i = 0; i < 10; i = i + 1) {
+        result = result + 2 * pow(x, 2 * i + 1) / (2 * i + 1);
+    }
+    return result;
+}
+
+fun ceil(a) {
+    return a + (1 - a % 1);
+}
+
+fun floor(a) {
+    return a - a % 1;
+}
+
+fun fact(a) {
+    var result = 1;
+    for (var i = 1; i <= a; i = i + 1) {
+        result = result * i;
+    }
+    return result;
+}
+
+fun sin(a) {
+    var result = 0;
+    for (var i = 0; i < 10; i = i + 1) {
+        result = result + pow(-1, i) * pow(a, 2 * i + 1) / fact(2 * i + 1);
+    }
+    return result;
+}
+
+fun cos(a) {
+    var result = 0;
+    for (var i = 0; i < 10; i = i + 1) {
+        result = result + pow(-1, i) * pow(a, 2 * i) / fact(2 * i);
+    }
+    return result;
+}
+
+fun tan(a) {
+    return sin(a) / cos(a);
+}

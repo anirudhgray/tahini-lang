@@ -1,0 +1,8 @@
+fun readFile (path) {
+    var content = _read(path);
+    return content;
+}
+
+fun writeFile (path, content) {
+    _write(path, content);
+}

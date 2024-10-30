@@ -1,0 +1,40 @@
+scoop "larder/math" into math;
+scoop "larder/collections" into collections;
+scoop "larder/string" into string;
+scoop "larder/io";
+
+print math::sin(0.5);
+
+print math::log(10);
+
+print math::floor(3.14);
+
+var dict = {
+    "a": 1,
+    "b": 2,
+    "c": 3,
+    "d": 4,
+    "e": 5
+};
+
+print dict["a"];
+print collections::keys(dict);
+print collections::values(dict);
+print collections::append(collections::keys(dict), collections::values(dict));
+print collections::remove(collections::keys(dict), 2);
+var l = string::split("hello. world", ". ");
+print len(l);
+print l[1];
+print string::join(l, " | ");
+
+// 0.479425538604203
+// 2.298904088675831
+// 3
+// 1
+// [a, b, c, d, e]
+// [1.0, 2.0, 3.0, 4.0, 5.0]
+// [a, b, c, d, e, [1.0, 2.0, 3.0, 4.0, 5.0]]
+// [a, b, d, e]
+// 2
+// world
+// hello | world

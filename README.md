@@ -64,6 +64,7 @@ print prepareDish();
       - [Flat Imports](#flat-imports)
       - [Namespaced Imports](#namespaced-imports)
     - [Built-in Functions](#built-in-functions)
+  - [Standard Library](#standard-library)
   - [Stretch Goals](#stretch-goals)
 - [The Theory Behind This Implementation of Tahini](#the-theory-behind-this-implementation-of-tahini)
   - [What is a Tree-Walk Interpreter?](#what-is-a-tree-walk-interpreter)
@@ -82,9 +83,10 @@ Tahini currently implements:
 - [ ] **Error Handling**: Support for user-defined exceptions and error handling (in progress).
 - [x] **Stack Traces**: Detailed error messages with line numbers and function names.
 - [x] **Unit Tests**: Write test blocks directly in the source file to validate code correctness.
-- [ ] **Import System**: Import other Tahini files to reuse code and create modular applications (in progress).
+- [x] **Import System**: Import other Tahini files to reuse code and create modular applications.
+- [ ] **Standard Library**: A growing set of built-in functions and utilities, called the `larder`.
   
-Planned features include a standard library and cross-language support.
+Planned features include cross-language support.
 
 ## Getting Started
 
@@ -427,11 +429,33 @@ See [tests/namescoop](./tahini/tests/namescoop1.tah) for an example of how impor
 
 ### Built-in Functions
 
-Currently, Tahini does not have a standard library. However, it does provide a set of built-in functions (filling some of the core gaps which an imported standard library would have provided) for common operations:
+Apart from its standard library (`larder`), Tahini provides a set of built-in functions in the default namespace for common operations:
 
 - `input()` - Read a line of string input from the user.
 - `clock()` - Get the current time in seconds since the Unix epoch.
 - `len(arr)` - Get the length of an array.
+
+## Standard Library
+
+Tahini comes with a growing standard library, called [the `larder`](./tahini/app/src/main/resources/stdlib/), which provides a set of built-in functions and utilities to simplify common tasks. The `larder` includes functions for string manipulation, file I/O, math operations, and more.
+
+Here are some of the modules and functions available in the `larder`:
+
+- `larder/math` - Mathematical functions like `sqrt`, `pow`, `sin` etc.
+- `larder/string` - String manipulation functions like `split`, `join` etc.
+- `larder/io` - File I/O functions like `readFile`, `writeFile` etc.
+- `larder/collections` - Collection functions like `values`, `keys`, `append`, `remove` etc.
+
+You can import the `larder` modules in your Tahini code using the `scoop` keyword, similar to importing other Tahini files.
+
+```tahini
+scoop "larder/math" into math;
+scoop "larder/io";
+
+var x = math::sqrt(25);
+print x;
+writeFile("output.txt", "Hello, Tahini!");
+```
 
 ## Stretch Goals
 
