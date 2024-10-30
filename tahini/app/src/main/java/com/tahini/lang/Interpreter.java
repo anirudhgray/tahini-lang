@@ -410,6 +410,11 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 checkNumberOperands(expr.operator, left, right);
                 yield (double) left * (double) right;
             }
+            case MODULO -> {
+                checkNumberOperands(expr.operator, left, right);
+                checkZDE(expr.operator, right);
+                yield (double) left % (double) right;
+            }
             case PLUS -> {
                 if (left instanceof Double && right instanceof Double) {
                     yield (double) left + (double) right;

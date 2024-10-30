@@ -43,6 +43,24 @@ fun sqrt(a) {
     return x;
 }
 
+fun log(a) {
+    var result = 0;
+    var x = (a - 1) / (a + 1);
+    var x2 = x * x;
+    for (var i = 0; i < 10; i = i + 1) {
+        result = result + 2 * pow(x, 2 * i + 1) / (2 * i + 1);
+    }
+    return result;
+}
+
+fun ceil(a) {
+    return a + (1 - a % 1);
+}
+
+fun floor(a) {
+    return a - a % 1;
+}
+
 fun fact(a) {
     var result = 1;
     for (var i = 1; i <= a; i = i + 1) {

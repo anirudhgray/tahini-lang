@@ -93,6 +93,8 @@ class Scanner {
                 addToken(TokenType.SEMICOLON);
             case '*' ->
                 addToken(TokenType.STAR);
+            case '%' ->
+                addToken(TokenType.MODULO);
             case '!' ->
                 addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
             case '=' ->

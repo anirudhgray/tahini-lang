@@ -2,6 +2,10 @@ scoop "larder/math" into math;
 
 print math::sin(0.5);
 
+print math::log(10);
+
+print math::floor(3.14);
+
 var dict = {
     "a": 1,
     "b": 2,
