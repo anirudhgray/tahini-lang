@@ -47,9 +47,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             public String toString() {
                 return "<native fn>";
             }
+
+            @Override
+            public boolean isInternal() {
+                return false;
+            }
         });
         StandardLibrary.addStandardFunctions(environment);
-        StandardLibrary.addInternalFunctions(environment, null);
+        StandardLibrary.addInternalFunctions(environment);
     }
 
     private final Stack<CallFrame> callStack = new Stack<>();
@@ -229,6 +234,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
             try {
                 this.environment = importedEnv;
+                StandardLibrary.addStandardFunctions(environment);
+                StandardLibrary.addInternalFunctions(environment);
 
                 for (Stmt statement : importedDeclarations) {
                     if (statement instanceof Stmt.Function || statement instanceof Stmt.Var || statement instanceof Stmt.Import) {

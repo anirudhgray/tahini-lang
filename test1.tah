@@ -1,4 +1,5 @@
 scoop "larder/math" into math;
+scoop "larder/collections" into collections;
 
 print math::sin(0.5);
 
@@ -15,5 +16,7 @@ var dict = {
 };
 
 print dict["a"];
-print _keys(dict);
-print _values(dict);
+print collections::keys(dict);
+print collections::values(dict);
+print collections::append(collections::keys(dict), collections::values(dict));
+print collections::remove(collections::keys(dict), 2);

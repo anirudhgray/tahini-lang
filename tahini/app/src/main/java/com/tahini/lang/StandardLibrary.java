@@ -12,20 +12,9 @@ class StandardLibrary {
         globalEnv.define("len", new ArrayLengthFunction());
     }
 
-    public static void addInternalFunctions(Environment globalEnv, String namespace) {
-        if (namespace == null) {
-            defineInternalFunctions(globalEnv);
-        } else {
-            Environment mapEnv = new Environment();
-            defineInternalFunctions(mapEnv);
-
-            globalEnv.defineNamespace(namespace, mapEnv);
-        }
-    }
-
-    private static void defineInternalFunctions(Environment mapEnv) {
-        mapEnv.define("_keys", new HashmapKeysFunction());
-        mapEnv.define("_values", new HashmapValuesFunction());
+    public static void addInternalFunctions(Environment globalEnv) {
+        globalEnv.define("_keys", new HashmapKeysFunction());
+        globalEnv.define("_values", new HashmapValuesFunction());
     }
 }
 
@@ -52,6 +41,11 @@ class HashmapValuesFunction implements TahiniCallable {
     public int arity() {
         return 1;
     }
+
+    @Override
+    public boolean isInternal() {
+        return true;
+    }
 }
 
 class HashmapKeysFunction implements TahiniCallable {
@@ -77,6 +71,11 @@ class HashmapKeysFunction implements TahiniCallable {
     public int arity() {
         return 1;
     }
+
+    @Override
+    public boolean isInternal() {
+        return true;
+    }
 }
 
 class InputFunction implements TahiniCallable {
@@ -97,6 +96,11 @@ class InputFunction implements TahiniCallable {
     @Override
     public int arity() {
         return 0;
+    }
+
+    @Override
+    public boolean isInternal() {
+        return false;
     }
 }
 
@@ -126,5 +130,10 @@ class ArrayLengthFunction implements TahiniCallable {
     @Override
     public int arity() {
         return 1;
+    }
+
+    @Override
+    public boolean isInternal() {
+        return false;
     }
 }

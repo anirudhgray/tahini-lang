@@ -12,6 +12,11 @@ class TahiniFunction implements TahiniCallable {
     }
 
     @Override
+    public boolean isInternal() {
+        return false;
+    }
+
+    @Override
     public int arity() {
         return declaration.params.size();
     }
