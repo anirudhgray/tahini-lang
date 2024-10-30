@@ -437,7 +437,7 @@ Apart from its standard library (`larder`), Tahini provides a set of built-in fu
 
 ## Standard Library
 
-Tahini comes with a growing standard library, called the `larder`, which provides a set of built-in functions and utilities to simplify common tasks. The `larder` includes functions for string manipulation, file I/O, math operations, and more.
+Tahini comes with a growing standard library, called [the `larder`](./tahini/app/src/main/resources/stdlib/), which provides a set of built-in functions and utilities to simplify common tasks. The `larder` includes functions for string manipulation, file I/O, math operations, and more.
 
 Here are some of the modules and functions available in the `larder`:
 
