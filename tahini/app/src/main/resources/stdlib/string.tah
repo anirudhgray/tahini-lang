@@ -1,0 +1,25 @@
+fun split(string, delimiter) {
+    var result = [];
+    var start = 0;
+    var delimLength = len(delimiter);
+    for (var i = 0; i <= len(string) - delimLength; i = i + 1) {
+        if (string[i:i + delimLength] == delimiter) {
+            result = result + [string[start:i]];
+            start = i + delimLength;
+            i = i + delimLength - 1; // Move the index to the end of the delimiter
+        }
+    }
+    result = result + [string[start:len(string)]];
+    return result;
+}
+
+fun join(arr, delimiter) {
+    var result = "";
+    for (var i = 0; i < len(arr); i = i + 1) {
+        result = result + arr[i];
+        if (i < len(arr) - 1) {
+            result = result + delimiter;
+        }
+    }
+    return result;
+}

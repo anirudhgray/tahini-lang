@@ -1,5 +1,7 @@
 scoop "larder/math" into math;
 scoop "larder/collections" into collections;
+scoop "larder/string" into string;
+scoop "larder/io";
 
 print math::sin(0.5);
 
@@ -20,3 +22,8 @@ print collections::keys(dict);
 print collections::values(dict);
 print collections::append(collections::keys(dict), collections::values(dict));
 print collections::remove(collections::keys(dict), 2);
+var l = string::split("hello. world", ". ");
+print len(l);
+print l[1];
+print string::join(l, " | ");
+writeFile("test1.tah","//okllll");
