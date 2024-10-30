@@ -1,3 +1,15 @@
-scoop "larder/stdlib" into std;
+scoop "larder/math" into math;
 
-print std::hello();
+print math::sin(0.5);
+
+var dict = {
+    "a": 1,
+    "b": 2,
+    "c": 3,
+    "d": 4,
+    "e": 5
+};
+
+print dict["a"];
+print _keys(dict);
+print _values(dict);

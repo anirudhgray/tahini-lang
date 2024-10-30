@@ -49,6 +49,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             }
         });
         StandardLibrary.addStandardFunctions(environment);
+        StandardLibrary.addInternalFunctions(environment, null);
     }
 
     private final Stack<CallFrame> callStack = new Stack<>();
