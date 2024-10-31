@@ -32,8 +32,9 @@ class TahiniFunction implements TahiniCallable {
 
         Expr failingPre = interpreter.evaluateContractConditions(declaration.preconditions, environment);
         if (failingPre != null) {
+            String errormsg = declaration.premsg != null ? "Precondition failed: " + declaration.premsg : "Precondition failed.";
             throw new RuntimeError(declaration.name,
-                    "Precondition failed.", new ArrayList<>());
+                    errormsg, new ArrayList<>());
         }
 
         Object returnValue = null;
@@ -45,8 +46,9 @@ class TahiniFunction implements TahiniCallable {
 
         Expr failingPost = interpreter.evaluateContractConditions(declaration.postconditions, environment);
         if (failingPost != null) {
+            String errormsg = declaration.postmsg != null ? "Postcondition failed: " + declaration.postmsg : "Postcondition failed.";
             throw new RuntimeError(declaration.name,
-                    "Postcondition failed.", new ArrayList<>());
+                    errormsg, new ArrayList<>());
         }
 
         return returnValue;

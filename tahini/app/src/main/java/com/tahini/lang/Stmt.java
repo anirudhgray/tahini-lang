@@ -30,12 +30,14 @@ abstract class Stmt {
     final Expr expression;
   }
   static class Function extends Stmt {
-    Function(Token name, List<Token> params, List<Stmt> body, List<Expr> preconditions, List<Expr> postconditions) {
+    Function(Token name, List<Token> params, List<Stmt> body, List<Expr> preconditions, List<Expr> postconditions, Object premsg, Object postmsg) {
       this.name = name;
       this.params = params;
       this.body = body;
       this.preconditions = preconditions;
       this.postconditions = postconditions;
+      this.premsg = premsg;
+      this.postmsg = postmsg;
     }
 
     @Override
@@ -48,6 +50,8 @@ abstract class Stmt {
     final List<Stmt> body;
     final List<Expr> preconditions;
     final List<Expr> postconditions;
+    final Object premsg;
+    final Object postmsg;
   }
   static class Test extends Stmt {
     Test(Token name, Stmt body) {

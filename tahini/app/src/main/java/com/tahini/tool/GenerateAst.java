@@ -33,7 +33,7 @@ public class GenerateAst {
 
         defineAst(outputDir, "Stmt", Arrays.asList(
                 "Expression : Expr expression",
-                "Function   : Token name, List<Token> params, List<Stmt> body, List<Expr> preconditions, List<Expr> postconditions",
+                "Function   : Token name, List<Token> params, List<Stmt> body, List<Expr> preconditions, List<Expr> postconditions, Object premsg, Object postmsg",
                 "Test       : Token name, Stmt body",
                 "Print      : Expr expression",
                 "If         : Expr condition, Stmt thenBranch, Stmt elseBranch",
