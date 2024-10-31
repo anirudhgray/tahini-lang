@@ -54,6 +54,10 @@ class ASTVisualizer implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitImportStmt(Stmt.Import stmt) {
+        if (stmt.name == null) {
+            formatNode("ImportStmt", "path", stmt.path.lexeme);
+            return null;
+        }
         formatNode("ImportStmt", "path", stmt.path.lexeme, "name", stmt.name.lexeme);
         return null;
     }
