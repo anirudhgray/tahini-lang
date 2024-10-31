@@ -24,6 +24,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     final boolean repl;
+    private int functionDepth = 0;
 
     private final Set<Path> scoopedFiles = new HashSet<>();
 
@@ -192,7 +193,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Void visitExpressionStmt(Stmt.Expression stmt) {
         Object value = evaluate(stmt.expression);
-        if (repl) {
+        if (repl && functionDepth == 0) {
             System.err.println(stringify(value));
         }
         return null;
@@ -468,6 +469,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
         Object result;
         try {
+            this.functionDepth++;
             if (expr.callee instanceof Expr.NamespacedVariable namespacedVariable) {
                 List<Token> nameParts = namespacedVariable.nameParts;
                 Environment env = environment;
@@ -486,6 +488,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 throw new RuntimeError(expr.paren, error.getMessage(), new ArrayList<>(callStack));
             }
             throw new RuntimeError(error.token, error.getMessage(), new ArrayList<>(callStack));
+        } finally {
+            this.functionDepth--;
         }
 
         callStack.pop();
