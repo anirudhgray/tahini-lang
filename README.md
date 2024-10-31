@@ -84,7 +84,7 @@ Tahini currently implements:
 - [x] **Stack Traces**: Detailed error messages with line numbers and function names.
 - [x] **Unit Tests**: Write test blocks directly in the source file to validate code correctness.
 - [x] **Import System**: Import other Tahini files to reuse code and create modular applications.
-- [ ] **Standard Library**: A growing set of built-in functions and utilities, called the `larder`.
+- [x] **Standard Library**: A growing set of built-in functions and utilities, called the `larder`.
   
 Planned features include cross-language support.
 

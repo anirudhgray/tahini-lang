@@ -77,18 +77,18 @@ class HTTPRestFunction implements TahiniCallable {
 
         int responseCode = connection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                StringBuilder response = new StringBuilder();
+                String line;
 
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                return response.toString();
             }
-
-            reader.close();
-            return response.toString();
         } else {
-            return "Failed to get the API response. Response code: " + responseCode;
+            throw new IOException("GET request failed with response code " + responseCode);
         }
     }
 }
