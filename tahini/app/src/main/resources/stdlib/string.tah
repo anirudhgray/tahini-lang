@@ -23,3 +23,18 @@ fun join(arr, delimiter) {
     }
     return result;
 }
+
+fun replace(string, old, new) {
+    var result = "";
+    var start = 0;
+    var oldLength = len(old);
+    for (var i = 0; i <= len(string) - oldLength; i = i + 1) {
+        if (string[i:i + oldLength] == old) {
+            result = result + string[start:i] + new;
+            start = i + oldLength;
+            i = i + oldLength - 1;
+        }
+    }
+    result = result + string[start:len(string)];
+    return result;
+}

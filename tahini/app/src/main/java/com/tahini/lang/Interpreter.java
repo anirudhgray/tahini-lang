@@ -32,27 +32,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     public Interpreter(boolean repl) {
         this.repl = repl;
-        globals.define("clock", new TahiniCallable() {
-            @Override
-            public int arity() {
-                return 0;
-            }
-
-            @Override
-            public Object call(Interpreter interpreter, List<Object> arguments) {
-                return (double) System.currentTimeMillis() / 1000.0;
-            }
-
-            @Override
-            public String toString() {
-                return "<native fn>";
-            }
-
-            @Override
-            public boolean isInternal() {
-                return false;
-            }
-        });
         StandardLibrary.addStandardFunctions(environment);
         StandardLibrary.addInternalFunctions(environment);
     }

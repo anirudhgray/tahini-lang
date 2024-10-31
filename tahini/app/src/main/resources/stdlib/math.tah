@@ -88,3 +88,8 @@ fun cos(a) {
 fun tan(a) {
     return sin(a) / cos(a);
 }
+
+fun round(float, precision) {
+    var factor = pow(10, precision);
+    return ceil(float * factor - 0.5) / factor;
+}

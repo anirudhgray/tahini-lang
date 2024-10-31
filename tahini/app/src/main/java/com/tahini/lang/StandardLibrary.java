@@ -1,6 +1,10 @@
 package com.tahini.lang;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +18,7 @@ class StandardLibrary {
     public static void addStandardFunctions(Environment globalEnv) {
         globalEnv.define("input", new InputFunction());
         globalEnv.define("len", new ArrayLengthFunction());
+        globalEnv.define("clock", new UnixEpochSecondsFunction());
     }
 
     public static void addInternalFunctions(Environment globalEnv) {
@@ -21,6 +26,116 @@ class StandardLibrary {
         globalEnv.define("_values", new HashmapValuesFunction());
         globalEnv.define("_read", new FileReadFunction());
         globalEnv.define("_write", new FileWriteFunction());
+        globalEnv.define("_random", new RandomHelperFunction());
+        globalEnv.define("_http", new HTTPRestFunction());
+    }
+}
+
+class HTTPRestFunction implements TahiniCallable {
+
+    @Override
+    public int arity() {
+        return 2;
+    }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> args) {
+        if (args.size() != 2) {
+            throw new RuntimeError(null, "Expected 2 arguments but got " + args.size() + ".", null);
+        }
+        Object urlarg = args.get(0);
+        if (!(urlarg instanceof String url)) {
+            throw new RuntimeError(null, "Expected a string url but got " + urlarg + ".", null);
+        }
+        Object methodarg = args.get(1);
+        if (!(methodarg.equals("GET"))) {
+            throw new RuntimeError(null, "Expected 'GET' but got " + methodarg + ".", null);
+        }
+        String response;
+        try {
+            response = sendGetRequest(url);
+            return response;
+        } catch (IOException e) {
+            throw new RuntimeError(null, "Error sending HTTP request: " + e.getMessage(), null);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "<native fn>";
+    }
+
+    @Override
+    public boolean isInternal() {
+        return false;
+    }
+
+    private static String sendGetRequest(String apiUrl) throws IOException {
+        URL url = new URL(apiUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+
+            reader.close();
+            return response.toString();
+        } else {
+            return "Failed to get the API response. Response code: " + responseCode;
+        }
+    }
+}
+
+class RandomHelperFunction implements TahiniCallable {
+
+    @Override
+    public int arity() {
+        return 0;
+    }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> arguments) {
+        return Math.random();
+    }
+
+    @Override
+    public String toString() {
+        return "<native fn>";
+    }
+
+    @Override
+    public boolean isInternal() {
+        return false;
+    }
+}
+
+class UnixEpochSecondsFunction implements TahiniCallable {
+
+    @Override
+    public int arity() {
+        return 0;
+    }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> arguments) {
+        return (double) System.currentTimeMillis() / 1000.0;
+    }
+
+    @Override
+    public String toString() {
+        return "<native fn>";
+    }
+
+    @Override
+    public boolean isInternal() {
+        return false;
     }
 }
 

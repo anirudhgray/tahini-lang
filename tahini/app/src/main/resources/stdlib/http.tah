@@ -1,0 +1,5 @@
+// Send a GET request to the specified URL and return the response.
+fun get(url) {
+    var response = _http(url, "GET");
+    return response;
+}

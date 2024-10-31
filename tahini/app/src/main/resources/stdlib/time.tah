@@ -1,0 +1,89 @@
+// time standard lib funcs
+scoop "larder/string" into string;
+scoop "larder/math" into math;
+
+// unix epoch in seconds (using the inbuilt clock() function)
+fun now() {
+    return clock();
+}
+
+fun isLeapYear(year) {
+    if (year % 4 == 0) {
+        if (year % 100 == 0) {
+            if (year % 400 == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
+fun daysInMonth(month, year) {
+    if (month == 2) {
+        return isLeapYear(year) ? 29 : 28;
+    } else if (month == 4 or month == 6 or month == 9 or month == 11) {
+        return 30;
+    } else {
+        return 31;
+    }
+}
+
+// Format a Unix timestamp into a string format "YYYY-MM-DD HH:mm:ss"
+fun format(epoch, formatStr) {
+    var secondsInDay = 86400;
+    var secondsInYear = 365 * secondsInDay;
+    var remaining = epoch;
+
+    // Calculate the year
+    var year = 1970;
+    while (remaining >= secondsInYear) {
+        remaining = remaining - secondsInYear;
+        year = year + 1;
+        secondsInYear = isLeapYear(year) ? 366 * secondsInDay : 365 * secondsInDay;
+    }
+
+    // Calculate the month and day
+    var month = 1;
+    while (true) {
+        var daysInThisMonth = daysInMonth(month, year);
+        var secondsInThisMonth = daysInThisMonth * secondsInDay;
+        if (remaining < secondsInThisMonth) {
+            break;
+        }
+        remaining = remaining - secondsInThisMonth;
+        month = month + 1;
+    }
+    var day = 1 + remaining / secondsInDay;
+    day = math::floor(day);
+    remaining = remaining % secondsInDay;
+
+    // Calculate the hour, minute, and second
+    var hour = remaining / 3600;
+    hour = math::floor(hour);
+    remaining = remaining % 3600;
+    var minute = remaining / 60;
+    minute = math::floor(minute);
+    var second = remaining % 60;
+    second = math::round(second, 3);
+
+    // Replace placeholders in formatStr
+    var result = formatStr;
+    result = string::replace(result, "YYYY", year);
+    result = string::replace(result, "MM", month);
+    result = string::replace(result, "DD", day);
+    result = string::replace(result, "HH", hour);
+    result = string::replace(result, "mm", minute);
+    result = string::replace(result, "ss", second);
+
+    return result;
+}
+
+// Convert a Unix timestamp to ISO 8601 format "YYYY-MM-DDTHH:mm:ssZ"
+fun toIso(epoch) {
+    return format(epoch, "YYYY-MM-DDTHH:mm:ssZ");
+}

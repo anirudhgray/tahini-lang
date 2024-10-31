@@ -2,6 +2,21 @@ scoop "larder/math" into math;
 scoop "larder/collections" into collections;
 scoop "larder/string" into string;
 scoop "larder/io";
+scoop "larder/time" into time;
+scoop "larder/random" into random;
+scoop "larder/http" into http;
+
+print random::random();
+print random::randomInt(3,10);
+
+print http::get("https://jsonplaceholder.typicode.com/posts/1");
+
+var curr = time::now();
+print curr;
+print time::format(curr, "YYYY-MM-DD HH:mm");
+print time::toIso(curr);
+
+print string::replace("hello world cello", "llo", 44);
 
 print math::sin(0.5);
 
@@ -26,4 +41,3 @@ var l = string::split("hello. world", ". ");
 print len(l);
 print l[1];
 print string::join(l, " | ");
-writeFile("test1.tah","//okllll");

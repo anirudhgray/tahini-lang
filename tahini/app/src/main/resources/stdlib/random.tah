@@ -1,0 +1,11 @@
+scoop "larder/math";
+
+// Random float between 0 and 1
+fun random() {
+    return _random();
+}
+
+// Random integer between min and max
+fun randomInt(min, max) {
+    return floor(random() * (max - min + 1) + min);
+}

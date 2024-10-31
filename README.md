@@ -441,10 +441,13 @@ Tahini comes with a growing standard library, called [the `larder`](./tahini/app
 
 Here are some of the modules and functions available in the `larder`:
 
-- `larder/math` - Mathematical functions like `sqrt`, `pow`, `sin` etc.
-- `larder/string` - String manipulation functions like `split`, `join` etc.
+- `larder/math` - Mathematical functions like `sqrt`, `pow`, `sin`, `round` etc.
+- `larder/string` - String manipulation functions like `split`, `join`, `replace` etc.
 - `larder/io` - File I/O functions like `readFile`, `writeFile` etc.
 - `larder/collections` - Collection functions like `values`, `keys`, `append`, `remove` etc.
+- `larder/time` - Time functions like `now`, `format` etc.
+- `larder/random` - Random number generation functions like `random`, `randomInt` etc.
+- `larder/http` - HTTP request functions like `get` (only `get` for now).
 
 You can import the `larder` modules in your Tahini code using the `scoop` keyword, similar to importing other Tahini files.
 
