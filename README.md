@@ -434,6 +434,7 @@ Apart from its standard library (`larder`), Tahini provides a set of built-in fu
 - `input()` - Read a line of string input from the user.
 - `clock()` - Get the current time in seconds since the Unix epoch.
 - `len(arr)` - Get the length of an array.
+- `typeOf(value)` - Get the type of a value as a string.
 
 ## Standard Library
 
@@ -458,6 +459,7 @@ scoop "larder/io";
 var x = math::sqrt(25);
 print x;
 writeFile("output.txt", "Hello, Tahini!");
+print typeOf(x); // "number"
 ```
 
 ## Stretch Goals
