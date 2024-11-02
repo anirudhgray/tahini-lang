@@ -7,11 +7,21 @@
 - Database support and SQL queries
 - Cross-language import of Java classes
 - Mocking features
+- Run file by disabling/enabling contracts
 
 ### Changed
 - Enhanced HTTP Request/Response support for methods (POST, PUT, DELETE, etc.)
+- Critical (runtimeError) vs warning (stderr) assertions
 
 ---
+
+## [0.4.0] - 2024-11-01
+
+### Added
+- `typeOf` function to determine the type of a variable.
+
+### Fixed
+- Add custom error messages for failing contracts (like for assertions).
 
 ## [0.3.2] - 2024-10-31
 
