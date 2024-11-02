@@ -41,6 +41,7 @@ class Scanner {
         keywords.put("precondition", TokenType.PRECONDITION);
         keywords.put("postcondition", TokenType.POSTCONDITION);
         keywords.put("assertion", TokenType.ASSERTION);
+        keywords.put("check", TokenType.WARNING);
         keywords.put("test", TokenType.TEST);
         keywords.put("scoop", TokenType.SCOOP);
         keywords.put("into", TokenType.INTO);

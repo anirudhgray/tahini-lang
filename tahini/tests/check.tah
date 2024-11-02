@@ -1,0 +1,9 @@
+scoop "larder/math" into math;
+check: math::max(4, 5) == 54;
+var recipeName = "Muffins";
+var sugar = 50;
+assertion: recipeName != nil, "Recipe name cannot be nil!";
+check: sugar < 40, "Sugar might be too much.";
+
+// Warning (null) [check.tah:2]
+// Warning (Sugar might be too much.) [check.tah:6]

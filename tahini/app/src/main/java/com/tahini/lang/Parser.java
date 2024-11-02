@@ -80,8 +80,8 @@ class Parser {
         if (match(TokenType.RETURN)) {
             return returnStatement();
         }
-        if (match(TokenType.ASSERTION)) {
-            return assertationStatement();
+        if (match(TokenType.ASSERTION, TokenType.WARNING)) {
+            return assertionStatement();
         }
         return expressionStatement();
     }
@@ -308,9 +308,9 @@ class Parser {
         return new Stmt.Function(name, parameters, body, preconditions, postconditions, premsg, postmsg);
     }
 
-    private Stmt assertationStatement() {
+    private Stmt assertionStatement() {
         Token type = previous();
-        consume(TokenType.COLON, "Expect ':' after 'assertation'.");
+        consume(TokenType.COLON, "Expect ':' after assertion type.");
         List<Expr> conditions = new ArrayList<>();
         Object msg = null;
         do {
@@ -320,7 +320,7 @@ class Parser {
             }
             conditions.add(expression());
         } while (match(TokenType.COMMA));
-        consume(TokenType.SEMICOLON, "Expect ';' after assertation.");
+        consume(TokenType.SEMICOLON, "Expect ';' after an assertion.");
         return new Stmt.Contract(type, conditions, msg);
     }
 

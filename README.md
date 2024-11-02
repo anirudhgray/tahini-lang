@@ -244,12 +244,16 @@ Precondition failed.
 [line 15]
 ```
 
-`assertion` works in a similar way, except it can be used anywhere in the function body, and outside of functions as well.
+`assertion` works in a similar way, except it can be used anywhere in the function body, and outside of functions as well. A non-critical form of `assertion` is also available — `check`. This will log a warning to stderr, but will not interrupt the program execution by throwing an error.
 
 ```
-var check = false;
-assertion: check, "Check should be true!";
+var recipeName = "Muffins";
+var sugar = 50;
+assertion: recipeName != nil, "Recipe name cannot be nil!";
+check: sugar < 40, "Sugar might be too much.";
 ```
+
+In the above example, if `recipeName` is `nil`, a critical error will be thrown, but if `sugar` is more than/equal to 40, a warning will be logged to stderr.
 
 #### Unit Tests
 

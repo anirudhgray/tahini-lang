@@ -1,5 +1,5 @@
-var check = false;
-assertion: check, "Check should be true!";
+var checkvar = false;
+assertion: checkvar, "Check should be true!";
 
 // RuntimeError: assertion contract failed (Check should be true!)
 // [at line 2 in assert_outside.tah]

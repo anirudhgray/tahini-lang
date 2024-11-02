@@ -184,8 +184,11 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Void visitContractStmt(Stmt.Contract stmt) {
         Object condition = evaluateContractConditions(stmt.conditions, environment);
-        if (condition != null) {
+        if (condition != null && stmt.type.type == TokenType.ASSERTION) {
             throw new RuntimeError(stmt.type, stmt.type.lexeme + " contract failed (" + stmt.msg + ")", new ArrayList<>());
+        } else if (condition != null && stmt.type.type == TokenType.WARNING) {
+            // stderr
+            System.err.println("Warning (" + stmt.msg + ") [" + stmt.type.filename + ":" + stmt.type.line + "]");
         }
         return null;
     }
