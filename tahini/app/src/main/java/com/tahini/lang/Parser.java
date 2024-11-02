@@ -80,8 +80,8 @@ class Parser {
         if (match(TokenType.RETURN)) {
             return returnStatement();
         }
-        if (match(TokenType.ASSERTION)) {
-            return assertationStatement();
+        if (match(TokenType.ASSERTION, TokenType.WARNING)) {
+            return assertionStatement();
         }
         return expressionStatement();
     }
@@ -279,15 +279,25 @@ class Parser {
         // TODO add support for return check in postcondition
         List<Expr> preconditions = new ArrayList<>();
         List<Expr> postconditions = new ArrayList<>();
+        Object premsg = null;
+        Object postmsg = null;
         if (match(TokenType.PRECONDITION)) {
             consume(TokenType.COLON, "Expect ':' after 'precondition'.");
             do {
+                if (match(TokenType.STRING)) {
+                    premsg = previous().literal;
+                    break;
+                }
                 preconditions.add(expression());
             } while (match(TokenType.COMMA));
         }
         if (match(TokenType.POSTCONDITION)) {
             consume(TokenType.COLON, "Expect ':' after 'postcondition'.");
             do {
+                if (match(TokenType.STRING)) {
+                    postmsg = previous().literal;
+                    break;
+                }
                 postconditions.add(expression());
             } while (match(TokenType.COMMA));
         }
@@ -295,12 +305,12 @@ class Parser {
         consume(TokenType.LEFT_BRACE, "Expect '{' before function body.");
         List<Stmt> body = block();
         endFunction();
-        return new Stmt.Function(name, parameters, body, preconditions, postconditions);
+        return new Stmt.Function(name, parameters, body, preconditions, postconditions, premsg, postmsg);
     }
 
-    private Stmt assertationStatement() {
+    private Stmt assertionStatement() {
         Token type = previous();
-        consume(TokenType.COLON, "Expect ':' after 'assertation'.");
+        consume(TokenType.COLON, "Expect ':' after assertion type.");
         List<Expr> conditions = new ArrayList<>();
         Object msg = null;
         do {
@@ -310,7 +320,7 @@ class Parser {
             }
             conditions.add(expression());
         } while (match(TokenType.COMMA));
-        consume(TokenType.SEMICOLON, "Expect ';' after assertation.");
+        consume(TokenType.SEMICOLON, "Expect ';' after an assertion.");
         return new Stmt.Contract(type, conditions, msg);
     }
 

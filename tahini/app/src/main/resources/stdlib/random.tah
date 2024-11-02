@@ -1,11 +1,18 @@
 scoop "larder/math";
 
 // Random float between 0 and 1
-fun random() {
-    return _random();
+fun random()
+    postcondition: 0 <= result, result <= 1
+{
+    var result = _random();
+    return result;
 }
 
 // Random integer between min and max
-fun randomInt(min, max) {
-    return floor(random() * (max - min + 1) + min);
+fun randomInt(min, max)
+    precondition: min <= max
+    postcondition: min <= result, result <= max
+{
+    var result = floor(random() * (max - min + 1) + min);
+    return result;
 }

@@ -1,0 +1,46 @@
+scoop "larder/math" into math;
+scoop "larder/collections" into collections;
+scoop "larder/string" into string;
+scoop "larder/io";
+scoop "larder/time" into time;
+scoop "larder/random" into random;
+scoop "larder/http" into http;
+
+print typeOf(4);
+print typeOf(4.0);
+print typeOf("hello");
+print typeOf(true);
+print typeOf(false);
+print typeOf([4,5]);
+print typeOf({"a": 1, "b": 2});
+print typeOf(nil);
+print typeOf(collections::keys({"a": 1, "b": 2}));
+print typeOf(4+5);
+print typeOf(4-5);
+print typeOf(4.3*5);
+print typeOf(random::random());
+var curr = time::now();
+print typeOf(curr);
+print typeOf(random::random);
+fun testFunc() {return 4;}
+print typeOf(testFunc);
+print typeOf(clock);
+print typeOf(_http);
+// number
+// number
+// string
+// boolean
+// boolean
+// array
+// hashmap
+// nil
+// array
+// number
+// number
+// number
+// number
+// number
+// function
+// function
+// function
+// function

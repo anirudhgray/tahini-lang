@@ -1,6 +1,8 @@
 // stdlib/math
 
-fun min(a, b) {
+fun min(a, b)
+    precondition: a != nil, b != nil, "Arguments must not be nil"
+{
     if (a < b) {
         return a;
     } else {

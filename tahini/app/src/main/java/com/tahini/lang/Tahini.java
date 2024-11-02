@@ -93,7 +93,7 @@ public class Tahini {
         for (int i = callStack.size() - 1; i >= 0; i--) {
             CallFrame frame = callStack.get(i);
             System.err.println(" in " + frame.function);
-            System.err.print("[called at line " + frame.returnToLine + " in " + frame.returnToFilename + "]");
+            System.err.println("[called at line " + frame.returnToLine + " in " + frame.returnToFilename + "]");
         }
 
         hadRuntimeError = true;

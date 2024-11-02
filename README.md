@@ -244,12 +244,16 @@ Precondition failed.
 [line 15]
 ```
 
-`assertion` works in a similar way, except it can be used anywhere in the function body, and outside of functions as well.
+`assertion` works in a similar way, except it can be used anywhere in the function body, and outside of functions as well. A non-critical form of `assertion` is also available — `check`. This will log a warning to stderr, but will not interrupt the program execution by throwing an error.
 
 ```
-var check = false;
-assertion: check, "Check should be true!";
+var recipeName = "Muffins";
+var sugar = 50;
+assertion: recipeName != nil, "Recipe name cannot be nil!";
+check: sugar < 40, "Sugar might be too much.";
 ```
+
+In the above example, if `recipeName` is `nil`, a critical error will be thrown, but if `sugar` is more than/equal to 40, a warning will be logged to stderr.
 
 #### Unit Tests
 
@@ -434,6 +438,7 @@ Apart from its standard library (`larder`), Tahini provides a set of built-in fu
 - `input()` - Read a line of string input from the user.
 - `clock()` - Get the current time in seconds since the Unix epoch.
 - `len(arr)` - Get the length of an array.
+- `typeOf(value)` - Get the type of a value as a string.
 
 ## Standard Library
 
@@ -458,6 +463,7 @@ scoop "larder/io";
 var x = math::sqrt(25);
 print x;
 writeFile("output.txt", "Hello, Tahini!");
+print typeOf(x); // "number"
 ```
 
 ## Stretch Goals
