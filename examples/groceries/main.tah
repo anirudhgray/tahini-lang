@@ -8,31 +8,35 @@ var recipeBook = {
 
 fun displayRecipeBook(book) {
     print "Recipe Book Contents:";
-    for (var i = 0; i < collections::len(collections::keys(book)); i = i + 1) {
+    for (var i = 0; i < len(collections::keys(book)); i = i + 1) {
         var recipe = collections::keys(book)[i];
         print recipe + ":";
         print book[recipe];
     }
 }
 
-// Function to list all unique ingredients across all recipes
-// fun listUniqueIngredients(book) {
-//     var uniqueIngredients = {};
+fun listUniqueIngredients(book) {
+    var uniqueIngredients = {};
     
-//     for (var j = 0; j < collections::len(collections::keys(book)); j = j + 1) {
-//         var ingredients = book[collections::keys(book)[j]];
-//         for (var k = 0; k < collections::len(collections::keys(ingredients)); k = k + 1) {
-//             var ingredient = collections::keys(ingredients)[k];
-//             uniqueIngredients[ingredient] = true;
-//         }
-//     }
+    for (var j = 0; j < len(collections::keys(book)); j = j + 1) {
+        var ingredients = book[collections::keys(book)[j]];
+        for (var k = 0; k < len(collections::keys(ingredients)); k = k + 1) {
+            var ingredient = collections::keys(ingredients)[k];
+            collections::put(uniqueIngredients, ingredient, true);
+        }
+    }
     
-//     print "Unique Ingredients Across Recipes:";
-//     print collections::keys(uniqueIngredients);
-// }
+    return collections::keys(uniqueIngredients);
+}
 
-// Display the contents of the recipe book
 displayRecipeBook(recipeBook);
+print "Unique Ingredients:";
+print listUniqueIngredients(recipeBook);
 
-// List all unique ingredients across the recipes
-// listUniqueIngredients(recipeBook);
+test "recipe book tests" {
+    assertion: len(collections::keys(recipeBook)) == 3, "There should be 3 recipes in the recipe book";
+    assertion: len(collections::keys(recipeBook["Pancakes"])) == 5, "There should be 5 ingredients in the Pancakes recipe";
+    assertion: len(collections::keys(recipeBook["Omelette"])) == 5, "There should be 5 ingredients in the Omelette recipe";
+    assertion: len(collections::keys(recipeBook["Salad"])) == 5, "There should be 5 ingredients in the Salad recipe";
+    assertion: len(listUniqueIngredients(recipeBook)) == 12, "There should be 7 unique ingredients across all recipes";
+}

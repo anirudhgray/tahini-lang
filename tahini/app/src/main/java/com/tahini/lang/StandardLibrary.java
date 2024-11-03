@@ -26,10 +26,77 @@ class StandardLibrary {
     public static void addInternalFunctions(Environment globalEnv) {
         globalEnv.define("_keys", new HashmapKeysFunction());
         globalEnv.define("_values", new HashmapValuesFunction());
+        globalEnv.define("_addToDict", new AddToDictionaryFunction());
+        globalEnv.define("_delFromDict", new RemoveFromDictionaryFunction());
         globalEnv.define("_read", new FileReadFunction());
         globalEnv.define("_write", new FileWriteFunction());
         globalEnv.define("_random", new RandomHelperFunction());
         globalEnv.define("_http", new HTTPRestFunction());
+    }
+}
+
+class RemoveFromDictionaryFunction implements TahiniCallable {
+
+    @Override
+    public int arity() {
+        return 2;
+    }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> args) {
+        if (args.size() != 2) {
+            throw new RuntimeError(null, "Expected 2 arguments but got " + args.size() + ".", null);
+        }
+        Object dictArg = args.get(0);
+        if (!(dictArg instanceof Map)) {
+            throw new RuntimeError(null, "Expected a hashmap but got " + dictArg + ".", null);
+        }
+        Object keyArg = args.get(1);
+        ((Map) dictArg).remove(keyArg);
+        return dictArg;
+    }
+
+    @Override
+    public String toString() {
+        return "<native fn>";
+    }
+
+    @Override
+    public boolean isInternal() {
+        return false;
+    }
+}
+
+class AddToDictionaryFunction implements TahiniCallable {
+
+    @Override
+    public int arity() {
+        return 3;
+    }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> args) {
+        if (args.size() != 3) {
+            throw new RuntimeError(null, "Expected 3 arguments but got " + args.size() + ".", null);
+        }
+        Object dictArg = args.get(0);
+        if (!(dictArg instanceof Map)) {
+            throw new RuntimeError(null, "Expected a hashmap but got " + dictArg + ".", null);
+        }
+        Object keyArg = args.get(1);
+        Object valueArg = args.get(2);
+        ((Map) dictArg).put(keyArg, valueArg);
+        return dictArg;
+    }
+
+    @Override
+    public String toString() {
+        return "<native fn>";
+    }
+
+    @Override
+    public boolean isInternal() {
+        return false;
     }
 }
 
@@ -393,6 +460,9 @@ class ArrayLengthFunction implements TahiniCallable {
             throw new RuntimeError(null, "Expected 1 argument but got " + args.size() + ".", null);
         }
         Object arg = args.get(0);
+        if (arg == null) {
+            return 0;
+        }
         return switch (arg) {
             case List<?> list ->
                 (double) list.size();

@@ -1,4 +1,26 @@
+scoop "larder/collections" into collections;
+
 var map = { "x": 10, "y": 20 };
 print map["x"];
+var map2 = {len: 10, "y": len, 20: "z", "a":20, "a":len};
+print map2["y"];
+print map2[20];
+print map2[len];
+print map2["a"];
+print map2["a"]([1,2,3,4,5]);
+
+map = collections::put(map, "z", 10);
+print map["z"];
+
+print map2;
+print collections::del(map2, len);
 
 // 10
+// <native fn>
+// z
+// 10
+// <native fn>
+// 5
+// 10
+// {a=<native fn>, 20.0=z, <native fn>=10.0, y=<native fn>}
+// {a=<native fn>, 20.0=z, y=<native fn>}
