@@ -439,6 +439,7 @@ Apart from its standard library (`larder`), Tahini provides a set of built-in fu
 - `clock()` - Get the current time in seconds since the Unix epoch.
 - `len(arr)` - Get the length of an array.
 - `typeOf(value)` - Get the type of a value as a string.
+- `stronum(string)` - Convert a string to a number.
 
 ## Standard Library
 

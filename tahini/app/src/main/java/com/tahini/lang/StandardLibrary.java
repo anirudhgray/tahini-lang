@@ -20,6 +20,7 @@ class StandardLibrary {
         globalEnv.define("len", new ArrayLengthFunction());
         globalEnv.define("clock", new UnixEpochSecondsFunction());
         globalEnv.define("typeOf", new TypeOfFunction());
+        globalEnv.define("stronum", new StringToNumberFunction());
     }
 
     public static void addInternalFunctions(Environment globalEnv) {
@@ -29,6 +30,40 @@ class StandardLibrary {
         globalEnv.define("_write", new FileWriteFunction());
         globalEnv.define("_random", new RandomHelperFunction());
         globalEnv.define("_http", new HTTPRestFunction());
+    }
+}
+
+class StringToNumberFunction implements TahiniCallable {
+
+    @Override
+    public int arity() {
+        return 1;
+    }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> args) {
+        if (args.size() != 1) {
+            throw new RuntimeError(null, "Expected 1 argument but got " + args.size() + ".", null);
+        }
+        Object arg = args.get(0);
+        if (!(arg instanceof String)) {
+            throw new RuntimeError(null, "Expected a string but got " + arg + ".", null);
+        }
+        try {
+            return Double.valueOf((String) arg);
+        } catch (NumberFormatException e) {
+            throw new RuntimeError(null, "Invalid number format: " + arg, null);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "<native fn>";
+    }
+
+    @Override
+    public boolean isInternal() {
+        return false;
     }
 }
 

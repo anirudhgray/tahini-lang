@@ -8,6 +8,7 @@
 - Cross-language import of Java classes
 - Mocking features
 - Run file by disabling/enabling contracts
+- Convert string to number
 
 ### Changed
 - Enhanced HTTP Request/Response support for methods (POST, PUT, DELETE, etc.)
