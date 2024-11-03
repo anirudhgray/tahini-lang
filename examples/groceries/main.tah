@@ -1,0 +1,42 @@
+scoop "larder/collections" into collections;
+
+var recipeBook = {
+    "Pancakes": {"flour": 200, "milk": 300, "eggs": 2, "sugar": 50, "butter": 20},
+    "Omelette": {"eggs": 3, "milk": 50, "cheese": 20, "salt": 1, "pepper": 1},
+    "Salad": {"lettuce": 100, "tomato": 50, "cucumber": 50, "olive oil": 10, "salt": 2}
+};
+
+fun displayRecipeBook(book) {
+    print "Recipe Book Contents:";
+    for (var i = 0; i < len(collections::keys(book)); i = i + 1) {
+        var recipe = collections::keys(book)[i];
+        print recipe + ":";
+        print book[recipe];
+    }
+}
+
+fun listUniqueIngredients(book) {
+    var uniqueIngredients = {};
+    
+    for (var j = 0; j < len(collections::keys(book)); j = j + 1) {
+        var ingredients = book[collections::keys(book)[j]];
+        for (var k = 0; k < len(collections::keys(ingredients)); k = k + 1) {
+            var ingredient = collections::keys(ingredients)[k];
+            collections::put(uniqueIngredients, ingredient, true);
+        }
+    }
+    
+    return collections::keys(uniqueIngredients);
+}
+
+displayRecipeBook(recipeBook);
+print "Unique Ingredients:";
+print listUniqueIngredients(recipeBook);
+
+test "recipe book tests" {
+    assertion: len(collections::keys(recipeBook)) == 3, "There should be 3 recipes in the recipe book";
+    assertion: len(collections::keys(recipeBook["Pancakes"])) == 5, "There should be 5 ingredients in the Pancakes recipe";
+    assertion: len(collections::keys(recipeBook["Omelette"])) == 5, "There should be 5 ingredients in the Omelette recipe";
+    assertion: len(collections::keys(recipeBook["Salad"])) == 5, "There should be 5 ingredients in the Salad recipe";
+    assertion: len(listUniqueIngredients(recipeBook)) == 12, "There should be 7 unique ingredients across all recipes";
+}

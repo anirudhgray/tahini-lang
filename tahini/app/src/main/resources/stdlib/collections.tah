@@ -16,3 +16,11 @@ fun append(list, item) {
 fun remove(list, index) {
     return list[0:index] + list[index + 1:len(list)];
 }
+
+fun put(map, key, value) {
+    return _addToDict(map, key, value);
+}
+
+fun del(map, key) {
+    return _delFromDict(map, key);
+}

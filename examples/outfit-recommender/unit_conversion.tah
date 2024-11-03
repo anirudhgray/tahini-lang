@@ -1,0 +1,13 @@
+fun celsiusToFahrenheit(celsius) {
+    return (celsius * 9/5) + 32;
+}
+
+fun fahrenheitToCelsius(fahrenheit) {
+    return (fahrenheit - 32) * 5/9;
+}
+
+test "unit conversion tests" {
+    assertion: celsiusToFahrenheit(0) == 32, "0°C should be 32°F";
+    assertion: fahrenheitToCelsius(32) == 0, "32°F should be 0°C";
+    assertion: celsiusToFahrenheit(100) == 212, "100°C should be 212°F";
+}

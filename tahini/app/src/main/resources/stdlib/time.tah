@@ -87,3 +87,8 @@ fun format(epoch, formatStr) {
 fun toIso(epoch) {
     return format(epoch, "YYYY-MM-DDTHH:mm:ssZ");
 }
+
+// Add hours, minutes, and/or seconds to a Unix timestamp
+fun addTime(epoch, hours, minutes, seconds) {
+    return epoch + (hours * 3600) + (minutes * 60) + seconds;
+}

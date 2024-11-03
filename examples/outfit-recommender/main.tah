@@ -1,0 +1,31 @@
+scoop "./unit_conversion.tah" into converter;
+scoop "larder/time" into time;
+
+// Determines recommendation based on temperature and time of day
+fun recommendOutfit(temp, unit, timezoneOffset) 
+    precondition: unit == "C" or unit == "F"
+{
+    var celsiusTemp = (unit == "F") ? converter::fahrenheitToCelsius(temp) : temp;
+
+    // Check time of day using larder/time
+    var currTime = time::addTime(time::now(), timezoneOffset, 0, 0);
+    var hour = stronum(time::format(currTime, "HH"));
+    var period = (hour < 12) ? "morning" : (hour < 18) ? "afternoon" : "evening";
+
+    if (celsiusTemp < 15) {
+        return "It's " + period + " and cold! Wear a coat, scarf, and gloves.";
+    } else if (celsiusTemp >= 15 and celsiusTemp <= 25) {
+        return "It's " + period + " and cool. A light jacket will do.";
+    } else {
+        return "It's " + period + " and warm! A t-shirt and shorts are fine.";
+    }
+}
+
+print "Welcome to the outfit recommender!";
+print "What timezone are you in? Decimal hour values, please. (e.g. 5.5 for IST, -5 for EST, etc.)";
+var timezoneOffset = stronum(input());
+print "Enter the temperature: ";
+var temperature = stronum(input());
+print "Enter the unit (C/F): ";
+var unit = input();
+print recommendOutfit(temperature, unit, timezoneOffset);
