@@ -1,0 +1,9 @@
+scoop "larder/http" into http;
+
+print "Enter a search term: ";
+var searchTerm = input();
+var url = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + searchTerm + "&format=json";
+var response = http::get(url);
+print response;
+
+// TODO more methods and json parsing to dict/hashmap
